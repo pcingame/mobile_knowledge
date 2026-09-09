@@ -1,101 +1,1020 @@
 {
   "id": "general",
-  "title": { "en": "General Mobile Knowledge", "vi": "Kiến thức chung Mobile" },
+  "title": {
+    "en": "General Mobile Knowledge",
+    "vi": "Kiến thức chung Mobile"
+  },
   "flashcards": [
-    { "question": { "en": "What is MVVM?", "vi": "MVVM là gì?" }, "answer": { "en": "Model-View-ViewModel separates UI (View) from business/presentation logic (ViewModel) via data binding/observation, with Model representing data — improves testability and separation of concerns.", "vi": "Model-View-ViewModel tách UI (View) khỏi logic nghiệp vụ/hiển thị (ViewModel) thông qua data binding/observation, Model đại diện cho dữ liệu — giúp dễ test và tách biệt trách nhiệm hơn." } },
-    { "question": { "en": "What are the layers of Clean Architecture?", "vi": "Các tầng của Clean Architecture?" }, "answer": { "en": "Typically Presentation (UI) -> Domain (use cases/business rules, framework-independent) -> Data (repositories/data sources); dependencies point inward, domain has no framework dependencies.", "vi": "Thường gồm Presentation (UI) -> Domain (use case/business rule, không phụ thuộc framework) -> Data (repository/data source); dependency luôn hướng vào trong, Domain không biết gì về framework." } },
-    { "question": { "en": "REST vs GraphQL?", "vi": "REST khác GraphQL như thế nào?" }, "answer": { "en": "REST exposes fixed endpoints returning fixed data shapes per resource. GraphQL exposes a single endpoint where clients specify exactly which fields they need, reducing over/under-fetching.", "vi": "REST expose các endpoint cố định trả về dữ liệu theo hình dạng cố định cho từng resource. GraphQL expose một endpoint duy nhất, client tự chọn field cần lấy, giảm over-fetching/under-fetching." } },
-    { "question": { "en": "What is caching and why does it matter on mobile?", "vi": "Caching là gì và tại sao quan trọng trên mobile?" }, "answer": { "en": "Storing previously fetched data locally (memory/disk) to avoid redundant network calls, reduce latency, and support offline use — but requires invalidation strategy to avoid stale data.", "vi": "Lưu dữ liệu đã fetch trước đó vào local (memory/disk) để tránh gọi mạng lặp lại, giảm độ trễ, hỗ trợ offline — nhưng cần chiến lược invalidate để tránh dữ liệu cũ (stale)." } },
-    { "question": { "en": "Optimistic UI vs Pessimistic UI?", "vi": "Optimistic UI khác Pessimistic UI như thế nào?" }, "answer": { "en": "Optimistic UI updates the UI immediately assuming a server call will succeed (rolling back on failure). Pessimistic UI waits for server confirmation before updating — optimistic feels faster but needs rollback handling.", "vi": "Optimistic UI cập nhật giao diện ngay lập tức, giả định server call sẽ thành công (rollback nếu fail). Pessimistic UI chờ server xác nhận rồi mới cập nhật — optimistic cảm giác nhanh hơn nhưng cần xử lý rollback." } },
-    { "question": { "en": "What is dependency injection and why use it?", "vi": "Dependency Injection là gì và tại sao dùng?" }, "answer": { "en": "Supplying an object's dependencies from outside rather than having it construct them itself — improves testability (can inject mocks) and decouples components.", "vi": "Cung cấp dependency của một object từ bên ngoài thay vì để nó tự khởi tạo — giúp dễ test (có thể inject mock) và giảm coupling giữa các thành phần." } },
-    { "question": { "en": "Unit test vs widget/UI test vs integration test?", "vi": "Unit test khác Widget/UI test và Integration test như thế nào?" }, "answer": { "en": "Unit tests verify a single function/class in isolation (fast, no UI); widget/UI tests verify a UI component's rendering/interaction in isolation; integration tests run the full app (or large parts) end-to-end, closest to real user behavior but slowest.", "vi": "Unit test kiểm tra một hàm/class riêng lẻ (nhanh, không cần UI). Widget/UI test kiểm tra một thành phần UI khi render/tương tác. Integration test chạy toàn bộ (hoặc phần lớn) app end-to-end, gần với hành vi thật nhất nhưng chậm nhất." } },
-    { "question": { "en": "What is JWT and how is it typically used for mobile auth?", "vi": "JWT là gì và dùng cho auth mobile như thế nào?" }, "answer": { "en": "JSON Web Token is a signed, self-contained token (header.payload.signature) proving identity/claims; mobile apps typically store it securely (Keychain/Keystore) and attach it as a Bearer token on API requests, refreshing via a refresh token before expiry.", "vi": "JSON Web Token là token đã ký, tự chứa thông tin (header.payload.signature) chứng minh danh tính/claims; app mobile thường lưu an toàn (Keychain/Keystore) và gắn vào request dưới dạng Bearer token, refresh bằng refresh token trước khi hết hạn." } },
-    { "question": { "en": "Why avoid storing sensitive data in plain SharedPreferences/UserDefaults?", "vi": "Vì sao không nên lưu dữ liệu nhạy cảm trong SharedPreferences/UserDefaults thường?" }, "answer": { "en": "They're not encrypted by default and can be read if the device is rooted/jailbroken or backed up; use platform secure storage (Keystore/Keychain, or flutter_secure_storage) for tokens/secrets.", "vi": "Chúng không mã hóa mặc định, có thể bị đọc nếu thiết bị root/jailbreak hoặc qua backup — nên dùng secure storage của platform (Keystore/Keychain, hoặc flutter_secure_storage) cho token/secret." } },
-    { "question": { "en": "What is offline-first design?", "vi": "Offline-first là gì?" }, "answer": { "en": "Architecting the app so the local data store is the source of truth for the UI, syncing with the server in the background, so the app remains usable without connectivity.", "vi": "Thiết kế app sao cho local data store là nguồn dữ liệu chính (source of truth) cho UI, đồng bộ với server ở nền — app vẫn dùng được khi mất kết nối." } },
-    { "question": { "en": "What is CI/CD for mobile apps?", "vi": "CI/CD cho app mobile là gì?" }, "answer": { "en": "Continuous Integration automatically builds and tests every commit/PR; Continuous Delivery/Deployment automates packaging, signing, and distributing builds (to TestFlight, Play Console internal testing, or the store) — reducing manual release steps and catching regressions early.", "vi": "Continuous Integration tự động build và test mỗi commit/PR; Continuous Delivery/Deployment tự động hoá việc đóng gói, ký (sign), và phân phối build (lên TestFlight, Play Console internal testing, hoặc store) — giảm thao tác release thủ công và phát hiện regression sớm." } },
-    { "question": { "en": "What's the difference between crash reporting and performance monitoring (APM)?", "vi": "Crash reporting khác performance monitoring (APM) như thế nào?" }, "answer": { "en": "Crash reporting (Crashlytics, Sentry) captures stack traces when the app crashes or hits a handled exception. Performance monitoring (APM) tracks non-fatal health metrics over time — app startup time, screen render time, network latency — surfacing slow-but-not-crashing issues.", "vi": "Crash reporting (Crashlytics, Sentry) ghi lại stack trace khi app crash hoặc gặp exception đã được handle. Performance monitoring (APM) theo dõi các chỉ số sức khoẻ không gây crash theo thời gian — thời gian khởi động app, thời gian render màn hình, độ trễ mạng — phát hiện vấn đề chậm nhưng không crash." } },
-    { "question": { "en": "How do push notifications typically reach a mobile app?", "vi": "Push notification thường đến app mobile như thế nào?" }, "answer": { "en": "Your backend sends the notification payload to a platform push service (FCM for Android, APNs for iOS), which delivers it to the device using a device-specific token; the OS wakes the app or shows the notification even if the app isn't running.", "vi": "Backend gửi payload notification tới dịch vụ push của nền tảng (FCM cho Android, APNs cho iOS), dịch vụ này gửi tới thiết bị bằng một token đặc thù cho thiết bị đó; hệ điều hành đánh thức app hoặc hiện notification kể cả khi app không chạy." } },
-    { "question": { "en": "What is a staged (phased) rollout?", "vi": "Staged rollout (phased rollout) là gì?" }, "answer": { "en": "Releasing a new app version to a small percentage of users first (e.g. 5%, then 20%, then 100%), monitoring crash rate/metrics at each stage before widening — limits the blast radius if the release has a serious bug.", "vi": "Phát hành phiên bản app mới cho một tỉ lệ nhỏ người dùng trước (ví dụ 5%, rồi 20%, rồi 100%), theo dõi tỉ lệ crash/chỉ số ở mỗi giai đoạn trước khi mở rộng — giới hạn phạm vi ảnh hưởng nếu bản release có bug nghiêm trọng." } },
-    { "question": { "en": "What does mobile accessibility (a11y) involve?", "vi": "Accessibility (a11y) trên mobile bao gồm những gì?" }, "answer": { "en": "Making the app usable by people with disabilities: meaningful labels for screen readers (VoiceOver/TalkBack), sufficient color contrast, large enough touch targets, and support for dynamic text sizing — often a legal requirement, not just a nice-to-have.", "vi": "Làm cho app dùng được bởi người khuyết tật: label có ý nghĩa cho screen reader (VoiceOver/TalkBack), độ tương phản màu đủ, vùng chạm đủ lớn, và hỗ trợ cỡ chữ động — thường là yêu cầu pháp lý, không chỉ là 'có thì tốt'." } },
-    { "question": { "en": "Localization vs internationalization?", "vi": "Localization khác internationalization như thế nào?" }, "answer": { "en": "Internationalization (i18n) is engineering the app so it *can* support multiple languages/regions (extracting strings, formatting dates/numbers/currency per locale). Localization (l10n) is the actual act of translating content and adapting it for a specific locale.", "vi": "Internationalization (i18n) là việc xây dựng app sao cho *có thể* hỗ trợ nhiều ngôn ngữ/khu vực (tách chuỗi ra riêng, định dạng ngày/số/tiền tệ theo locale). Localization (l10n) là hành động thực tế dịch nội dung và điều chỉnh cho một locale cụ thể." } },
-    { "question": { "en": "What is exponential backoff and why use it for retrying API calls?", "vi": "Exponential backoff là gì và vì sao dùng khi retry API call?" }, "answer": { "en": "A retry strategy where the wait time between attempts grows exponentially (1s, 2s, 4s, 8s, ...), often with jitter (small randomization) added — prevents a flaky server or network from being hammered by many clients retrying in lockstep.", "vi": "Một chiến lược retry mà thời gian chờ giữa các lần thử tăng theo cấp số nhân (1s, 2s, 4s, 8s, ...), thường kèm jitter (ngẫu nhiên hoá nhỏ) — tránh việc một server/network chập chờn bị dồn dập bởi nhiều client retry cùng lúc." } },
-    { "question": { "en": "What are feature flags used for?", "vi": "Feature flag dùng để làm gì?" }, "answer": { "en": "Toggling a feature on/off remotely (via a config service) without shipping a new app build — enables gradual rollouts, A/B testing, and instantly disabling a broken feature without an emergency release.", "vi": "Bật/tắt một tính năng từ xa (qua một dịch vụ config) mà không cần release bản app mới — cho phép rollout dần dần, A/B testing, và tắt ngay một tính năng lỗi mà không cần release khẩn cấp." } },
-    { "question": { "en": "Why does app size matter, and what commonly bloats it?", "vi": "Vì sao kích thước app quan trọng, và điều gì thường làm nó phình to?" }, "answer": { "en": "Larger downloads have higher abandonment rates and slower installs, especially on constrained networks/storage. Common bloat sources: unoptimized images, unused dependencies, uncompressed assets, and (on Android) not using an App Bundle to serve device-specific APKs.", "vi": "App tải về lớn hơn có tỉ lệ bỏ dở cao hơn và cài đặt chậm hơn, đặc biệt trên mạng/bộ nhớ hạn chế. Nguồn phình to phổ biến: ảnh chưa tối ưu, dependency không dùng, asset chưa nén, và (trên Android) không dùng App Bundle để phân phối APK đặc thù theo thiết bị." } },
-    { "question": { "en": "What's the purpose of analytics event tracking in a mobile app?", "vi": "Mục đích của việc track sự kiện analytics trong app mobile là gì?" }, "answer": { "en": "Recording structured events (screen views, button taps, purchases) with properties, sent to a backend (Firebase Analytics, Amplitude, ...) so product teams can measure feature usage, funnels, and retention — distinct from crash/performance monitoring, which tracks app health rather than user behavior.", "vi": "Ghi lại các sự kiện có cấu trúc (xem màn hình, tap nút, mua hàng) kèm thuộc tính, gửi tới backend (Firebase Analytics, Amplitude, ...) để đội sản phẩm đo lường mức dùng tính năng, funnel, và retention — khác với crash/performance monitoring vốn theo dõi sức khoẻ app chứ không phải hành vi người dùng." } }
+    {
+      "question": {
+        "en": "What is MVVM?",
+        "vi": "MVVM là gì?"
+      },
+      "answer": {
+        "en": "Model-View-ViewModel separates UI (View) from business/presentation logic (ViewModel) via data binding/observation, with Model representing data — improves testability and separation of concerns.",
+        "vi": "Model-View-ViewModel tách UI (View) khỏi logic nghiệp vụ/hiển thị (ViewModel) thông qua data binding/observation, Model đại diện cho dữ liệu — giúp dễ test và tách biệt trách nhiệm hơn."
+      }
+    },
+    {
+      "question": {
+        "en": "What are the layers of Clean Architecture?",
+        "vi": "Các tầng của Clean Architecture?"
+      },
+      "answer": {
+        "en": "Typically Presentation (UI) -> Domain (use cases/business rules, framework-independent) -> Data (repositories/data sources); dependencies point inward, domain has no framework dependencies.",
+        "vi": "Thường gồm Presentation (UI) -> Domain (use case/business rule, không phụ thuộc framework) -> Data (repository/data source); dependency luôn hướng vào trong, Domain không biết gì về framework."
+      }
+    },
+    {
+      "question": {
+        "en": "REST vs GraphQL?",
+        "vi": "REST khác GraphQL như thế nào?"
+      },
+      "answer": {
+        "en": "REST exposes fixed endpoints returning fixed data shapes per resource. GraphQL exposes a single endpoint where clients specify exactly which fields they need, reducing over/under-fetching.",
+        "vi": "REST expose các endpoint cố định trả về dữ liệu theo hình dạng cố định cho từng resource. GraphQL expose một endpoint duy nhất, client tự chọn field cần lấy, giảm over-fetching/under-fetching."
+      }
+    },
+    {
+      "question": {
+        "en": "What is caching and why does it matter on mobile?",
+        "vi": "Caching là gì và tại sao quan trọng trên mobile?"
+      },
+      "answer": {
+        "en": "Storing previously fetched data locally (memory/disk) to avoid redundant network calls, reduce latency, and support offline use — but requires invalidation strategy to avoid stale data.",
+        "vi": "Lưu dữ liệu đã fetch trước đó vào local (memory/disk) để tránh gọi mạng lặp lại, giảm độ trễ, hỗ trợ offline — nhưng cần chiến lược invalidate để tránh dữ liệu cũ (stale)."
+      }
+    },
+    {
+      "question": {
+        "en": "Optimistic UI vs Pessimistic UI?",
+        "vi": "Optimistic UI khác Pessimistic UI như thế nào?"
+      },
+      "answer": {
+        "en": "Optimistic UI updates the UI immediately assuming a server call will succeed (rolling back on failure). Pessimistic UI waits for server confirmation before updating — optimistic feels faster but needs rollback handling.",
+        "vi": "Optimistic UI cập nhật giao diện ngay lập tức, giả định server call sẽ thành công (rollback nếu fail). Pessimistic UI chờ server xác nhận rồi mới cập nhật — optimistic cảm giác nhanh hơn nhưng cần xử lý rollback."
+      }
+    },
+    {
+      "question": {
+        "en": "What is dependency injection and why use it?",
+        "vi": "Dependency Injection là gì và tại sao dùng?"
+      },
+      "answer": {
+        "en": "Supplying an object's dependencies from outside rather than having it construct them itself — improves testability (can inject mocks) and decouples components.",
+        "vi": "Cung cấp dependency của một object từ bên ngoài thay vì để nó tự khởi tạo — giúp dễ test (có thể inject mock) và giảm coupling giữa các thành phần."
+      }
+    },
+    {
+      "question": {
+        "en": "Unit test vs widget/UI test vs integration test?",
+        "vi": "Unit test khác Widget/UI test và Integration test như thế nào?"
+      },
+      "answer": {
+        "en": "Unit tests verify a single function/class in isolation (fast, no UI); widget/UI tests verify a UI component's rendering/interaction in isolation; integration tests run the full app (or large parts) end-to-end, closest to real user behavior but slowest.",
+        "vi": "Unit test kiểm tra một hàm/class riêng lẻ (nhanh, không cần UI). Widget/UI test kiểm tra một thành phần UI khi render/tương tác. Integration test chạy toàn bộ (hoặc phần lớn) app end-to-end, gần với hành vi thật nhất nhưng chậm nhất."
+      }
+    },
+    {
+      "question": {
+        "en": "What is JWT and how is it typically used for mobile auth?",
+        "vi": "JWT là gì và dùng cho auth mobile như thế nào?"
+      },
+      "answer": {
+        "en": "JSON Web Token is a signed, self-contained token (header.payload.signature) proving identity/claims; mobile apps typically store it securely (Keychain/Keystore) and attach it as a Bearer token on API requests, refreshing via a refresh token before expiry.",
+        "vi": "JSON Web Token là token đã ký, tự chứa thông tin (header.payload.signature) chứng minh danh tính/claims; app mobile thường lưu an toàn (Keychain/Keystore) và gắn vào request dưới dạng Bearer token, refresh bằng refresh token trước khi hết hạn."
+      }
+    },
+    {
+      "question": {
+        "en": "Why avoid storing sensitive data in plain SharedPreferences/UserDefaults?",
+        "vi": "Vì sao không nên lưu dữ liệu nhạy cảm trong SharedPreferences/UserDefaults thường?"
+      },
+      "answer": {
+        "en": "They're not encrypted by default and can be read if the device is rooted/jailbroken or backed up; use platform secure storage (Keystore/Keychain, or flutter_secure_storage) for tokens/secrets.",
+        "vi": "Chúng không mã hóa mặc định, có thể bị đọc nếu thiết bị root/jailbreak hoặc qua backup — nên dùng secure storage của platform (Keystore/Keychain, hoặc flutter_secure_storage) cho token/secret."
+      }
+    },
+    {
+      "question": {
+        "en": "What is offline-first design?",
+        "vi": "Offline-first là gì?"
+      },
+      "answer": {
+        "en": "Architecting the app so the local data store is the source of truth for the UI, syncing with the server in the background, so the app remains usable without connectivity.",
+        "vi": "Thiết kế app sao cho local data store là nguồn dữ liệu chính (source of truth) cho UI, đồng bộ với server ở nền — app vẫn dùng được khi mất kết nối."
+      }
+    },
+    {
+      "question": {
+        "en": "What is CI/CD for mobile apps?",
+        "vi": "CI/CD cho app mobile là gì?"
+      },
+      "answer": {
+        "en": "Continuous Integration automatically builds and tests every commit/PR; Continuous Delivery/Deployment automates packaging, signing, and distributing builds (to TestFlight, Play Console internal testing, or the store) — reducing manual release steps and catching regressions early.",
+        "vi": "Continuous Integration tự động build và test mỗi commit/PR; Continuous Delivery/Deployment tự động hoá việc đóng gói, ký (sign), và phân phối build (lên TestFlight, Play Console internal testing, hoặc store) — giảm thao tác release thủ công và phát hiện regression sớm."
+      }
+    },
+    {
+      "question": {
+        "en": "What's the difference between crash reporting and performance monitoring (APM)?",
+        "vi": "Crash reporting khác performance monitoring (APM) như thế nào?"
+      },
+      "answer": {
+        "en": "Crash reporting (Crashlytics, Sentry) captures stack traces when the app crashes or hits a handled exception. Performance monitoring (APM) tracks non-fatal health metrics over time — app startup time, screen render time, network latency — surfacing slow-but-not-crashing issues.",
+        "vi": "Crash reporting (Crashlytics, Sentry) ghi lại stack trace khi app crash hoặc gặp exception đã được handle. Performance monitoring (APM) theo dõi các chỉ số sức khoẻ không gây crash theo thời gian — thời gian khởi động app, thời gian render màn hình, độ trễ mạng — phát hiện vấn đề chậm nhưng không crash."
+      }
+    },
+    {
+      "question": {
+        "en": "How do push notifications typically reach a mobile app?",
+        "vi": "Push notification thường đến app mobile như thế nào?"
+      },
+      "answer": {
+        "en": "Your backend sends the notification payload to a platform push service (FCM for Android, APNs for iOS), which delivers it to the device using a device-specific token; the OS wakes the app or shows the notification even if the app isn't running.",
+        "vi": "Backend gửi payload notification tới dịch vụ push của nền tảng (FCM cho Android, APNs cho iOS), dịch vụ này gửi tới thiết bị bằng một token đặc thù cho thiết bị đó; hệ điều hành đánh thức app hoặc hiện notification kể cả khi app không chạy."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a staged (phased) rollout?",
+        "vi": "Staged rollout (phased rollout) là gì?"
+      },
+      "answer": {
+        "en": "Releasing a new app version to a small percentage of users first (e.g. 5%, then 20%, then 100%), monitoring crash rate/metrics at each stage before widening — limits the blast radius if the release has a serious bug.",
+        "vi": "Phát hành phiên bản app mới cho một tỉ lệ nhỏ người dùng trước (ví dụ 5%, rồi 20%, rồi 100%), theo dõi tỉ lệ crash/chỉ số ở mỗi giai đoạn trước khi mở rộng — giới hạn phạm vi ảnh hưởng nếu bản release có bug nghiêm trọng."
+      }
+    },
+    {
+      "question": {
+        "en": "What does mobile accessibility (a11y) involve?",
+        "vi": "Accessibility (a11y) trên mobile bao gồm những gì?"
+      },
+      "answer": {
+        "en": "Making the app usable by people with disabilities: meaningful labels for screen readers (VoiceOver/TalkBack), sufficient color contrast, large enough touch targets, and support for dynamic text sizing — often a legal requirement, not just a nice-to-have.",
+        "vi": "Làm cho app dùng được bởi người khuyết tật: label có ý nghĩa cho screen reader (VoiceOver/TalkBack), độ tương phản màu đủ, vùng chạm đủ lớn, và hỗ trợ cỡ chữ động — thường là yêu cầu pháp lý, không chỉ là 'có thì tốt'."
+      }
+    },
+    {
+      "question": {
+        "en": "Localization vs internationalization?",
+        "vi": "Localization khác internationalization như thế nào?"
+      },
+      "answer": {
+        "en": "Internationalization (i18n) is engineering the app so it *can* support multiple languages/regions (extracting strings, formatting dates/numbers/currency per locale). Localization (l10n) is the actual act of translating content and adapting it for a specific locale.",
+        "vi": "Internationalization (i18n) là việc xây dựng app sao cho *có thể* hỗ trợ nhiều ngôn ngữ/khu vực (tách chuỗi ra riêng, định dạng ngày/số/tiền tệ theo locale). Localization (l10n) là hành động thực tế dịch nội dung và điều chỉnh cho một locale cụ thể."
+      }
+    },
+    {
+      "question": {
+        "en": "What is exponential backoff and why use it for retrying API calls?",
+        "vi": "Exponential backoff là gì và vì sao dùng khi retry API call?"
+      },
+      "answer": {
+        "en": "A retry strategy where the wait time between attempts grows exponentially (1s, 2s, 4s, 8s, ...), often with jitter (small randomization) added — prevents a flaky server or network from being hammered by many clients retrying in lockstep.",
+        "vi": "Một chiến lược retry mà thời gian chờ giữa các lần thử tăng theo cấp số nhân (1s, 2s, 4s, 8s, ...), thường kèm jitter (ngẫu nhiên hoá nhỏ) — tránh việc một server/network chập chờn bị dồn dập bởi nhiều client retry cùng lúc."
+      }
+    },
+    {
+      "question": {
+        "en": "What are feature flags used for?",
+        "vi": "Feature flag dùng để làm gì?"
+      },
+      "answer": {
+        "en": "Toggling a feature on/off remotely (via a config service) without shipping a new app build — enables gradual rollouts, A/B testing, and instantly disabling a broken feature without an emergency release.",
+        "vi": "Bật/tắt một tính năng từ xa (qua một dịch vụ config) mà không cần release bản app mới — cho phép rollout dần dần, A/B testing, và tắt ngay một tính năng lỗi mà không cần release khẩn cấp."
+      }
+    },
+    {
+      "question": {
+        "en": "Why does app size matter, and what commonly bloats it?",
+        "vi": "Vì sao kích thước app quan trọng, và điều gì thường làm nó phình to?"
+      },
+      "answer": {
+        "en": "Larger downloads have higher abandonment rates and slower installs, especially on constrained networks/storage. Common bloat sources: unoptimized images, unused dependencies, uncompressed assets, and (on Android) not using an App Bundle to serve device-specific APKs.",
+        "vi": "App tải về lớn hơn có tỉ lệ bỏ dở cao hơn và cài đặt chậm hơn, đặc biệt trên mạng/bộ nhớ hạn chế. Nguồn phình to phổ biến: ảnh chưa tối ưu, dependency không dùng, asset chưa nén, và (trên Android) không dùng App Bundle để phân phối APK đặc thù theo thiết bị."
+      }
+    },
+    {
+      "question": {
+        "en": "What's the purpose of analytics event tracking in a mobile app?",
+        "vi": "Mục đích của việc track sự kiện analytics trong app mobile là gì?"
+      },
+      "answer": {
+        "en": "Recording structured events (screen views, button taps, purchases) with properties, sent to a backend (Firebase Analytics, Amplitude, ...) so product teams can measure feature usage, funnels, and retention — distinct from crash/performance monitoring, which tracks app health rather than user behavior.",
+        "vi": "Ghi lại các sự kiện có cấu trúc (xem màn hình, tap nút, mua hàng) kèm thuộc tính, gửi tới backend (Firebase Analytics, Amplitude, ...) để đội sản phẩm đo lường mức dùng tính năng, funnel, và retention — khác với crash/performance monitoring vốn theo dõi sức khoẻ app chứ không phải hành vi người dùng."
+      }
+    },
+    {
+      "question": {
+        "en": "What is A/B testing and why is it used before a full feature rollout?",
+        "vi": "A/B testing là gì và vì sao dùng nó trước khi rollout đầy đủ một tính năng?"
+      },
+      "answer": {
+        "en": "Randomly splitting users into groups (A: control, B: variant) to compare a metric (conversion, retention, ...) between them — lets a team measure a change's real impact with statistical confidence before committing to it for everyone, catching a feature that looks good in theory but hurts a metric in practice.",
+        "vi": "Chia ngẫu nhiên người dùng thành các nhóm (A: đối chứng, B: biến thể) để so sánh một chỉ số (chuyển đổi, retention, ...) giữa chúng — giúp team đo tác động thực sự của một thay đổi với độ tin cậy thống kê trước khi áp dụng cho tất cả, phát hiện một tính năng nghe hay về lý thuyết nhưng lại làm giảm chỉ số trong thực tế."
+      }
+    },
+    {
+      "question": {
+        "en": "What do DAU, MAU, and retention measure?",
+        "vi": "DAU, MAU và retention đo lường điều gì?"
+      },
+      "answer": {
+        "en": "DAU/MAU (daily/monthly active users) measure how many distinct users open the app in that window — their ratio (DAU/MAU) approximates 'stickiness.' Retention measures whether users who installed on day 0 are still coming back on day N (e.g. Day-1, Day-7, Day-30 retention) — a more honest signal of long-term value than raw install counts.",
+        "vi": "DAU/MAU (người dùng hoạt động theo ngày/tháng) đo số người dùng riêng biệt mở app trong khoảng đó — tỉ lệ của chúng (DAU/MAU) xấp xỉ độ 'dính' (stickiness) của app. Retention đo liệu người dùng cài đặt ở ngày 0 có còn quay lại ở ngày N hay không (ví dụ retention Ngày-1, Ngày-7, Ngày-30) — tín hiệu trung thực hơn về giá trị dài hạn so với số lượt cài đặt thô."
+      }
+    },
+    {
+      "question": {
+        "en": "What's the core tradeoff between cross-platform (Flutter/React Native) and fully native development?",
+        "vi": "Đánh đổi cốt lõi giữa cross-platform (Flutter/React Native) và phát triển native hoàn toàn là gì?"
+      },
+      "answer": {
+        "en": "Cross-platform shares one codebase across iOS/Android (faster to build and maintain, one team), at the cost of occasionally needing platform-specific code for deep OS integrations or bleeding-edge platform features that the framework hasn't wrapped yet. Fully native gives unrestricted access to each platform's latest APIs, at the cost of maintaining two separate codebases and teams.",
+        "vi": "Cross-platform dùng chung một codebase cho iOS/Android (xây và bảo trì nhanh hơn, một team duy nhất), đánh đổi bằng việc thỉnh thoảng vẫn cần code đặc thù nền tảng cho các tích hợp OS sâu hoặc tính năng nền tảng mới nhất mà framework chưa bọc kịp. Native hoàn toàn cho quyền truy cập không giới hạn vào API mới nhất của từng nền tảng, đánh đổi bằng việc phải bảo trì hai codebase và hai team riêng biệt."
+      }
+    },
+    {
+      "question": {
+        "en": "Name a few common reasons apps get rejected during App Store/Play Store review.",
+        "vi": "Kể vài lý do phổ biến khiến app bị từ chối khi review trên App Store/Play Store."
+      },
+      "answer": {
+        "en": "Crashes or broken core functionality found by the reviewer, misleading metadata (screenshots/description not matching actual behavior), missing privacy disclosures for data collected, broken login/demo credentials the reviewer can't get past, and (on iOS) using private APIs or not following Human Interface Guidelines for basic navigation patterns.",
+        "vi": "App crash hoặc chức năng chính bị lỗi khi reviewer kiểm tra, metadata gây hiểu lầm (screenshot/mô tả không khớp hành vi thực tế), thiếu công bố về dữ liệu thu thập (privacy), tài khoản đăng nhập/demo không dùng được để reviewer vượt qua, và (trên iOS) dùng private API hoặc không tuân theo Human Interface Guidelines cho các pattern điều hướng cơ bản."
+      }
+    },
+    {
+      "question": {
+        "en": "What do 'Universal Links' (iOS) and 'App Links' (Android) have in common?",
+        "vi": "'Universal Links' (iOS) và 'App Links' (Android) có điểm gì chung?"
+      },
+      "answer": {
+        "en": "Both are verified https deep links — backed by a file the app's domain hosts (apple-app-site-association on iOS, assetlinks.json on Android) proving domain ownership — that open directly in the app with no disambiguation prompt, unlike an unverified custom-scheme or basic intent-filter deep link.",
+        "vi": "Cả hai đều là deep link https đã được verify — dựa trên một file mà domain của app host (apple-app-site-association trên iOS, assetlinks.json trên Android) chứng minh quyền sở hữu domain — mở thẳng vào app mà không hiện dialog hỏi chọn, khác với deep link dùng custom scheme hoặc intent-filter cơ bản chưa verify."
+      }
+    },
+    {
+      "question": {
+        "en": "Monorepo vs polyrepo for a mobile team with a Flutter app, a backend, and a design system?",
+        "vi": "Monorepo khác polyrepo như thế nào cho một team mobile có app Flutter, backend, và design system?"
+      },
+      "answer": {
+        "en": "A monorepo keeps everything in one repository — atomic cross-project commits (e.g. change an API and its Flutter client together) and shared tooling/CI, at the cost of a larger repo and more complex access control. Polyrepo keeps each project in its own repository — simpler ownership and smaller checkouts, at the cost of coordinating versioned dependencies (e.g. a shared design-system package) across repos.",
+        "vi": "Monorepo giữ mọi thứ trong một repository — commit xuyên dự án nguyên tử (ví dụ đổi một API cùng lúc với client Flutter của nó) và tooling/CI dùng chung, đánh đổi bằng repo lớn hơn và access control phức tạp hơn. Polyrepo giữ mỗi dự án trong repository riêng — quyền sở hữu đơn giản hơn và checkout nhỏ hơn, đánh đổi bằng việc phải phối hợp version của các dependency dùng chung (ví dụ package design-system) giữa các repo."
+      }
+    }
   ],
   "quiz": [
-    { "question": { "en": "In Clean Architecture, which layer should have no dependency on frameworks (Flutter/Android/iOS SDK)?", "vi": "Trong Clean Architecture, tầng nào không nên phụ thuộc vào framework (Flutter/Android/iOS SDK)?" }, "options": [ { "en": "Presentation", "vi": "Presentation" }, { "en": "Data", "vi": "Data" }, { "en": "Domain", "vi": "Domain" }, { "en": "Infrastructure", "vi": "Infrastructure" } ], "answerIndex": 2, "explanation": { "en": "The Domain layer (entities/use cases) is meant to be pure business logic, independent of UI or framework details, so it's easiest to test and reuse.", "vi": "Tầng Domain (entity/use case) là business logic thuần, độc lập với UI hay framework, nên dễ test và tái sử dụng nhất." } },
-    { "question": { "en": "What is the main advantage of GraphQL over REST for mobile clients?", "vi": "Lợi ích chính của GraphQL so với REST cho client mobile là gì?" }, "options": [ { "en": "It's always faster on the network", "vi": "Luôn nhanh hơn về mạng" }, { "en": "Clients can request exactly the fields they need, avoiding over/under-fetching", "vi": "Client có thể yêu cầu đúng field cần thiết, tránh over/under-fetching" }, { "en": "It doesn't require a server", "vi": "Không cần server" }, { "en": "It replaces the need for caching", "vi": "Thay thế được caching" } ], "answerIndex": 1, "explanation": { "en": "GraphQL lets the client shape the response, which is especially useful on mobile where bandwidth/payload size matters.", "vi": "GraphQL cho phép client định hình response, đặc biệt hữu ích trên mobile nơi băng thông/kích thước payload quan trọng." } },
-    { "question": { "en": "What's the risk of storing an auth token in SharedPreferences/UserDefaults without extra protection?", "vi": "Rủi ro khi lưu auth token trong SharedPreferences/UserDefaults mà không bảo vệ thêm là gì?" }, "options": [ { "en": "The token expires too quickly", "vi": "Token hết hạn quá nhanh" }, { "en": "It's not encrypted by default and can be exposed on a rooted/jailbroken device or backup", "vi": "Không mã hóa mặc định, có thể bị lộ trên thiết bị root/jailbreak hoặc qua backup" }, { "en": "The app can't read it back itself", "vi": "App không tự đọc được" }, { "en": "There is no risk", "vi": "Không có rủi ro" } ], "answerIndex": 1, "explanation": { "en": "These stores are plain (unencrypted) by default; sensitive data should go in Keystore/Keychain-backed secure storage instead.", "vi": "Các store này ở dạng plain (không mã hóa) mặc định; dữ liệu nhạy cảm nên dùng secure storage dựa trên Keystore/Keychain." } },
-    { "question": { "en": "What does an optimistic UI update mean?", "vi": "Optimistic UI update nghĩa là gì?" }, "options": [ { "en": "Waiting for server confirmation before changing the UI", "vi": "Chờ server xác nhận rồi mới đổi UI" }, { "en": "Updating the UI immediately and rolling back if the server call fails", "vi": "Cập nhật UI ngay lập tức và rollback nếu server call thất bại" }, { "en": "Never showing a loading indicator", "vi": "Không bao giờ hiện loading indicator" }, { "en": "Only used for read-only screens", "vi": "Chỉ dùng cho màn hình chỉ đọc" } ], "answerIndex": 1, "explanation": { "en": "Optimistic updates assume success for responsiveness, with a rollback/error path if the backend call actually fails.", "vi": "Optimistic update giả định thành công để tăng cảm giác phản hồi nhanh, có đường rollback/error nếu backend call thực sự thất bại." } },
-    { "question": { "en": "Which test type is closest to real end-user behavior but generally the slowest to run?", "vi": "Loại test nào gần nhất với hành vi người dùng thật nhưng thường chậm nhất?" }, "options": [ { "en": "Unit test", "vi": "Unit test" }, { "en": "Widget/UI test", "vi": "Widget/UI test" }, { "en": "Integration test", "vi": "Integration test" }, { "en": "Static analysis", "vi": "Static analysis" } ], "answerIndex": 2, "explanation": { "en": "Integration tests exercise the app (often on a real/simulated device) end-to-end, giving the highest confidence but at the highest runtime cost.", "vi": "Integration test chạy app (thường trên thiết bị/simulator thật) end-to-end, độ tin cậy cao nhất nhưng chi phí runtime cao nhất." } },
-    { "question": { "en": "What does 'offline-first' mean for an app's architecture?", "vi": "'Offline-first' nghĩa là gì đối với kiến trúc app?" }, "options": [ { "en": "The app refuses to work without internet", "vi": "App từ chối hoạt động khi không có internet" }, { "en": "The local database is the source of truth for the UI, syncing with the server in the background", "vi": "Local database là source of truth cho UI, đồng bộ với server ở nền" }, { "en": "All data is deleted when offline", "vi": "Toàn bộ dữ liệu bị xóa khi offline" }, { "en": "It only applies to games", "vi": "Chỉ áp dụng cho game" } ], "answerIndex": 1, "explanation": { "en": "Offline-first apps read/write to local storage first (instant, always available) and reconcile with the server asynchronously.", "vi": "App offline-first đọc/ghi vào local storage trước (tức thời, luôn sẵn có) rồi đồng bộ với server bất đồng bộ." } },
-    { "question": { "en": "What is the primary purpose of dependency injection?", "vi": "Mục đích chính của Dependency Injection là gì?" }, "options": [ { "en": "To make apps run faster automatically", "vi": "Giúp app tự động chạy nhanh hơn" }, { "en": "To supply a component's dependencies from outside so they can be swapped/mocked, improving testability and decoupling", "vi": "Cung cấp dependency từ bên ngoài để dễ thay thế/mock, tăng khả năng test và giảm coupling" }, { "en": "To reduce app size", "vi": "Giảm dung lượng app" }, { "en": "To handle navigation", "vi": "Xử lý navigation" } ], "answerIndex": 1, "explanation": { "en": "DI inverts control of dependency creation, making it easy to substitute mocks/fakes in tests and swap implementations.", "vi": "DI đảo ngược quyền kiểm soát việc tạo dependency, giúp dễ dàng thay bằng mock/fake trong test và hoán đổi implementation." } },
-    { "question": { "en": "What is a refresh token typically used for?", "vi": "Refresh token thường được dùng để làm gì?" }, "options": [ { "en": "Replacing the need for any authentication", "vi": "Thay thế hoàn toàn việc xác thực" }, { "en": "Obtaining a new access token once the current one expires, without asking the user to log in again", "vi": "Lấy access token mới khi cái hiện tại hết hạn, mà không cần người dùng đăng nhập lại" }, { "en": "Encrypting local storage", "vi": "Mã hóa local storage" }, { "en": "Speeding up network requests", "vi": "Tăng tốc network request" } ], "answerIndex": 1, "explanation": { "en": "Refresh tokens (usually longer-lived, stored securely) let the client silently obtain a new short-lived access token when it expires.", "vi": "Refresh token (thường sống lâu hơn, lưu an toàn) cho phép client âm thầm lấy access token ngắn hạn mới khi hết hạn." } },
-    { "question": { "en": "What does Continuous Integration (CI) primarily automate for a mobile team?", "vi": "Continuous Integration (CI) chủ yếu tự động hoá điều gì cho team mobile?" }, "options": [ { "en": "Designing the app's UI", "vi": "Thiết kế UI của app" }, { "en": "Building and running tests automatically on every commit/PR", "vi": "Tự động build và chạy test trên mỗi commit/PR" }, { "en": "Writing the app's marketing copy", "vi": "Viết nội dung marketing cho app" }, { "en": "Approving App Store submissions", "vi": "Duyệt hồ sơ nộp lên App Store" } ], "answerIndex": 1, "explanation": { "en": "CI catches regressions early by automatically building and testing every change, before it's merged or released.", "vi": "CI phát hiện regression sớm bằng cách tự động build và test mỗi thay đổi, trước khi nó được merge hay release." } },
-    { "question": { "en": "What does a crash reporting tool (like Crashlytics or Sentry) primarily capture?", "vi": "Một công cụ crash reporting (như Crashlytics hay Sentry) chủ yếu ghi lại điều gì?" }, "options": [ { "en": "Marketing conversion rates", "vi": "Tỉ lệ chuyển đổi marketing" }, { "en": "Stack traces from crashes and handled exceptions", "vi": "Stack trace từ các crash và exception đã được handle" }, { "en": "App Store review text", "vi": "Nội dung review trên App Store" }, { "en": "UI design mockups", "vi": "Mockup thiết kế UI" } ], "answerIndex": 1, "explanation": { "en": "Crash reporting tools collect stack traces and device/app context whenever the app crashes or a handled exception is logged, helping diagnose bugs in production.", "vi": "Công cụ crash reporting thu thập stack trace cùng thông tin thiết bị/app mỗi khi app crash hoặc một exception đã handle được log, giúp chẩn đoán bug trên production." } },
-    { "question": { "en": "In the typical push notification flow, what role does FCM/APNs play?", "vi": "Trong luồng push notification thông thường, FCM/APNs đóng vai trò gì?" }, "options": [ { "en": "They are the platform push service that delivers your backend's notification to the device", "vi": "Là dịch vụ push của nền tảng, gửi notification từ backend của bạn tới thiết bị" }, { "en": "They store the app's user data", "vi": "Lưu trữ dữ liệu người dùng của app" }, { "en": "They compile the app for release", "vi": "Biên dịch app cho bản release" }, { "en": "They are only used for in-app chat", "vi": "Chỉ dùng cho chat trong app" } ], "answerIndex": 0, "explanation": { "en": "Your backend sends the payload to FCM (Android) or APNs (iOS), which routes it to the specific device using its push token, even waking the app if it isn't running.", "vi": "Backend gửi payload tới FCM (Android) hoặc APNs (iOS), dịch vụ này định tuyến tới đúng thiết bị bằng push token của nó, kể cả đánh thức app nếu nó không chạy." } },
-    { "question": { "en": "What is the main benefit of a staged (phased) rollout?", "vi": "Lợi ích chính của staged rollout (phased rollout) là gì?" }, "options": [ { "en": "It makes the app download faster", "vi": "Giúp tải app nhanh hơn" }, { "en": "It limits the blast radius if a release has a serious bug, by exposing it to a small percentage of users first", "vi": "Giới hạn phạm vi ảnh hưởng nếu release có bug nghiêm trọng, bằng cách chỉ đưa tới một tỉ lệ nhỏ người dùng trước" }, { "en": "It skips App Store/Play Store review", "vi": "Bỏ qua việc review của App Store/Play Store" }, { "en": "It only applies to beta testers, never to production", "vi": "Chỉ áp dụng cho beta tester, không bao giờ dùng cho production" } ], "answerIndex": 1, "explanation": { "en": "By watching crash rate and key metrics at each percentage stage, a team can halt a rollout before a bad release reaches everyone.", "vi": "Bằng cách theo dõi tỉ lệ crash và các chỉ số quan trọng ở mỗi giai đoạn tỉ lệ, team có thể dừng rollout trước khi một bản release lỗi đến với tất cả mọi người." } },
-    { "question": { "en": "Why does mobile accessibility (a11y) matter beyond being 'nice to have'?", "vi": "Vì sao accessibility (a11y) trên mobile quan trọng hơn là chỉ 'có thì tốt'?" }, "options": [ { "en": "It has no real impact on users", "vi": "Không có tác động thực sự tới người dùng" }, { "en": "It's often a legal requirement and makes the app usable by people with disabilities", "vi": "Thường là yêu cầu pháp lý và giúp app dùng được bởi người khuyết tật" }, { "en": "It only affects app icon design", "vi": "Chỉ ảnh hưởng tới thiết kế icon app" }, { "en": "It's automatically handled with zero developer effort", "vi": "Được xử lý tự động, không cần công sức của developer" } ], "answerIndex": 1, "explanation": { "en": "Accessibility standards (like labels for screen readers, sufficient contrast, dynamic text support) are legally mandated in many regions and directly determine whether people with disabilities can use the app at all.", "vi": "Các tiêu chuẩn accessibility (như label cho screen reader, độ tương phản đủ, hỗ trợ cỡ chữ động) được yêu cầu bởi luật ở nhiều khu vực và quyết định trực tiếp việc người khuyết tật có dùng được app hay không." } },
-    { "question": { "en": "What's the difference between internationalization (i18n) and localization (l10n)?", "vi": "Sự khác biệt giữa internationalization (i18n) và localization (l10n) là gì?" }, "options": [ { "en": "They are the same thing", "vi": "Chúng giống hệt nhau" }, { "en": "i18n is engineering the app to support multiple locales; l10n is the actual translation/adaptation for a specific locale", "vi": "i18n là xây dựng app để hỗ trợ nhiều locale; l10n là hành động dịch/điều chỉnh thực tế cho một locale cụ thể" }, { "en": "i18n only applies to dates, l10n only applies to currency", "vi": "i18n chỉ áp dụng cho ngày tháng, l10n chỉ áp dụng cho tiền tệ" }, { "en": "l10n happens before i18n", "vi": "l10n xảy ra trước i18n" } ], "answerIndex": 1, "explanation": { "en": "i18n is the technical groundwork (extracting strings, locale-aware formatting); l10n is the content work of actually translating and adapting for each target locale, done on top of that groundwork.", "vi": "i18n là nền tảng kỹ thuật (tách chuỗi, định dạng theo locale); l10n là công việc nội dung thực sự dịch và điều chỉnh cho từng locale mục tiêu, thực hiện trên nền tảng đó." } },
-    { "question": { "en": "Why use exponential backoff (with jitter) when retrying a failed API call?", "vi": "Vì sao dùng exponential backoff (kèm jitter) khi retry một API call thất bại?" }, "options": [ { "en": "To retry as fast as possible every time", "vi": "Để retry càng nhanh càng tốt mỗi lần" }, { "en": "To avoid overwhelming a struggling server with synchronized retries from many clients", "vi": "Để tránh dồn dập server đang gặp vấn đề bằng các lần retry đồng loạt từ nhiều client" }, { "en": "It guarantees the request will eventually succeed", "vi": "Nó đảm bảo request cuối cùng sẽ thành công" }, { "en": "It's required by every HTTP client library", "vi": "Nó bắt buộc phải có ở mọi thư viện HTTP client" } ], "answerIndex": 1, "explanation": { "en": "Growing the delay between retries (plus randomized jitter) spreads out retry traffic instead of many clients hammering the server at the exact same moments.", "vi": "Tăng dần khoảng chờ giữa các lần retry (kèm jitter ngẫu nhiên) giúp trải đều lưu lượng retry thay vì nhiều client cùng dồn vào server ở đúng cùng một thời điểm." } },
-    { "question": { "en": "What is the main benefit of a feature flag / remote config system?", "vi": "Lợi ích chính của hệ thống feature flag / remote config là gì?" }, "options": [ { "en": "It makes the app compile faster", "vi": "Giúp app biên dịch nhanh hơn" }, { "en": "It lets a team toggle a feature on/off remotely without shipping a new app build", "vi": "Cho phép team bật/tắt một tính năng từ xa mà không cần release bản app mới" }, { "en": "It replaces the need for testing", "vi": "Thay thế được việc testing" }, { "en": "It only works for backend services, not mobile apps", "vi": "Chỉ hoạt động cho backend service, không dùng cho app mobile" } ], "answerIndex": 1, "explanation": { "en": "Feature flags decouple deploying code from releasing a feature to users, enabling gradual rollouts, A/B tests, and instant kill-switches for broken features.", "vi": "Feature flag tách rời việc deploy code khỏi việc phát hành tính năng cho người dùng, cho phép rollout dần dần, A/B test, và tắt ngay lập tức tính năng lỗi." } }
+    {
+      "question": {
+        "en": "In Clean Architecture, which layer should have no dependency on frameworks (Flutter/Android/iOS SDK)?",
+        "vi": "Trong Clean Architecture, tầng nào không nên phụ thuộc vào framework (Flutter/Android/iOS SDK)?"
+      },
+      "options": [
+        {
+          "en": "Presentation",
+          "vi": "Presentation"
+        },
+        {
+          "en": "Data",
+          "vi": "Data"
+        },
+        {
+          "en": "Domain",
+          "vi": "Domain"
+        },
+        {
+          "en": "Infrastructure",
+          "vi": "Infrastructure"
+        }
+      ],
+      "answerIndex": 2,
+      "explanation": {
+        "en": "The Domain layer (entities/use cases) is meant to be pure business logic, independent of UI or framework details, so it's easiest to test and reuse.",
+        "vi": "Tầng Domain (entity/use case) là business logic thuần, độc lập với UI hay framework, nên dễ test và tái sử dụng nhất."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the main advantage of GraphQL over REST for mobile clients?",
+        "vi": "Lợi ích chính của GraphQL so với REST cho client mobile là gì?"
+      },
+      "options": [
+        {
+          "en": "It's always faster on the network",
+          "vi": "Luôn nhanh hơn về mạng"
+        },
+        {
+          "en": "Clients can request exactly the fields they need, avoiding over/under-fetching",
+          "vi": "Client có thể yêu cầu đúng field cần thiết, tránh over/under-fetching"
+        },
+        {
+          "en": "It doesn't require a server",
+          "vi": "Không cần server"
+        },
+        {
+          "en": "It replaces the need for caching",
+          "vi": "Thay thế được caching"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "GraphQL lets the client shape the response, which is especially useful on mobile where bandwidth/payload size matters.",
+        "vi": "GraphQL cho phép client định hình response, đặc biệt hữu ích trên mobile nơi băng thông/kích thước payload quan trọng."
+      }
+    },
+    {
+      "question": {
+        "en": "What's the risk of storing an auth token in SharedPreferences/UserDefaults without extra protection?",
+        "vi": "Rủi ro khi lưu auth token trong SharedPreferences/UserDefaults mà không bảo vệ thêm là gì?"
+      },
+      "options": [
+        {
+          "en": "The token expires too quickly",
+          "vi": "Token hết hạn quá nhanh"
+        },
+        {
+          "en": "It's not encrypted by default and can be exposed on a rooted/jailbroken device or backup",
+          "vi": "Không mã hóa mặc định, có thể bị lộ trên thiết bị root/jailbreak hoặc qua backup"
+        },
+        {
+          "en": "The app can't read it back itself",
+          "vi": "App không tự đọc được"
+        },
+        {
+          "en": "There is no risk",
+          "vi": "Không có rủi ro"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "These stores are plain (unencrypted) by default; sensitive data should go in Keystore/Keychain-backed secure storage instead.",
+        "vi": "Các store này ở dạng plain (không mã hóa) mặc định; dữ liệu nhạy cảm nên dùng secure storage dựa trên Keystore/Keychain."
+      }
+    },
+    {
+      "question": {
+        "en": "What does an optimistic UI update mean?",
+        "vi": "Optimistic UI update nghĩa là gì?"
+      },
+      "options": [
+        {
+          "en": "Waiting for server confirmation before changing the UI",
+          "vi": "Chờ server xác nhận rồi mới đổi UI"
+        },
+        {
+          "en": "Updating the UI immediately and rolling back if the server call fails",
+          "vi": "Cập nhật UI ngay lập tức và rollback nếu server call thất bại"
+        },
+        {
+          "en": "Never showing a loading indicator",
+          "vi": "Không bao giờ hiện loading indicator"
+        },
+        {
+          "en": "Only used for read-only screens",
+          "vi": "Chỉ dùng cho màn hình chỉ đọc"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "Optimistic updates assume success for responsiveness, with a rollback/error path if the backend call actually fails.",
+        "vi": "Optimistic update giả định thành công để tăng cảm giác phản hồi nhanh, có đường rollback/error nếu backend call thực sự thất bại."
+      }
+    },
+    {
+      "question": {
+        "en": "Which test type is closest to real end-user behavior but generally the slowest to run?",
+        "vi": "Loại test nào gần nhất với hành vi người dùng thật nhưng thường chậm nhất?"
+      },
+      "options": [
+        {
+          "en": "Unit test",
+          "vi": "Unit test"
+        },
+        {
+          "en": "Widget/UI test",
+          "vi": "Widget/UI test"
+        },
+        {
+          "en": "Integration test",
+          "vi": "Integration test"
+        },
+        {
+          "en": "Static analysis",
+          "vi": "Static analysis"
+        }
+      ],
+      "answerIndex": 2,
+      "explanation": {
+        "en": "Integration tests exercise the app (often on a real/simulated device) end-to-end, giving the highest confidence but at the highest runtime cost.",
+        "vi": "Integration test chạy app (thường trên thiết bị/simulator thật) end-to-end, độ tin cậy cao nhất nhưng chi phí runtime cao nhất."
+      }
+    },
+    {
+      "question": {
+        "en": "What does 'offline-first' mean for an app's architecture?",
+        "vi": "'Offline-first' nghĩa là gì đối với kiến trúc app?"
+      },
+      "options": [
+        {
+          "en": "The app refuses to work without internet",
+          "vi": "App từ chối hoạt động khi không có internet"
+        },
+        {
+          "en": "The local database is the source of truth for the UI, syncing with the server in the background",
+          "vi": "Local database là source of truth cho UI, đồng bộ với server ở nền"
+        },
+        {
+          "en": "All data is deleted when offline",
+          "vi": "Toàn bộ dữ liệu bị xóa khi offline"
+        },
+        {
+          "en": "It only applies to games",
+          "vi": "Chỉ áp dụng cho game"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "Offline-first apps read/write to local storage first (instant, always available) and reconcile with the server asynchronously.",
+        "vi": "App offline-first đọc/ghi vào local storage trước (tức thời, luôn sẵn có) rồi đồng bộ với server bất đồng bộ."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the primary purpose of dependency injection?",
+        "vi": "Mục đích chính của Dependency Injection là gì?"
+      },
+      "options": [
+        {
+          "en": "To make apps run faster automatically",
+          "vi": "Giúp app tự động chạy nhanh hơn"
+        },
+        {
+          "en": "To supply a component's dependencies from outside so they can be swapped/mocked, improving testability and decoupling",
+          "vi": "Cung cấp dependency từ bên ngoài để dễ thay thế/mock, tăng khả năng test và giảm coupling"
+        },
+        {
+          "en": "To reduce app size",
+          "vi": "Giảm dung lượng app"
+        },
+        {
+          "en": "To handle navigation",
+          "vi": "Xử lý navigation"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "DI inverts control of dependency creation, making it easy to substitute mocks/fakes in tests and swap implementations.",
+        "vi": "DI đảo ngược quyền kiểm soát việc tạo dependency, giúp dễ dàng thay bằng mock/fake trong test và hoán đổi implementation."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a refresh token typically used for?",
+        "vi": "Refresh token thường được dùng để làm gì?"
+      },
+      "options": [
+        {
+          "en": "Replacing the need for any authentication",
+          "vi": "Thay thế hoàn toàn việc xác thực"
+        },
+        {
+          "en": "Obtaining a new access token once the current one expires, without asking the user to log in again",
+          "vi": "Lấy access token mới khi cái hiện tại hết hạn, mà không cần người dùng đăng nhập lại"
+        },
+        {
+          "en": "Encrypting local storage",
+          "vi": "Mã hóa local storage"
+        },
+        {
+          "en": "Speeding up network requests",
+          "vi": "Tăng tốc network request"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "Refresh tokens (usually longer-lived, stored securely) let the client silently obtain a new short-lived access token when it expires.",
+        "vi": "Refresh token (thường sống lâu hơn, lưu an toàn) cho phép client âm thầm lấy access token ngắn hạn mới khi hết hạn."
+      }
+    },
+    {
+      "question": {
+        "en": "What does Continuous Integration (CI) primarily automate for a mobile team?",
+        "vi": "Continuous Integration (CI) chủ yếu tự động hoá điều gì cho team mobile?"
+      },
+      "options": [
+        {
+          "en": "Designing the app's UI",
+          "vi": "Thiết kế UI của app"
+        },
+        {
+          "en": "Building and running tests automatically on every commit/PR",
+          "vi": "Tự động build và chạy test trên mỗi commit/PR"
+        },
+        {
+          "en": "Writing the app's marketing copy",
+          "vi": "Viết nội dung marketing cho app"
+        },
+        {
+          "en": "Approving App Store submissions",
+          "vi": "Duyệt hồ sơ nộp lên App Store"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "CI catches regressions early by automatically building and testing every change, before it's merged or released.",
+        "vi": "CI phát hiện regression sớm bằng cách tự động build và test mỗi thay đổi, trước khi nó được merge hay release."
+      }
+    },
+    {
+      "question": {
+        "en": "What does a crash reporting tool (like Crashlytics or Sentry) primarily capture?",
+        "vi": "Một công cụ crash reporting (như Crashlytics hay Sentry) chủ yếu ghi lại điều gì?"
+      },
+      "options": [
+        {
+          "en": "Marketing conversion rates",
+          "vi": "Tỉ lệ chuyển đổi marketing"
+        },
+        {
+          "en": "Stack traces from crashes and handled exceptions",
+          "vi": "Stack trace từ các crash và exception đã được handle"
+        },
+        {
+          "en": "App Store review text",
+          "vi": "Nội dung review trên App Store"
+        },
+        {
+          "en": "UI design mockups",
+          "vi": "Mockup thiết kế UI"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "Crash reporting tools collect stack traces and device/app context whenever the app crashes or a handled exception is logged, helping diagnose bugs in production.",
+        "vi": "Công cụ crash reporting thu thập stack trace cùng thông tin thiết bị/app mỗi khi app crash hoặc một exception đã handle được log, giúp chẩn đoán bug trên production."
+      }
+    },
+    {
+      "question": {
+        "en": "In the typical push notification flow, what role does FCM/APNs play?",
+        "vi": "Trong luồng push notification thông thường, FCM/APNs đóng vai trò gì?"
+      },
+      "options": [
+        {
+          "en": "They are the platform push service that delivers your backend's notification to the device",
+          "vi": "Là dịch vụ push của nền tảng, gửi notification từ backend của bạn tới thiết bị"
+        },
+        {
+          "en": "They store the app's user data",
+          "vi": "Lưu trữ dữ liệu người dùng của app"
+        },
+        {
+          "en": "They compile the app for release",
+          "vi": "Biên dịch app cho bản release"
+        },
+        {
+          "en": "They are only used for in-app chat",
+          "vi": "Chỉ dùng cho chat trong app"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Your backend sends the payload to FCM (Android) or APNs (iOS), which routes it to the specific device using its push token, even waking the app if it isn't running.",
+        "vi": "Backend gửi payload tới FCM (Android) hoặc APNs (iOS), dịch vụ này định tuyến tới đúng thiết bị bằng push token của nó, kể cả đánh thức app nếu nó không chạy."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the main benefit of a staged (phased) rollout?",
+        "vi": "Lợi ích chính của staged rollout (phased rollout) là gì?"
+      },
+      "options": [
+        {
+          "en": "It makes the app download faster",
+          "vi": "Giúp tải app nhanh hơn"
+        },
+        {
+          "en": "It limits the blast radius if a release has a serious bug, by exposing it to a small percentage of users first",
+          "vi": "Giới hạn phạm vi ảnh hưởng nếu release có bug nghiêm trọng, bằng cách chỉ đưa tới một tỉ lệ nhỏ người dùng trước"
+        },
+        {
+          "en": "It skips App Store/Play Store review",
+          "vi": "Bỏ qua việc review của App Store/Play Store"
+        },
+        {
+          "en": "It only applies to beta testers, never to production",
+          "vi": "Chỉ áp dụng cho beta tester, không bao giờ dùng cho production"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "By watching crash rate and key metrics at each percentage stage, a team can halt a rollout before a bad release reaches everyone.",
+        "vi": "Bằng cách theo dõi tỉ lệ crash và các chỉ số quan trọng ở mỗi giai đoạn tỉ lệ, team có thể dừng rollout trước khi một bản release lỗi đến với tất cả mọi người."
+      }
+    },
+    {
+      "question": {
+        "en": "Why does mobile accessibility (a11y) matter beyond being 'nice to have'?",
+        "vi": "Vì sao accessibility (a11y) trên mobile quan trọng hơn là chỉ 'có thì tốt'?"
+      },
+      "options": [
+        {
+          "en": "It has no real impact on users",
+          "vi": "Không có tác động thực sự tới người dùng"
+        },
+        {
+          "en": "It's often a legal requirement and makes the app usable by people with disabilities",
+          "vi": "Thường là yêu cầu pháp lý và giúp app dùng được bởi người khuyết tật"
+        },
+        {
+          "en": "It only affects app icon design",
+          "vi": "Chỉ ảnh hưởng tới thiết kế icon app"
+        },
+        {
+          "en": "It's automatically handled with zero developer effort",
+          "vi": "Được xử lý tự động, không cần công sức của developer"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "Accessibility standards (like labels for screen readers, sufficient contrast, dynamic text support) are legally mandated in many regions and directly determine whether people with disabilities can use the app at all.",
+        "vi": "Các tiêu chuẩn accessibility (như label cho screen reader, độ tương phản đủ, hỗ trợ cỡ chữ động) được yêu cầu bởi luật ở nhiều khu vực và quyết định trực tiếp việc người khuyết tật có dùng được app hay không."
+      }
+    },
+    {
+      "question": {
+        "en": "What's the difference between internationalization (i18n) and localization (l10n)?",
+        "vi": "Sự khác biệt giữa internationalization (i18n) và localization (l10n) là gì?"
+      },
+      "options": [
+        {
+          "en": "They are the same thing",
+          "vi": "Chúng giống hệt nhau"
+        },
+        {
+          "en": "i18n is engineering the app to support multiple locales; l10n is the actual translation/adaptation for a specific locale",
+          "vi": "i18n là xây dựng app để hỗ trợ nhiều locale; l10n là hành động dịch/điều chỉnh thực tế cho một locale cụ thể"
+        },
+        {
+          "en": "i18n only applies to dates, l10n only applies to currency",
+          "vi": "i18n chỉ áp dụng cho ngày tháng, l10n chỉ áp dụng cho tiền tệ"
+        },
+        {
+          "en": "l10n happens before i18n",
+          "vi": "l10n xảy ra trước i18n"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "i18n is the technical groundwork (extracting strings, locale-aware formatting); l10n is the content work of actually translating and adapting for each target locale, done on top of that groundwork.",
+        "vi": "i18n là nền tảng kỹ thuật (tách chuỗi, định dạng theo locale); l10n là công việc nội dung thực sự dịch và điều chỉnh cho từng locale mục tiêu, thực hiện trên nền tảng đó."
+      }
+    },
+    {
+      "question": {
+        "en": "Why use exponential backoff (with jitter) when retrying a failed API call?",
+        "vi": "Vì sao dùng exponential backoff (kèm jitter) khi retry một API call thất bại?"
+      },
+      "options": [
+        {
+          "en": "To retry as fast as possible every time",
+          "vi": "Để retry càng nhanh càng tốt mỗi lần"
+        },
+        {
+          "en": "To avoid overwhelming a struggling server with synchronized retries from many clients",
+          "vi": "Để tránh dồn dập server đang gặp vấn đề bằng các lần retry đồng loạt từ nhiều client"
+        },
+        {
+          "en": "It guarantees the request will eventually succeed",
+          "vi": "Nó đảm bảo request cuối cùng sẽ thành công"
+        },
+        {
+          "en": "It's required by every HTTP client library",
+          "vi": "Nó bắt buộc phải có ở mọi thư viện HTTP client"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "Growing the delay between retries (plus randomized jitter) spreads out retry traffic instead of many clients hammering the server at the exact same moments.",
+        "vi": "Tăng dần khoảng chờ giữa các lần retry (kèm jitter ngẫu nhiên) giúp trải đều lưu lượng retry thay vì nhiều client cùng dồn vào server ở đúng cùng một thời điểm."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the main benefit of a feature flag / remote config system?",
+        "vi": "Lợi ích chính của hệ thống feature flag / remote config là gì?"
+      },
+      "options": [
+        {
+          "en": "It makes the app compile faster",
+          "vi": "Giúp app biên dịch nhanh hơn"
+        },
+        {
+          "en": "It lets a team toggle a feature on/off remotely without shipping a new app build",
+          "vi": "Cho phép team bật/tắt một tính năng từ xa mà không cần release bản app mới"
+        },
+        {
+          "en": "It replaces the need for testing",
+          "vi": "Thay thế được việc testing"
+        },
+        {
+          "en": "It only works for backend services, not mobile apps",
+          "vi": "Chỉ hoạt động cho backend service, không dùng cho app mobile"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "Feature flags decouple deploying code from releasing a feature to users, enabling gradual rollouts, A/B tests, and instant kill-switches for broken features.",
+        "vi": "Feature flag tách rời việc deploy code khỏi việc phát hành tính năng cho người dùng, cho phép rollout dần dần, A/B test, và tắt ngay lập tức tính năng lỗi."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the main purpose of A/B testing a new feature?",
+        "vi": "Mục đích chính của A/B testing một tính năng mới là gì?"
+      },
+      "options": [
+        {
+          "en": "To make the app compile faster",
+          "vi": "Giúp app biên dịch nhanh hơn"
+        },
+        {
+          "en": "To measure the feature's real impact on a metric with statistical confidence before a full rollout",
+          "vi": "Đo tác động thực sự của tính năng lên một chỉ số với độ tin cậy thống kê trước khi rollout đầy đủ"
+        },
+        {
+          "en": "To replace the need for QA testing",
+          "vi": "Thay thế nhu cầu QA test"
+        },
+        {
+          "en": "To automatically fix bugs",
+          "vi": "Tự động sửa bug"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "Randomly splitting users into control/variant groups isolates the feature's actual causal effect on the metric being watched.",
+        "vi": "Chia ngẫu nhiên người dùng thành nhóm đối chứng/biến thể giúp tách biệt tác động nhân quả thực sự của tính năng lên chỉ số đang theo dõi."
+      }
+    },
+    {
+      "question": {
+        "en": "What does Day-7 retention measure?",
+        "vi": "Retention Ngày-7 đo lường điều gì?"
+      },
+      "options": [
+        {
+          "en": "How many users installed the app in 7 days",
+          "vi": "Bao nhiêu người dùng cài app trong 7 ngày"
+        },
+        {
+          "en": "Whether users who installed on day 0 are still using the app 7 days later",
+          "vi": "Người dùng cài đặt ở ngày 0 có còn dùng app sau 7 ngày hay không"
+        },
+        {
+          "en": "How fast the app loads in 7 seconds",
+          "vi": "App tải nhanh trong 7 giây"
+        },
+        {
+          "en": "The app's rating after 7 reviews",
+          "vi": "Rating của app sau 7 lượt đánh giá"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "Retention tracks whether the same cohort of users comes back over time — a stronger signal of real value than raw install or DAU counts alone.",
+        "vi": "Retention theo dõi liệu cùng một nhóm người dùng có quay lại theo thời gian hay không — tín hiệu mạnh hơn về giá trị thực so với chỉ riêng số lượt cài hay DAU."
+      }
+    },
+    {
+      "question": {
+        "en": "What's the main tradeoff of choosing cross-platform (Flutter) over fully native development?",
+        "vi": "Đánh đổi chính khi chọn cross-platform (Flutter) thay vì phát triển native hoàn toàn là gì?"
+      },
+      "options": [
+        {
+          "en": "One shared codebase for both platforms, at the cost of occasionally needing platform-specific code for deep OS integrations",
+          "vi": "Một codebase dùng chung cho cả hai nền tảng, đánh đổi bằng việc thỉnh thoảng vẫn cần code đặc thù nền tảng cho tích hợp OS sâu"
+        },
+        {
+          "en": "Cross-platform apps cannot access the camera",
+          "vi": "App cross-platform không thể truy cập camera"
+        },
+        {
+          "en": "Cross-platform is always slower to build initially",
+          "vi": "Cross-platform luôn build ban đầu chậm hơn"
+        },
+        {
+          "en": "There is no tradeoff",
+          "vi": "Không có đánh đổi nào"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Cross-platform frameworks cover most UI/logic needs from one codebase, but the newest or most OS-specific features sometimes require a platform channel or native module bridge.",
+        "vi": "Framework cross-platform bao phủ hầu hết nhu cầu UI/logic từ một codebase, nhưng tính năng mới nhất hoặc đặc thù OS nhất đôi khi cần một platform channel hay native module bridge."
+      }
+    },
+    {
+      "question": {
+        "en": "Which of these is a common App Store/Play Store review rejection reason?",
+        "vi": "Cái nào sau đây là lý do phổ biến khiến app bị từ chối review trên App Store/Play Store?"
+      },
+      "options": [
+        {
+          "en": "The app icon uses the brand's primary color",
+          "vi": "Icon app dùng màu chủ đạo của thương hiệu"
+        },
+        {
+          "en": "Broken login credentials that prevent the reviewer from testing the app",
+          "vi": "Tài khoản đăng nhập bị lỗi khiến reviewer không test được app"
+        },
+        {
+          "en": "The app has more than 10 screens",
+          "vi": "App có hơn 10 màn hình"
+        },
+        {
+          "en": "The app supports dark mode",
+          "vi": "App hỗ trợ dark mode"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "If a reviewer can't get past login (or a demo account doesn't work), they can't evaluate the app's core functionality and will reject it.",
+        "vi": "Nếu reviewer không thể vượt qua bước đăng nhập (hoặc tài khoản demo không hoạt động), họ không thể đánh giá chức năng chính của app và sẽ từ chối."
+      }
+    },
+    {
+      "question": {
+        "en": "What do iOS Universal Links and Android App Links have in common?",
+        "vi": "Universal Links của iOS và App Links của Android có điểm gì chung?"
+      },
+      "options": [
+        {
+          "en": "Both are verified https deep links that open the app directly, no disambiguation dialog",
+          "vi": "Cả hai đều là deep link https đã verify, mở thẳng app, không hiện dialog hỏi chọn"
+        },
+        {
+          "en": "Both only work on tablets",
+          "vi": "Cả hai chỉ hoạt động trên tablet"
+        },
+        {
+          "en": "Both require a paid API key",
+          "vi": "Cả hai cần API key trả phí"
+        },
+        {
+          "en": "Neither can pass any data to the app",
+          "vi": "Không cái nào truyền được dữ liệu vào app"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Both rely on a domain-hosted verification file proving the app owns that domain, letting the OS skip the chooser it would show for an unverified deep link.",
+        "vi": "Cả hai đều dựa vào một file verification host trên domain chứng minh app sở hữu domain đó, cho phép hệ điều hành bỏ qua dialog hỏi chọn mà nó sẽ hiện với một deep link chưa verify."
+      }
+    },
+    {
+      "question": {
+        "en": "What's the main benefit of a monorepo for a team with a Flutter app, backend, and shared design system?",
+        "vi": "Lợi ích chính của monorepo cho một team có app Flutter, backend, và design system dùng chung là gì?"
+      },
+      "options": [
+        {
+          "en": "Atomic cross-project commits and shared tooling/CI",
+          "vi": "Commit xuyên dự án nguyên tử và tooling/CI dùng chung"
+        },
+        {
+          "en": "It automatically makes the app faster",
+          "vi": "Tự động làm app chạy nhanh hơn"
+        },
+        {
+          "en": "It removes the need for version control",
+          "vi": "Loại bỏ nhu cầu version control"
+        },
+        {
+          "en": "It's required by Flutter",
+          "vi": "Bắt buộc phải dùng nếu làm Flutter"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "A monorepo lets a single commit change an API and its client together atomically, and shares CI/tooling config — at the cost of a larger, more complex repository.",
+        "vi": "Monorepo cho phép một commit thay đổi API và client của nó cùng lúc, nguyên tử, và dùng chung config CI/tooling — đánh đổi bằng một repository lớn hơn, phức tạp hơn."
+      }
+    }
   ],
   "notes": [
     {
-      "title": { "en": "MVVM & Clean Architecture", "vi": "MVVM & Clean Architecture" },
+      "title": {
+        "en": "MVVM & Clean Architecture",
+        "vi": "MVVM & Clean Architecture"
+      },
       "content": {
         "en": "**MVVM**: the View only displays state and forwards user actions; the ViewModel holds presentation state and logic, exposed as an observable (Stream/ValueNotifier/LiveData/@Published); the Model is plain data. The View 'observes' the ViewModel rather than calling into business logic directly.\n\n**Clean Architecture** goes further by clearly separating three layers:\n\n1. **Presentation** — UI + state management (can follow MVVM internally).\n2. **Domain** — pure business logic/use cases, with no import of any framework package (Flutter, Android SDK, UIKit, ...). This is the easiest layer to unit test since no UI needs mocking.\n3. **Data** — repository implementation, data sources (API, local DB), mappers between data-layer models and domain entities.\n\nDependency rule: outer layers depend on inner layers (Presentation -> Domain <- Data), never the reverse — Domain doesn't know Data or Presentation exist, it only defines an interface (a repository abstraction) that Data implements.",
         "vi": "**MVVM**: View chỉ hiển thị và forward user action; ViewModel giữ presentation state và logic, expose ra dưới dạng observable (Stream/ValueNotifier/LiveData/@Published); Model là dữ liệu thuần. View 'quan sát' ViewModel thay vì gọi trực tiếp vào business logic.\n\n**Clean Architecture** đi xa hơn bằng cách tách rõ 3 tầng:\n\n1. **Presentation** — UI + state management (có thể theo MVVM).\n2. **Domain** — use case/business rule thuần Dart/Kotlin/Swift, không import bất kỳ package framework nào (Flutter, Android SDK, UIKit...). Đây là tầng dễ unit test nhất vì không cần mock UI.\n3. **Data** — repository implementation, data source (API, local DB), mapper giữa model tầng data và entity tầng domain.\n\nQuy tắc dependency: tầng ngoài phụ thuộc vào tầng trong (Presentation -> Domain <- Data), không bao giờ ngược lại — Domain không biết Data hay Presentation tồn tại, chỉ định nghĩa interface (repository abstraction) mà Data implement."
       }
     },
     {
-      "title": { "en": "REST vs GraphQL & Caching Strategies", "vi": "REST vs GraphQL & chiến lược Caching" },
+      "title": {
+        "en": "REST vs GraphQL & Caching Strategies",
+        "vi": "REST vs GraphQL & chiến lược Caching"
+      },
       "content": {
         "en": "**REST**: each resource has its own endpoint (`/users/1`, `/users/1/posts`), the response shape is fixed by the server — easy to cache with HTTP caching (ETag, Cache-Control) since the URL is a natural cache key.\n\n**GraphQL**: a single endpoint, the client sends a query describing exactly which fields it needs — reduces over-fetching (unused fields) and under-fetching (needing multiple round trips), but caching is more complex since there's no longer one URL per resource.\n\n**Common mobile caching strategies**:\n\n- Cache-then-network: show cached data immediately, then fetch from network and update once the fresh result arrives.\n- TTL (time-to-live): cached data expires after X minutes and is considered stale, triggering a refetch.\n- ETag/If-None-Match: the server returns 304 Not Modified if data hasn't changed, saving bandwidth.",
         "vi": "**REST**: mỗi resource có endpoint riêng (`/users/1`, `/users/1/posts`), response shape cố định do server quyết định — dễ cache bằng HTTP cache (ETag, Cache-Control) vì URL là key tự nhiên.\n\n**GraphQL**: một endpoint duy nhất, client gửi query mô tả chính xác field cần lấy — giảm việc phải gọi nhiều request (over-fetching nhiều resource) hoặc nhận dư field không dùng (under/over-fetching), nhưng cache phức tạp hơn vì không còn 1-URL-1-resource.\n\n**Chiến lược cache phổ biến trên mobile**:\n\n- Cache-then-network: hiển thị dữ liệu cache ngay, sau đó gọi network và cập nhật khi có kết quả mới.\n- TTL (time-to-live): dữ liệu cache hết hạn sau X phút thì coi là stale, cần refetch.\n- ETag/If-None-Match: server trả 304 Not Modified nếu dữ liệu chưa đổi, tiết kiệm băng thông."
       }
     },
     {
-      "title": { "en": "Testing Pyramid: Unit, Widget, Integration", "vi": "Testing Pyramid: Unit, Widget, Integration" },
+      "title": {
+        "en": "Testing Pyramid: Unit, Widget, Integration",
+        "vi": "Testing Pyramid: Unit, Widget, Integration"
+      },
       "content": {
         "en": "The testing pyramid suggests a ratio: many unit tests at the base, fewer widget/UI tests in the middle, and the fewest integration tests at the top — because integration tests are slow and prone to flakiness.\n\n- **Unit test**: tests a single function/class in isolation, mocking every external dependency (repository, API client). Runs in milliseconds, no emulator needed.\n- **Widget/UI test**: renders a widget/view in a test environment, simulates tap/scroll, and asserts on the render result — no need to run the whole app.\n- **Integration test**: runs the real (or near-real) app on a device/emulator, simulating a full user flow (login -> add item -> checkout) — highest cost, but catches real integration bugs the other two miss.",
         "vi": "Testing pyramid gợi ý tỉ lệ: nhiều unit test ở đáy, ít hơn ở widget/UI test, và ít nhất ở integration test trên đỉnh — vì integration test chậm và dễ flaky.\n\n- **Unit test**: test một function/class cô lập, mock mọi dependency ngoài (repository, API client). Chạy trong mili-giây, không cần emulator.\n- **Widget/UI test**: dựng một widget/view trong môi trường test, giả lập tap/scroll, assert kết quả render — không cần chạy toàn bộ app.\n- **Integration test**: chạy app thật (hoặc gần thật) trên thiết bị/emulator, mô phỏng luồng người dùng đầy đủ (login -> thêm item -> checkout) — chi phí cao nhất nhưng phát hiện lỗi tích hợp thực tế mà 2 loại trên bỏ sót."
       }
     },
     {
-      "title": { "en": "Mobile Security Basics: Secure Storage & Auth Tokens", "vi": "Bảo mật Mobile cơ bản: Secure Storage & Auth Token" },
+      "title": {
+        "en": "Mobile Security Basics: Secure Storage & Auth Tokens",
+        "vi": "Bảo mật Mobile cơ bản: Secure Storage & Auth Token"
+      },
       "content": {
         "en": "A few basic security principles frequently asked about in interviews:\n\n1. **Never store tokens/secrets in plain SharedPreferences/UserDefaults** — use Android Keystore / iOS Keychain (or a package like `flutter_secure_storage` wrapping them).\n2. **Short-lived access token + long-lived refresh token** — limits the damage if an access token leaks, since it expires quickly; the refresh token is only used to obtain a new access token, not sent with every request.\n3. **Always use HTTPS/TLS**, and consider certificate pinning for high-security apps to defend against man-in-the-middle attacks.\n4. **Never log sensitive data** (tokens, passwords, PII) to console/crash reports in release builds.\n5. **Client-side validation is UX, not security** — it doesn't replace server-side validation, which is the actual security boundary.",
         "vi": "Một số nguyên tắc bảo mật cơ bản hay được hỏi khi phỏng vấn:\n\n1. **Không bao giờ lưu token/secret ở plain SharedPreferences/UserDefaults** — dùng Android Keystore / iOS Keychain (hoặc package như `flutter_secure_storage` bọc quanh chúng).\n2. **Access token ngắn hạn + refresh token dài hạn** — giảm thiệt hại nếu access token bị lộ, vì nó hết hạn nhanh; refresh token chỉ dùng để lấy access token mới, không gửi kèm mọi request.\n3. **Luôn dùng HTTPS/TLS**, cân nhắc certificate pinning cho app có yêu cầu bảo mật cao để chống man-in-the-middle.\n4. **Không log dữ liệu nhạy cảm** (token, mật khẩu, PII) ra console/crash report ở bản release.\n5. **Validate phía client là trải nghiệm, không phải bảo mật** — nó không thay thế được validate phía server, vốn mới là ranh giới bảo mật thực sự."
       }
     },
     {
-      "title": { "en": "CI/CD for Mobile Apps", "vi": "CI/CD cho App Mobile" },
+      "title": {
+        "en": "CI/CD for Mobile Apps",
+        "vi": "CI/CD cho App Mobile"
+      },
       "content": {
         "en": "A typical mobile CI/CD pipeline (Codemagic, Bitrise, GitHub Actions, Fastlane) runs on every push/PR:\n\n1. **Build** — compile the app for each target platform.\n2. **Test** — run unit + widget tests (and sometimes integration tests on a device farm).\n3. **Lint/analyze** — static analysis, catching style and correctness issues before human review.\n4. **Sign & package** — apply release signing keys/certificates, producing an .ipa/.apk/.aab.\n5. **Distribute** — upload to TestFlight, Play Console internal testing track, or (on merge to a release branch) the public store, often gated by a staged rollout.\n\nMobile CI/CD has extra friction compared to web/backend: builds are slow (especially iOS, needing a macOS runner), and app store review adds a delay outside your team's control — so many teams separate 'ship to internal testers' (fast, automated) from 'ship to the public store' (slower, gated by review + staged rollout).",
         "vi": "Một pipeline CI/CD mobile điển hình (Codemagic, Bitrise, GitHub Actions, Fastlane) chạy trên mỗi push/PR:\n\n1. **Build** — biên dịch app cho từng nền tảng mục tiêu.\n2. **Test** — chạy unit + widget test (và đôi khi cả integration test trên device farm).\n3. **Lint/analyze** — phân tích tĩnh, phát hiện vấn đề style và correctness trước khi con người review.\n4. **Sign & package** — áp dụng key/certificate ký release, tạo ra file .ipa/.apk/.aab.\n5. **Distribute** — upload lên TestFlight, kênh internal testing của Play Console, hoặc (khi merge vào nhánh release) lên store công khai, thường được kiểm soát bởi staged rollout.\n\nCI/CD mobile có thêm ma sát so với web/backend: build chậm (đặc biệt iOS, cần runner macOS), và việc review của app store thêm độ trễ nằm ngoài tầm kiểm soát của team — nên nhiều team tách riêng 'ship cho internal tester' (nhanh, tự động) khỏi 'ship lên store công khai' (chậm hơn, bị chặn bởi review + staged rollout)."
       }
     },
     {
-      "title": { "en": "Crash Reporting & Performance Monitoring", "vi": "Crash Reporting & Performance Monitoring" },
+      "title": {
+        "en": "Crash Reporting & Performance Monitoring",
+        "vi": "Crash Reporting & Performance Monitoring"
+      },
       "content": {
         "en": "Two related but distinct observability concerns for a shipped app:\n\n- **Crash reporting** (Firebase Crashlytics, Sentry) captures the stack trace, device info, and breadcrumbs (recent user actions/logs) whenever the app crashes or a handled exception is explicitly reported — the primary signal for 'something is definitely broken.'\n- **Performance monitoring (APM)** tracks non-fatal health metrics over time: cold start time, screen rendering duration, network request latency, frame drops. These issues don't crash the app but degrade the experience and are easy to miss without dedicated tracking.\n\nBoth typically report a **crash-free users %** or similar top-line metric that teams gate releases on — e.g. 'don't widen a staged rollout past 20% if crash-free rate drops below 99.5%.' Symbolication (mapping obfuscated stack traces back to real function/line names, using the dSYM on iOS or the R8/ProGuard mapping file on Android) is a common practical gotcha: without uploading the right mapping file for a build, crash reports become unreadable.",
         "vi": "Hai mối quan tâm quan sát (observability) liên quan nhưng khác nhau cho một app đã ship:\n\n- **Crash reporting** (Firebase Crashlytics, Sentry) ghi lại stack trace, thông tin thiết bị, và breadcrumb (log/hành động gần đây của người dùng) mỗi khi app crash hoặc một exception đã handle được báo cáo tường minh — tín hiệu chính cho 'chắc chắn có gì đó bị hỏng'.\n- **Performance monitoring (APM)** theo dõi các chỉ số sức khoẻ không gây crash theo thời gian: thời gian cold start, thời gian render màn hình, độ trễ request mạng, frame bị rớt. Những vấn đề này không làm app crash nhưng làm giảm trải nghiệm và dễ bị bỏ sót nếu không theo dõi riêng.\n\nCả hai thường báo cáo một chỉ số tổng quan như **% người dùng không gặp crash**, mà team dùng để chặn release — ví dụ 'không mở rộng staged rollout quá 20% nếu tỉ lệ crash-free giảm dưới 99.5%'. Symbolication (ánh xạ stack trace đã bị làm rối về lại tên hàm/dòng thật, dùng dSYM trên iOS hay file mapping R8/ProGuard trên Android) là một cái bẫy thực tế hay gặp: không upload đúng file mapping cho một bản build sẽ khiến crash report không đọc được."
       }
     },
     {
-      "title": { "en": "Push Notifications: FCM & APNs", "vi": "Push Notification: FCM & APNs" },
+      "title": {
+        "en": "Push Notifications: FCM & APNs",
+        "vi": "Push Notification: FCM & APNs"
+      },
       "content": {
         "en": "Push notifications don't go directly from your backend to the device — they're routed through the platform's push service:\n\n```\nYour backend --> FCM (Android) / APNs (iOS) --> Device\n```\n\n1. On first launch, the device registers with FCM/APNs and receives a unique **push token**.\n2. The app sends that token to your backend, which stores it against the user.\n3. To notify a user, your backend sends the payload + token to FCM/APNs, which delivers it to the specific device (even waking the app process briefly if it's not running).\n\nTwo payload types matter: a **notification payload** (title/body the OS displays automatically, even if the app is killed) vs a **data payload** (silently delivered to app code to handle — e.g. syncing data in the background, only when the app is running or briefly woken). Push tokens can change (app reinstall, OS restore) — a common interview question is 'how do you handle a stale token?': the answer is your backend must handle send failures gracefully and prompt the app to re-register.",
         "vi": "Push notification không đi thẳng từ backend của bạn tới thiết bị — chúng được định tuyến qua dịch vụ push của nền tảng:\n\n```\nBackend của bạn --> FCM (Android) / APNs (iOS) --> Thiết bị\n```\n\n1. Lần đầu khởi chạy, thiết bị đăng ký với FCM/APNs và nhận một **push token** duy nhất.\n2. App gửi token đó về backend, backend lưu lại gắn với người dùng.\n3. Để notify một người dùng, backend gửi payload + token tới FCM/APNs, dịch vụ này gửi tới đúng thiết bị đó (thậm chí đánh thức app một chút nếu nó không chạy).\n\nCó hai loại payload cần lưu ý: **notification payload** (title/body mà hệ điều hành tự hiển thị, kể cả khi app đã bị kill) và **data payload** (gửi âm thầm cho code của app xử lý — ví dụ đồng bộ dữ liệu ở nền, chỉ khi app đang chạy hoặc được đánh thức tạm thời). Push token có thể thay đổi (cài lại app, khôi phục hệ điều hành) — một câu hỏi phỏng vấn hay gặp là 'bạn xử lý token cũ (stale) như thế nào?': câu trả lời là backend phải xử lý lỗi gửi một cách hợp lý và yêu cầu app đăng ký lại."
       }
     },
     {
-      "title": { "en": "Feature Flags & Staged Rollouts", "vi": "Feature Flag & Staged Rollout" },
+      "title": {
+        "en": "Feature Flags & Staged Rollouts",
+        "vi": "Feature Flag & Staged Rollout"
+      },
       "content": {
         "en": "Two complementary techniques for de-risking releases:\n\n**Feature flags** (LaunchDarkly, Firebase Remote Config, a custom backend flag) decouple *deploying* code from *releasing* a feature: the code ships inside a normal app build, hidden behind a flag, and is toggled on remotely later — no new app build needed to turn it on, off, or roll it out to a subset of users (e.g. by user ID hash, region, or percentage).\n\n**Staged (phased) rollouts**, offered natively by the Play Console and App Store Connect, work at the *build* level instead: a new app version is released to a small percentage of users first, with crash rate/key metrics monitored before widening to 100% — if something's wrong, the rollout is halted (or the previous version restored) before most users are affected.\n\nInterview framing: feature flags let you ship code dark and turn on a feature instantly; staged rollouts limit exposure to a whole new build (including things a flag can't gate, like a native crash in code that always runs). Mature teams use both together.",
         "vi": "Hai kỹ thuật bổ trợ nhau để giảm rủi ro khi release:\n\n**Feature flag** (LaunchDarkly, Firebase Remote Config, một flag backend tự viết) tách rời việc *deploy* code khỏi việc *phát hành* một tính năng: code được ship bên trong một bản app bình thường, ẩn sau một flag, và được bật từ xa sau đó — không cần bản app mới để bật, tắt, hay rollout cho một nhóm người dùng con (ví dụ theo hash user ID, khu vực, hoặc tỉ lệ phần trăm).\n\n**Staged rollout (phased rollout)**, được Play Console và App Store Connect hỗ trợ sẵn, hoạt động ở cấp độ *bản build* thay vào đó: một phiên bản app mới được phát hành cho một tỉ lệ nhỏ người dùng trước, theo dõi tỉ lệ crash/chỉ số quan trọng trước khi mở rộng lên 100% — nếu có vấn đề, rollout bị dừng lại (hoặc phiên bản trước được khôi phục) trước khi phần lớn người dùng bị ảnh hưởng.\n\nGóc nhìn phỏng vấn: feature flag cho phép ship code 'ẩn' và bật tính năng ngay lập tức; staged rollout giới hạn phạm vi tiếp xúc với cả một bản build mới (bao gồm cả những thứ flag không chặn được, như một crash native trong code luôn chạy). Các team trưởng thành thường dùng cả hai cùng lúc."
+      }
+    },
+    {
+      "title": {
+        "en": "A/B Testing & Product Metrics",
+        "vi": "A/B Testing & Chỉ số sản phẩm"
+      },
+      "content": {
+        "en": "**A/B testing** randomly assigns users to a control group (A, current behavior) and a variant group (B, the change being tested), then compares a target metric between them. The randomization is what makes the comparison trustworthy — without it, any difference could be explained by *who* ended up in each group rather than the change itself.\n\nA few metrics that commonly gate a rollout decision:\n\n- **DAU / MAU** (daily/monthly active users) — how many distinct users open the app in that window. The ratio DAU/MAU roughly measures 'stickiness' (a ratio near 1 means most monthly users show up daily; near 0 means occasional use).\n- **Retention (Day-1 / Day-7 / Day-30)** — of users who first opened the app on day 0, what fraction are still active N days later. This is usually a more honest signal than install counts, since it tracks whether the *same* people keep finding value, not just whether new people keep arriving.\n- **Conversion** — the fraction of users completing a defined funnel step (e.g. finishing onboarding, completing a purchase).\n\nInterview framing: a feature that increases installs but tanks Day-7 retention is usually a net negative — metrics need to be read together, not in isolation.",
+        "vi": "**A/B testing** phân ngẫu nhiên người dùng vào một nhóm đối chứng (A, hành vi hiện tại) và một nhóm biến thể (B, thay đổi đang được thử nghiệm), rồi so sánh một chỉ số mục tiêu giữa chúng. Việc ngẫu nhiên hoá chính là thứ khiến so sánh này đáng tin — nếu không có nó, bất kỳ khác biệt nào cũng có thể được giải thích bởi *ai* rơi vào nhóm nào chứ không phải bản thân thay đổi.\n\nMột vài chỉ số thường quyết định việc rollout:\n\n- **DAU / MAU** (người dùng hoạt động theo ngày/tháng) — bao nhiêu người dùng riêng biệt mở app trong khoảng đó. Tỉ lệ DAU/MAU đo xấp xỉ độ 'dính' (gần 1 nghĩa là hầu hết người dùng hàng tháng ghé mỗi ngày; gần 0 nghĩa là dùng thỉnh thoảng).\n- **Retention (Ngày-1 / Ngày-7 / Ngày-30)** — trong số người dùng mở app lần đầu ở ngày 0, bao nhiêu phần trăm vẫn hoạt động sau N ngày. Đây thường là tín hiệu trung thực hơn số lượt cài, vì nó theo dõi liệu *cùng những người đó* có tiếp tục thấy giá trị hay không, chứ không chỉ là liệu người mới có tiếp tục đến.\n- **Conversion (tỉ lệ chuyển đổi)** — phần trăm người dùng hoàn thành một bước funnel xác định (ví dụ hoàn tất onboarding, hoàn tất một lượt mua).\n\nGóc nhìn phỏng vấn: một tính năng làm tăng lượt cài nhưng làm giảm retention Ngày-7 thường là một điều tiêu cực ròng — các chỉ số cần được đọc cùng nhau, không tách rời."
+      }
+    },
+    {
+      "title": {
+        "en": "Cross-Platform vs Native: Choosing an Approach",
+        "vi": "Cross-Platform vs Native: Chọn cách tiếp cận"
+      },
+      "content": {
+        "en": "There's no universally 'correct' answer — the right choice depends on the team and the product.\n\n**Cross-platform (Flutter, React Native)** shares one codebase and one team across iOS/Android:\n\n- Faster to build and maintain two platforms' worth of features.\n- UI consistency between platforms is easy (or hard to avoid, if the platform should actually feel native).\n- Occasionally needs a platform channel / native module bridge for OS features the framework hasn't wrapped yet (see the Flutter notes on platform channels).\n\n**Fully native (Swift/UIKit+SwiftUI, Kotlin/Jetpack)**:\n\n- Immediate access to every new OS API on day one — no waiting for a framework to catch up.\n- Each platform's team can move independently, but that's also double the team, double the code review, double the QA surface.\n- Often chosen when the app is deeply tied to platform-specific capabilities (e.g. heavy AR/camera work, or a highly custom, platform-idiomatic UI).\n\nInterview framing: this is rarely 'which is objectively better' — it's a tradeoff between team size/velocity and depth of platform integration, decided per product, and some companies use both (a cross-platform core with a native module for one demanding feature).",
+        "vi": "Không có câu trả lời 'đúng' phổ quát — lựa chọn phù hợp phụ thuộc vào team và sản phẩm.\n\n**Cross-platform (Flutter, React Native)** dùng chung một codebase và một team cho cả iOS/Android:\n\n- Xây và bảo trì tính năng cho cả hai nền tảng nhanh hơn.\n- Đồng nhất UI giữa các nền tảng dễ dàng (hoặc khó tránh khỏi, nếu nền tảng thực sự nên có cảm giác native).\n- Thỉnh thoảng cần platform channel / native module bridge cho tính năng OS mà framework chưa bọc kịp (xem note về platform channel ở phần Flutter).\n\n**Native hoàn toàn (Swift/UIKit+SwiftUI, Kotlin/Jetpack)**:\n\n- Truy cập ngay lập tức mọi API OS mới ngay ngày đầu — không cần chờ framework bắt kịp.\n- Team mỗi nền tảng có thể di chuyển độc lập, nhưng đó cũng là gấp đôi team, gấp đôi code review, gấp đôi bề mặt QA.\n- Thường được chọn khi app gắn chặt với khả năng đặc thù nền tảng (ví dụ công việc AR/camera nặng, hoặc UI tuỳ chỉnh cao, đúng chất nền tảng).\n\nGóc nhìn phỏng vấn: đây hiếm khi là 'cái nào tốt hơn khách quan' — đó là đánh đổi giữa quy mô/tốc độ team và độ sâu tích hợp nền tảng, quyết định theo từng sản phẩm, và một số công ty dùng cả hai (lõi cross-platform kèm một native module cho một tính năng đòi hỏi cao)."
+      }
+    },
+    {
+      "title": {
+        "en": "App Store Review: Common Rejection Reasons",
+        "vi": "Review App Store/Play Store: Các lý do bị từ chối phổ biến"
+      },
+      "content": {
+        "en": "A shortlist of reasons apps commonly bounce back from review, useful to know for both interviews and shipping a real app:\n\n1. **Crashes or broken core flows** — the single most common rejection; test the exact flow a reviewer would follow before submitting.\n2. **Broken or missing demo credentials** — if the app requires login, the reviewer needs a working account; provide one in the submission notes.\n3. **Misleading metadata** — screenshots or description promising functionality the app doesn't actually have.\n4. **Missing privacy disclosures** — not declaring what data is collected and why (App Store's 'Privacy Nutrition Labels', Play Store's Data Safety section) when the app actually collects it.\n5. **Guideline-specific issues** — iOS: using private APIs, not following Human Interface Guidelines for standard interactions (e.g. non-standard back gestures); Android: violating Play Store policy on permissions (requesting more than the app's stated purpose needs).\n\nInterview framing: review rejection is often treated as a pure legal/business concern, but it's directly relevant to engineering — QA-ing the exact reviewer flow and keeping permission requests minimal and justified are both things developers control.",
+        "vi": "Danh sách ngắn các lý do app thường bị trả về khi review, hữu ích để biết cho cả phỏng vấn lẫn khi ship một app thật:\n\n1. **Crash hoặc luồng chính bị lỗi** — lý do bị từ chối phổ biến nhất; hãy test đúng luồng mà reviewer sẽ đi qua trước khi submit.\n2. **Tài khoản demo lỗi hoặc thiếu** — nếu app yêu cầu đăng nhập, reviewer cần một tài khoản hoạt động được; cung cấp trong ghi chú khi submit.\n3. **Metadata gây hiểu lầm** — screenshot hoặc mô tả hứa hẹn chức năng mà app thực tế không có.\n4. **Thiếu công bố về privacy** — không khai báo dữ liệu nào được thu thập và vì sao (Privacy Nutrition Labels của App Store, phần Data Safety của Play Store) trong khi app thực tế có thu thập.\n5. **Vấn đề đặc thù guideline** — iOS: dùng private API, không tuân theo Human Interface Guidelines cho tương tác chuẩn (ví dụ cử chỉ back không chuẩn); Android: vi phạm chính sách permission của Play Store (xin nhiều quyền hơn mục đích app đã khai báo cần).\n\nGóc nhìn phỏng vấn: việc bị từ chối review thường bị coi là vấn đề pháp lý/kinh doanh thuần tuý, nhưng nó liên quan trực tiếp đến engineering — QA đúng luồng mà reviewer sẽ đi qua và giữ các yêu cầu permission tối thiểu, có lý do rõ ràng, đều là những thứ developer kiểm soát được."
       }
     }
   ]

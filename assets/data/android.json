@@ -1,101 +1,1020 @@
 {
   "id": "android",
-  "title": { "en": "Android Native", "vi": "Android Native" },
+  "title": {
+    "en": "Android Native",
+    "vi": "Android Native"
+  },
   "flashcards": [
-    { "question": { "en": "Activity lifecycle order on first launch and on finish?", "vi": "Thứ tự vòng đời Activity khi khởi chạy lần đầu và khi kết thúc?" }, "answer": { "en": "Launch: onCreate() -> onStart() -> onResume(). Finish: onPause() -> onStop() -> onDestroy().", "vi": "Khởi chạy: onCreate() -> onStart() -> onResume(). Kết thúc: onPause() -> onStop() -> onDestroy()." } },
-    { "question": { "en": "Activity vs Fragment?", "vi": "Activity khác Fragment như thế nào?" }, "answer": { "en": "Activity is a full-screen entry point managed by the OS with its own lifecycle. Fragment is a reusable portion of UI/behavior hosted inside an Activity (or another Fragment), whose lifecycle is tied to its host.", "vi": "Activity là một entry point toàn màn hình do hệ điều hành quản lý, có vòng đời riêng. Fragment là một phần UI/hành vi tái sử dụng được, chứa trong một Activity (hoặc Fragment khác), vòng đời gắn với host của nó." } },
-    { "question": { "en": "What is a Service?", "vi": "Service là gì?" }, "answer": { "en": "A component that runs in the background without a UI for long-running operations (playing music, syncing data). Can be started (runs until stopped) or bound (client-server interface).", "vi": "Một component chạy nền không có UI, dùng cho các tác vụ chạy lâu (phát nhạc, đồng bộ dữ liệu). Có thể là started (chạy đến khi bị dừng) hoặc bound (giao diện client-server)." } },
-    { "question": { "en": "apply() vs commit() in SharedPreferences?", "vi": "apply() khác commit() trong SharedPreferences như thế nào?" }, "answer": { "en": "commit() writes synchronously and returns a success/failure boolean. apply() writes asynchronously in the background with no return value — preferred unless you need the immediate result.", "vi": "commit() ghi đồng bộ và trả về boolean thành công/thất bại. apply() ghi bất đồng bộ ở nền, không trả về giá trị — nên ưu tiên dùng trừ khi cần kết quả ngay lập tức." } },
-    { "question": { "en": "What is ViewModel and why use it?", "vi": "ViewModel là gì và vì sao nên dùng?" }, "answer": { "en": "A lifecycle-aware Jetpack component that survives configuration changes like rotation, holding UI-related data outside the Activity/Fragment so it isn't lost or recreated.", "vi": "Một component Jetpack nhận biết vòng đời, sống sót qua các thay đổi cấu hình như xoay màn hình, giữ dữ liệu liên quan UI bên ngoài Activity/Fragment để không bị mất hay tạo lại." } },
-    { "question": { "en": "How does Context cause memory leaks?", "vi": "Context gây memory leak như thế nào?" }, "answer": { "en": "Holding a long-lived reference to an Activity Context (e.g. in a static field or singleton) after it's destroyed prevents garbage collection of the whole view tree — use applicationContext or a WeakReference instead.", "vi": "Giữ một tham chiếu sống lâu tới Activity Context (ví dụ trong static field hoặc singleton) sau khi nó đã bị destroy sẽ ngăn garbage collector thu hồi toàn bộ view tree — nên dùng applicationContext hoặc WeakReference thay thế." } },
-    { "question": { "en": "Implicit vs explicit Intent?", "vi": "Implicit Intent khác explicit Intent như thế nào?" }, "answer": { "en": "Explicit Intent names the exact component class to start. Implicit Intent declares an action/data and lets the system match it against components' registered IntentFilters, possibly in another app.", "vi": "Explicit Intent chỉ định chính xác class component cần khởi chạy. Implicit Intent khai báo action/data và để hệ thống khớp với IntentFilter đã đăng ký của các component, có thể ở app khác." } },
-    { "question": { "en": "What is an ANR?", "vi": "ANR là gì?" }, "answer": { "en": "Application Not Responding — triggered when the main thread is blocked too long (about 5s for input events), prompting the OS to offer killing the app. Avoid by moving heavy work off the main thread.", "vi": "Application Not Responding — xảy ra khi main thread bị block quá lâu (khoảng 5s với input event), khiến hệ điều hành đề nghị kill app. Tránh bằng cách đưa việc nặng ra khỏi main thread." } },
-    { "question": { "en": "Room vs raw SQLite?", "vi": "Room khác SQLite thuần như thế nào?" }, "answer": { "en": "Room is a Jetpack persistence library providing compile-time verified SQL, DAOs and object mapping over SQLite, reducing boilerplate and catching query errors at compile time.", "vi": "Room là thư viện persistence của Jetpack cung cấp SQL được kiểm tra ở compile-time, DAO và object mapping trên nền SQLite, giảm boilerplate và phát hiện lỗi câu query ngay lúc biên dịch." } },
-    { "question": { "en": "Coroutines vs Threads?", "vi": "Coroutine khác Thread như thế nào?" }, "answer": { "en": "Coroutines are lightweight, cooperatively-scheduled units of async code that suspend without blocking an OS thread — many can run on a small thread pool, unlike heavier OS-level Threads.", "vi": "Coroutine là các đơn vị code bất đồng bộ nhẹ, được lập lịch cộng tác, có thể suspend mà không chặn OS thread — rất nhiều coroutine có thể chạy trên một thread pool nhỏ, khác với Thread ở cấp hệ điều hành vốn nặng hơn." } },
-    { "question": { "en": "Jetpack Compose vs the classic XML View system?", "vi": "Jetpack Compose khác hệ thống View XML truyền thống như thế nào?" }, "answer": { "en": "XML views are imperative — you mutate View objects directly (`view.text = \"...\"`). Compose is declarative — you describe the UI as a function of state, and Compose re-executes (recomposes) only the functions whose inputs changed.", "vi": "View XML mang tính mệnh lệnh — bạn thay đổi trực tiếp đối tượng View (`view.text = \"...\"`). Compose mang tính khai báo — bạn mô tả UI như một hàm của state, và Compose chỉ chạy lại (recompose) những hàm có input thay đổi." } },
-    { "question": { "en": "What problem does Hilt (or Dagger) solve?", "vi": "Hilt (hoặc Dagger) giải quyết vấn đề gì?" }, "answer": { "en": "Dependency injection: instead of a class constructing its own dependencies (a repository, an API client), Hilt generates code to supply them from outside, scoped to Android components (Activity, ViewModel, ...) — improving testability and decoupling.", "vi": "Dependency injection: thay vì một class tự khởi tạo dependency của nó (một repository, một API client), Hilt sinh code để cung cấp chúng từ bên ngoài, gắn phạm vi (scope) theo các component Android (Activity, ViewModel, ...) — giúp dễ test và giảm coupling." } },
-    { "question": { "en": "What is the ViewHolder pattern in RecyclerView for?", "vi": "Pattern ViewHolder trong RecyclerView dùng để làm gì?" }, "answer": { "en": "It caches references to a row's child Views so `findViewById` isn't called repeatedly on every scroll/bind — RecyclerView also recycles ViewHolder instances instead of inflating a new row layout for every item, keeping scrolling smooth.", "vi": "Nó cache tham chiếu tới các View con của một dòng để không phải gọi `findViewById` lặp đi lặp lại mỗi lần cuộn/bind — RecyclerView cũng tái sử dụng (recycle) các instance ViewHolder thay vì inflate layout mới cho từng item, giúp cuộn mượt hơn." } },
-    { "question": { "en": "LiveData vs Kotlin StateFlow?", "vi": "LiveData khác Kotlin StateFlow như thế nào?" }, "answer": { "en": "Both are observable holders of a current value. LiveData is lifecycle-aware out of the box and Android-specific. StateFlow is a plain Kotlin coroutines type (usable outside Android), requires manual lifecycle-aware collection (`repeatOnLifecycle`), and composes naturally with other Flow operators.", "vi": "Cả hai đều là kiểu giữ giá trị hiện tại có thể quan sát. LiveData nhận biết vòng đời sẵn có và đặc thù cho Android. StateFlow là kiểu thuần Kotlin coroutines (dùng được ngoài Android), cần thu thập (collect) nhận biết vòng đời thủ công (`repeatOnLifecycle`), và kết hợp tự nhiên với các toán tử Flow khác." } },
-    { "question": { "en": "When would you use WorkManager instead of a coroutine or Service?", "vi": "Khi nào nên dùng WorkManager thay vì coroutine hoặc Service?" }, "answer": { "en": "When work must be deferrable but guaranteed to run — even surviving app restarts or device reboots — such as periodic sync or uploading logs, optionally constrained to conditions like 'only on WiFi' or 'only when charging'.", "vi": "Khi công việc có thể trì hoãn nhưng phải được đảm bảo chạy — kể cả khi app khởi động lại hay thiết bị reboot — như đồng bộ định kỳ hay upload log, có thể kèm điều kiện như 'chỉ khi có WiFi' hay 'chỉ khi đang sạc'." } },
-    { "question": { "en": "Parcelable vs Serializable for passing data between Activities?", "vi": "Parcelable khác Serializable như thế nào khi truyền dữ liệu giữa các Activity?" }, "answer": { "en": "Serializable is Java's generic reflection-based mechanism — simple to implement but slow due to reflection. Parcelable is Android-specific, requires more boilerplate (or `@Parcelize` in Kotlin) but is significantly faster since it avoids reflection, making it the preferred choice for Intent extras.", "vi": "Serializable là cơ chế chung của Java dựa trên reflection — dễ triển khai nhưng chậm vì dùng reflection. Parcelable đặc thù cho Android, cần nhiều boilerplate hơn (hoặc `@Parcelize` trong Kotlin) nhưng nhanh hơn đáng kể vì tránh reflection, nên được ưu tiên cho Intent extras." } },
-    { "question": { "en": "What is a BroadcastReceiver used for?", "vi": "BroadcastReceiver dùng để làm gì?" }, "answer": { "en": "A component that listens for and reacts to system-wide or app-specific broadcast events (e.g. connectivity changed, battery low, a custom broadcast sent by your own app) without needing an always-running process.", "vi": "Một component lắng nghe và phản ứng với các broadcast event toàn hệ thống hoặc đặc thù của app (ví dụ thay đổi kết nối mạng, pin yếu, hoặc một broadcast tuỳ chỉnh do chính app gửi) mà không cần một process luôn chạy." } },
-    { "question": { "en": "What do ProGuard/R8 do at build time?", "vi": "ProGuard/R8 làm gì lúc build?" }, "answer": { "en": "They shrink (remove unused code), obfuscate (rename classes/methods to shorter, harder-to-reverse-engineer names), and optimize the compiled bytecode for release builds, reducing APK size and adding a mild layer of protection against reverse engineering.", "vi": "Chúng thu gọn (xoá code không dùng), làm rối (đổi tên class/method thành tên ngắn, khó dịch ngược) và tối ưu bytecode đã biên dịch cho bản release, giảm kích thước APK và thêm một lớp bảo vệ nhẹ chống dịch ngược." } },
-    { "question": { "en": "Android App Bundle (.aab) vs APK?", "vi": "Android App Bundle (.aab) khác APK như thế nào?" }, "answer": { "en": "An APK is a single installable package built for every device. An App Bundle is a publishing format containing all resources; Google Play then generates and serves optimized, device-specific APKs (only the assets/code that device actually needs), reducing download size.", "vi": "APK là một gói cài đặt duy nhất, build cho mọi thiết bị. App Bundle là định dạng publish chứa tất cả tài nguyên; Google Play sau đó sinh ra và phân phối các APK tối ưu, đặc thù theo thiết bị (chỉ gồm asset/code thiết bị đó thực sự cần), giúp giảm dung lượng tải về." } },
-    { "question": { "en": "What does the Jetpack Navigation Component provide?", "vi": "Jetpack Navigation Component cung cấp điều gì?" }, "answer": { "en": "A framework for handling in-app navigation via a visual/XML navigation graph, generating type-safe arguments between destinations (Safe Args), and standardizing back-stack behavior across Fragments/Compose destinations.", "vi": "Một framework để xử lý điều hướng trong app thông qua navigation graph (dạng hình ảnh/XML), sinh ra tham số truyền giữa các destination an toàn về kiểu (Safe Args), và chuẩn hoá hành vi back-stack giữa các Fragment/destination Compose." } }
+    {
+      "question": {
+        "en": "Activity lifecycle order on first launch and on finish?",
+        "vi": "Thứ tự vòng đời Activity khi khởi chạy lần đầu và khi kết thúc?"
+      },
+      "answer": {
+        "en": "Launch: onCreate() -> onStart() -> onResume(). Finish: onPause() -> onStop() -> onDestroy().",
+        "vi": "Khởi chạy: onCreate() -> onStart() -> onResume(). Kết thúc: onPause() -> onStop() -> onDestroy()."
+      }
+    },
+    {
+      "question": {
+        "en": "Activity vs Fragment?",
+        "vi": "Activity khác Fragment như thế nào?"
+      },
+      "answer": {
+        "en": "Activity is a full-screen entry point managed by the OS with its own lifecycle. Fragment is a reusable portion of UI/behavior hosted inside an Activity (or another Fragment), whose lifecycle is tied to its host.",
+        "vi": "Activity là một entry point toàn màn hình do hệ điều hành quản lý, có vòng đời riêng. Fragment là một phần UI/hành vi tái sử dụng được, chứa trong một Activity (hoặc Fragment khác), vòng đời gắn với host của nó."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a Service?",
+        "vi": "Service là gì?"
+      },
+      "answer": {
+        "en": "A component that runs in the background without a UI for long-running operations (playing music, syncing data). Can be started (runs until stopped) or bound (client-server interface).",
+        "vi": "Một component chạy nền không có UI, dùng cho các tác vụ chạy lâu (phát nhạc, đồng bộ dữ liệu). Có thể là started (chạy đến khi bị dừng) hoặc bound (giao diện client-server)."
+      }
+    },
+    {
+      "question": {
+        "en": "apply() vs commit() in SharedPreferences?",
+        "vi": "apply() khác commit() trong SharedPreferences như thế nào?"
+      },
+      "answer": {
+        "en": "commit() writes synchronously and returns a success/failure boolean. apply() writes asynchronously in the background with no return value — preferred unless you need the immediate result.",
+        "vi": "commit() ghi đồng bộ và trả về boolean thành công/thất bại. apply() ghi bất đồng bộ ở nền, không trả về giá trị — nên ưu tiên dùng trừ khi cần kết quả ngay lập tức."
+      }
+    },
+    {
+      "question": {
+        "en": "What is ViewModel and why use it?",
+        "vi": "ViewModel là gì và vì sao nên dùng?"
+      },
+      "answer": {
+        "en": "A lifecycle-aware Jetpack component that survives configuration changes like rotation, holding UI-related data outside the Activity/Fragment so it isn't lost or recreated.",
+        "vi": "Một component Jetpack nhận biết vòng đời, sống sót qua các thay đổi cấu hình như xoay màn hình, giữ dữ liệu liên quan UI bên ngoài Activity/Fragment để không bị mất hay tạo lại."
+      }
+    },
+    {
+      "question": {
+        "en": "How does Context cause memory leaks?",
+        "vi": "Context gây memory leak như thế nào?"
+      },
+      "answer": {
+        "en": "Holding a long-lived reference to an Activity Context (e.g. in a static field or singleton) after it's destroyed prevents garbage collection of the whole view tree — use applicationContext or a WeakReference instead.",
+        "vi": "Giữ một tham chiếu sống lâu tới Activity Context (ví dụ trong static field hoặc singleton) sau khi nó đã bị destroy sẽ ngăn garbage collector thu hồi toàn bộ view tree — nên dùng applicationContext hoặc WeakReference thay thế."
+      }
+    },
+    {
+      "question": {
+        "en": "Implicit vs explicit Intent?",
+        "vi": "Implicit Intent khác explicit Intent như thế nào?"
+      },
+      "answer": {
+        "en": "Explicit Intent names the exact component class to start. Implicit Intent declares an action/data and lets the system match it against components' registered IntentFilters, possibly in another app.",
+        "vi": "Explicit Intent chỉ định chính xác class component cần khởi chạy. Implicit Intent khai báo action/data và để hệ thống khớp với IntentFilter đã đăng ký của các component, có thể ở app khác."
+      }
+    },
+    {
+      "question": {
+        "en": "What is an ANR?",
+        "vi": "ANR là gì?"
+      },
+      "answer": {
+        "en": "Application Not Responding — triggered when the main thread is blocked too long (about 5s for input events), prompting the OS to offer killing the app. Avoid by moving heavy work off the main thread.",
+        "vi": "Application Not Responding — xảy ra khi main thread bị block quá lâu (khoảng 5s với input event), khiến hệ điều hành đề nghị kill app. Tránh bằng cách đưa việc nặng ra khỏi main thread."
+      }
+    },
+    {
+      "question": {
+        "en": "Room vs raw SQLite?",
+        "vi": "Room khác SQLite thuần như thế nào?"
+      },
+      "answer": {
+        "en": "Room is a Jetpack persistence library providing compile-time verified SQL, DAOs and object mapping over SQLite, reducing boilerplate and catching query errors at compile time.",
+        "vi": "Room là thư viện persistence của Jetpack cung cấp SQL được kiểm tra ở compile-time, DAO và object mapping trên nền SQLite, giảm boilerplate và phát hiện lỗi câu query ngay lúc biên dịch."
+      }
+    },
+    {
+      "question": {
+        "en": "Coroutines vs Threads?",
+        "vi": "Coroutine khác Thread như thế nào?"
+      },
+      "answer": {
+        "en": "Coroutines are lightweight, cooperatively-scheduled units of async code that suspend without blocking an OS thread — many can run on a small thread pool, unlike heavier OS-level Threads.",
+        "vi": "Coroutine là các đơn vị code bất đồng bộ nhẹ, được lập lịch cộng tác, có thể suspend mà không chặn OS thread — rất nhiều coroutine có thể chạy trên một thread pool nhỏ, khác với Thread ở cấp hệ điều hành vốn nặng hơn."
+      }
+    },
+    {
+      "question": {
+        "en": "Jetpack Compose vs the classic XML View system?",
+        "vi": "Jetpack Compose khác hệ thống View XML truyền thống như thế nào?"
+      },
+      "answer": {
+        "en": "XML views are imperative — you mutate View objects directly (`view.text = \"...\"`). Compose is declarative — you describe the UI as a function of state, and Compose re-executes (recomposes) only the functions whose inputs changed.",
+        "vi": "View XML mang tính mệnh lệnh — bạn thay đổi trực tiếp đối tượng View (`view.text = \"...\"`). Compose mang tính khai báo — bạn mô tả UI như một hàm của state, và Compose chỉ chạy lại (recompose) những hàm có input thay đổi."
+      }
+    },
+    {
+      "question": {
+        "en": "What problem does Hilt (or Dagger) solve?",
+        "vi": "Hilt (hoặc Dagger) giải quyết vấn đề gì?"
+      },
+      "answer": {
+        "en": "Dependency injection: instead of a class constructing its own dependencies (a repository, an API client), Hilt generates code to supply them from outside, scoped to Android components (Activity, ViewModel, ...) — improving testability and decoupling.",
+        "vi": "Dependency injection: thay vì một class tự khởi tạo dependency của nó (một repository, một API client), Hilt sinh code để cung cấp chúng từ bên ngoài, gắn phạm vi (scope) theo các component Android (Activity, ViewModel, ...) — giúp dễ test và giảm coupling."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the ViewHolder pattern in RecyclerView for?",
+        "vi": "Pattern ViewHolder trong RecyclerView dùng để làm gì?"
+      },
+      "answer": {
+        "en": "It caches references to a row's child Views so `findViewById` isn't called repeatedly on every scroll/bind — RecyclerView also recycles ViewHolder instances instead of inflating a new row layout for every item, keeping scrolling smooth.",
+        "vi": "Nó cache tham chiếu tới các View con của một dòng để không phải gọi `findViewById` lặp đi lặp lại mỗi lần cuộn/bind — RecyclerView cũng tái sử dụng (recycle) các instance ViewHolder thay vì inflate layout mới cho từng item, giúp cuộn mượt hơn."
+      }
+    },
+    {
+      "question": {
+        "en": "LiveData vs Kotlin StateFlow?",
+        "vi": "LiveData khác Kotlin StateFlow như thế nào?"
+      },
+      "answer": {
+        "en": "Both are observable holders of a current value. LiveData is lifecycle-aware out of the box and Android-specific. StateFlow is a plain Kotlin coroutines type (usable outside Android), requires manual lifecycle-aware collection (`repeatOnLifecycle`), and composes naturally with other Flow operators.",
+        "vi": "Cả hai đều là kiểu giữ giá trị hiện tại có thể quan sát. LiveData nhận biết vòng đời sẵn có và đặc thù cho Android. StateFlow là kiểu thuần Kotlin coroutines (dùng được ngoài Android), cần thu thập (collect) nhận biết vòng đời thủ công (`repeatOnLifecycle`), và kết hợp tự nhiên với các toán tử Flow khác."
+      }
+    },
+    {
+      "question": {
+        "en": "When would you use WorkManager instead of a coroutine or Service?",
+        "vi": "Khi nào nên dùng WorkManager thay vì coroutine hoặc Service?"
+      },
+      "answer": {
+        "en": "When work must be deferrable but guaranteed to run — even surviving app restarts or device reboots — such as periodic sync or uploading logs, optionally constrained to conditions like 'only on WiFi' or 'only when charging'.",
+        "vi": "Khi công việc có thể trì hoãn nhưng phải được đảm bảo chạy — kể cả khi app khởi động lại hay thiết bị reboot — như đồng bộ định kỳ hay upload log, có thể kèm điều kiện như 'chỉ khi có WiFi' hay 'chỉ khi đang sạc'."
+      }
+    },
+    {
+      "question": {
+        "en": "Parcelable vs Serializable for passing data between Activities?",
+        "vi": "Parcelable khác Serializable như thế nào khi truyền dữ liệu giữa các Activity?"
+      },
+      "answer": {
+        "en": "Serializable is Java's generic reflection-based mechanism — simple to implement but slow due to reflection. Parcelable is Android-specific, requires more boilerplate (or `@Parcelize` in Kotlin) but is significantly faster since it avoids reflection, making it the preferred choice for Intent extras.",
+        "vi": "Serializable là cơ chế chung của Java dựa trên reflection — dễ triển khai nhưng chậm vì dùng reflection. Parcelable đặc thù cho Android, cần nhiều boilerplate hơn (hoặc `@Parcelize` trong Kotlin) nhưng nhanh hơn đáng kể vì tránh reflection, nên được ưu tiên cho Intent extras."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a BroadcastReceiver used for?",
+        "vi": "BroadcastReceiver dùng để làm gì?"
+      },
+      "answer": {
+        "en": "A component that listens for and reacts to system-wide or app-specific broadcast events (e.g. connectivity changed, battery low, a custom broadcast sent by your own app) without needing an always-running process.",
+        "vi": "Một component lắng nghe và phản ứng với các broadcast event toàn hệ thống hoặc đặc thù của app (ví dụ thay đổi kết nối mạng, pin yếu, hoặc một broadcast tuỳ chỉnh do chính app gửi) mà không cần một process luôn chạy."
+      }
+    },
+    {
+      "question": {
+        "en": "What do ProGuard/R8 do at build time?",
+        "vi": "ProGuard/R8 làm gì lúc build?"
+      },
+      "answer": {
+        "en": "They shrink (remove unused code), obfuscate (rename classes/methods to shorter, harder-to-reverse-engineer names), and optimize the compiled bytecode for release builds, reducing APK size and adding a mild layer of protection against reverse engineering.",
+        "vi": "Chúng thu gọn (xoá code không dùng), làm rối (đổi tên class/method thành tên ngắn, khó dịch ngược) và tối ưu bytecode đã biên dịch cho bản release, giảm kích thước APK và thêm một lớp bảo vệ nhẹ chống dịch ngược."
+      }
+    },
+    {
+      "question": {
+        "en": "Android App Bundle (.aab) vs APK?",
+        "vi": "Android App Bundle (.aab) khác APK như thế nào?"
+      },
+      "answer": {
+        "en": "An APK is a single installable package built for every device. An App Bundle is a publishing format containing all resources; Google Play then generates and serves optimized, device-specific APKs (only the assets/code that device actually needs), reducing download size.",
+        "vi": "APK là một gói cài đặt duy nhất, build cho mọi thiết bị. App Bundle là định dạng publish chứa tất cả tài nguyên; Google Play sau đó sinh ra và phân phối các APK tối ưu, đặc thù theo thiết bị (chỉ gồm asset/code thiết bị đó thực sự cần), giúp giảm dung lượng tải về."
+      }
+    },
+    {
+      "question": {
+        "en": "What does the Jetpack Navigation Component provide?",
+        "vi": "Jetpack Navigation Component cung cấp điều gì?"
+      },
+      "answer": {
+        "en": "A framework for handling in-app navigation via a visual/XML navigation graph, generating type-safe arguments between destinations (Safe Args), and standardizing back-stack behavior across Fragments/Compose destinations.",
+        "vi": "Một framework để xử lý điều hướng trong app thông qua navigation graph (dạng hình ảnh/XML), sinh ra tham số truyền giữa các destination an toàn về kiểu (Safe Args), và chuẩn hoá hành vi back-stack giữa các Fragment/destination Compose."
+      }
+    },
+    {
+      "question": {
+        "en": "Why use a Kotlin sealed class to model UI state (Loading/Success/Error)?",
+        "vi": "Vì sao dùng sealed class của Kotlin để mô hình hoá UI state (Loading/Success/Error)?"
+      },
+      "answer": {
+        "en": "A sealed class restricts the type hierarchy to a known, closed set of subclasses declared in the same file/module. The compiler can then verify a `when` expression over it is exhaustive — if a new state is added, every place handling it fails to compile until updated, catching missed cases at compile time.",
+        "vi": "Sealed class giới hạn hệ thống phân cấp kiểu thành một tập subclass đã biết, đóng, khai báo trong cùng file/module. Compiler nhờ đó có thể kiểm tra một biểu thức `when` trên nó có đầy đủ (exhaustive) hay không — nếu thêm state mới, mọi nơi xử lý nó sẽ không biên dịch được cho đến khi cập nhật, bắt lỗi thiếu case ngay ở compile-time."
+      }
+    },
+    {
+      "question": {
+        "en": "Dangerous vs normal permissions on Android?",
+        "vi": "Permission 'dangerous' khác 'normal' trên Android như thế nào?"
+      },
+      "answer": {
+        "en": "Normal permissions (e.g. internet access) are granted automatically at install time. Dangerous permissions (camera, location, contacts) touch private user data and must be requested at runtime, with the user able to approve or deny each one individually.",
+        "vi": "Permission normal (ví dụ truy cập internet) được cấp tự động lúc cài đặt. Permission dangerous (camera, vị trí, danh bạ) đụng đến dữ liệu riêng tư của người dùng và phải được xin ở runtime, người dùng có thể chấp thuận hoặc từ chối từng cái riêng lẻ."
+      }
+    },
+    {
+      "question": {
+        "en": "Deep links vs Android App Links?",
+        "vi": "Deep link khác Android App Links như thế nào?"
+      },
+      "answer": {
+        "en": "A basic deep link (custom scheme or unverified http/https intent filter) can be claimed by multiple apps, prompting a disambiguation dialog. An App Link is a verified https deep link (backed by a Digital Asset Links file hosted on the domain) that Android opens directly in your app with no chooser, since ownership of the domain is proven.",
+        "vi": "Deep link cơ bản (custom scheme hoặc intent filter http/https chưa verify) có thể bị nhiều app cùng nhận, khiến hiện dialog hỏi chọn app. App Link là deep link https đã được verify (dựa trên file Digital Asset Links host trên domain) mà Android mở thẳng vào app của bạn, không hiện dialog, vì quyền sở hữu domain đã được chứng minh."
+      }
+    },
+    {
+      "question": {
+        "en": "What are Gradle build variants / product flavors for?",
+        "vi": "Build variant / product flavor trong Gradle dùng để làm gì?"
+      },
+      "answer": {
+        "en": "Build types (debug/release) control how code is compiled (minification, debuggability); product flavors let you build different versions of the app (e.g. 'free' vs 'paid', or per-environment 'staging' vs 'production') from the same codebase, each combination producing a distinct build variant with its own resources/config.",
+        "vi": "Build type (debug/release) kiểm soát cách code được biên dịch (minify, khả năng debug); product flavor cho phép build nhiều phiên bản app khác nhau (ví dụ 'free' vs 'paid', hoặc theo môi trường 'staging' vs 'production') từ cùng một codebase, mỗi tổ hợp tạo ra một build variant riêng với resource/config riêng."
+      }
+    },
+    {
+      "question": {
+        "en": "What's the main benefit of splitting a large Android app into multiple Gradle modules?",
+        "vi": "Lợi ích chính của việc chia một app Android lớn thành nhiều module Gradle là gì?"
+      },
+      "answer": {
+        "en": "Faster incremental builds (Gradle only rebuilds changed modules and their dependents), enforced boundaries between features (a module can't accidentally depend on another feature's internals), and the ability for different teams to own different modules independently.",
+        "vi": "Build tăng dần nhanh hơn (Gradle chỉ rebuild các module đã đổi và module phụ thuộc vào nó), ranh giới rõ ràng giữa các feature (một module không thể vô tình phụ thuộc vào phần nội bộ của feature khác), và cho phép các team khác nhau sở hữu module khác nhau độc lập."
+      }
+    },
+    {
+      "question": {
+        "en": "StateFlow vs SharedFlow?",
+        "vi": "StateFlow khác SharedFlow như thế nào?"
+      },
+      "answer": {
+        "en": "StateFlow always holds a current value (like an observable variable) and new collectors immediately get the latest value. SharedFlow is more general — it can be configured with no replay (pure event stream, e.g. one-off navigation events or snackbar messages) or a replay buffer, and doesn't require an initial value.",
+        "vi": "StateFlow luôn giữ một giá trị hiện tại (giống một biến quan sát được) và collector mới sẽ nhận ngay giá trị mới nhất. SharedFlow tổng quát hơn — có thể cấu hình không replay (luồng sự kiện thuần, ví dụ sự kiện điều hướng một lần hay thông báo snackbar) hoặc có replay buffer, và không bắt buộc phải có giá trị khởi tạo."
+      }
+    }
   ],
   "quiz": [
-    { "question": { "en": "Which callback is the standard place to release resources acquired while the Activity was visible (e.g. unregister a listener)?", "vi": "Callback nào là nơi tiêu chuẩn để giải phóng tài nguyên đã lấy khi Activity đang hiển thị (ví dụ hủy đăng ký listener)?" }, "options": [ { "en": "onCreate()", "vi": "onCreate()" }, { "en": "onPause()", "vi": "onPause()" }, { "en": "onDestroy()", "vi": "onDestroy()" }, { "en": "onRestart()", "vi": "onRestart()" } ], "answerIndex": 1, "explanation": { "en": "onPause() runs when the Activity loses foreground focus; it's the standard place to release resources acquired in onResume().", "vi": "onPause() chạy khi Activity mất focus foreground; đây là nơi tiêu chuẩn để giải phóng tài nguyên đã lấy trong onResume()." } },
-    { "question": { "en": "What survives a configuration change (like rotation) by default in Jetpack architecture?", "vi": "Điều gì mặc định sống sót qua thay đổi cấu hình (như xoay màn hình) trong kiến trúc Jetpack?" }, "options": [ { "en": "Activity instance", "vi": "Instance của Activity" }, { "en": "ViewModel", "vi": "ViewModel" }, { "en": "Fragment instance", "vi": "Instance của Fragment" }, { "en": "onCreate's local variables", "vi": "Biến local trong onCreate" } ], "answerIndex": 1, "explanation": { "en": "ViewModel is retained across configuration changes because it's scoped to the ViewModelStore, not the recreated Activity/Fragment instance.", "vi": "ViewModel được giữ lại qua các thay đổi cấu hình vì nó gắn scope với ViewModelStore, không phải với instance Activity/Fragment bị tạo lại." } },
-    { "question": { "en": "What's true about a bound Service?", "vi": "Điều gì đúng về một bound Service?" }, "options": [ { "en": "It always runs even with no clients bound", "vi": "Nó luôn chạy kể cả khi không có client nào bound" }, { "en": "It provides a client-server interface via IBinder and is typically stopped when no clients remain bound", "vi": "Nó cung cấp giao diện client-server qua IBinder và thường bị dừng khi không còn client nào bound" }, { "en": "It cannot communicate with the Activity", "vi": "Nó không thể giao tiếp với Activity" }, { "en": "It must run on a separate process", "vi": "Nó bắt buộc phải chạy trên process riêng" } ], "answerIndex": 1, "explanation": { "en": "A bound Service offers an IBinder for clients to interact with it and is stopped once all clients unbind.", "vi": "Bound Service cung cấp một IBinder để client tương tác và bị dừng khi tất cả client đã unbind." } },
-    { "question": { "en": "What does apply() on SharedPreferences.Editor guarantee compared to commit()?", "vi": "apply() trên SharedPreferences.Editor đảm bảo điều gì so với commit()?" }, "options": [ { "en": "Immediate synchronous write with a boolean result", "vi": "Ghi đồng bộ ngay lập tức, trả về kết quả boolean" }, { "en": "Asynchronous write to disk, no return value, non-blocking", "vi": "Ghi bất đồng bộ xuống đĩa, không trả về giá trị, không chặn thread" }, { "en": "It never actually persists data", "vi": "Nó thực chất không bao giờ lưu dữ liệu" }, { "en": "It's identical to commit()", "vi": "Nó giống hệt commit()" } ], "answerIndex": 1, "explanation": { "en": "apply() commits changes to memory immediately and writes to disk asynchronously in the background.", "vi": "apply() commit thay đổi vào bộ nhớ ngay lập tức và ghi xuống đĩa bất đồng bộ ở nền." } },
-    { "question": { "en": "What's the main cause of Context-related memory leaks?", "vi": "Nguyên nhân chính gây memory leak liên quan đến Context là gì?" }, "options": [ { "en": "Using applicationContext everywhere", "vi": "Dùng applicationContext ở mọi nơi" }, { "en": "Holding a static reference to an Activity Context after it's destroyed", "vi": "Giữ một tham chiếu static tới Activity Context sau khi nó đã bị destroy" }, { "en": "Using ViewModel", "vi": "Dùng ViewModel" }, { "en": "Using Room database", "vi": "Dùng database Room" } ], "answerIndex": 1, "explanation": { "en": "A static/long-lived reference to an Activity keeps its entire view tree from being garbage collected, even after it's destroyed.", "vi": "Một tham chiếu static/sống lâu tới Activity khiến toàn bộ view tree của nó không thể bị garbage collect, kể cả sau khi đã destroy." } },
-    { "question": { "en": "What triggers an ANR dialog?", "vi": "Điều gì kích hoạt hộp thoại ANR?" }, "options": [ { "en": "A background Service crashing", "vi": "Một Service chạy nền bị crash" }, { "en": "The main thread being blocked (about 5s on input events)", "vi": "Main thread bị block (khoảng 5s với input event)" }, { "en": "Low disk space", "vi": "Thiếu dung lượng đĩa" }, { "en": "A network timeout inside a coroutine", "vi": "Network timeout bên trong một coroutine" } ], "answerIndex": 1, "explanation": { "en": "ANR happens when the main/UI thread can't respond to input or lifecycle events within the system's timeout window.", "vi": "ANR xảy ra khi main/UI thread không thể phản hồi input hoặc sự kiện vòng đời trong khoảng thời gian timeout của hệ thống." } },
-    { "question": { "en": "What is the benefit of Kotlin coroutines over raw Threads for async work?", "vi": "Lợi ích của Kotlin coroutine so với Thread thuần cho công việc bất đồng bộ là gì?" }, "options": [ { "en": "Coroutines always run in parallel like Threads", "vi": "Coroutine luôn chạy song song như Thread" }, { "en": "Coroutines are lightweight and can suspend without blocking an OS thread", "vi": "Coroutine nhẹ và có thể suspend mà không chặn OS thread" }, { "en": "Coroutines replace the need for a main thread", "vi": "Coroutine thay thế hoàn toàn nhu cầu main thread" }, { "en": "Coroutines can only run network calls", "vi": "Coroutine chỉ chạy được các lời gọi mạng" } ], "answerIndex": 1, "explanation": { "en": "Coroutines are cooperatively scheduled and suspend cheaply, letting thousands run concurrently on a small thread pool.", "vi": "Coroutine được lập lịch cộng tác và suspend với chi phí thấp, cho phép hàng ngàn coroutine chạy đồng thời trên một thread pool nhỏ." } },
-    { "question": { "en": "How are implicit Intents resolved?", "vi": "Implicit Intent được giải quyết (resolve) như thế nào?" }, "options": [ { "en": "By the exact class name specified", "vi": "Bởi tên class chính xác được chỉ định" }, { "en": "By the system matching declared action/data/category against registered IntentFilters", "vi": "Bởi hệ thống khớp action/data/category đã khai báo với các IntentFilter đã đăng ký" }, { "en": "At compile time only", "vi": "Chỉ ở compile time" }, { "en": "They cannot start Activities in other apps", "vi": "Chúng không thể khởi chạy Activity ở app khác" } ], "answerIndex": 1, "explanation": { "en": "The system matches the Intent's action/category/data against components' <intent-filter> declarations to decide who handles it.", "vi": "Hệ thống khớp action/category/data của Intent với khai báo <intent-filter> của các component để quyết định ai xử lý nó." } },
-    { "question": { "en": "What's the key mental-model difference between Jetpack Compose and the XML View system?", "vi": "Khác biệt cốt lõi về mô hình tư duy giữa Jetpack Compose và hệ thống View XML là gì?" }, "options": [ { "en": "Compose is imperative, XML Views are declarative", "vi": "Compose mệnh lệnh, View XML khai báo" }, { "en": "Compose is declarative (UI as a function of state), XML Views are imperative (mutate View objects directly)", "vi": "Compose khai báo (UI là hàm của state), View XML mệnh lệnh (thay đổi trực tiếp đối tượng View)" }, { "en": "There is no real difference", "vi": "Không có khác biệt thực sự" }, { "en": "XML Views cannot show dynamic data", "vi": "View XML không thể hiển thị dữ liệu động" } ], "answerIndex": 1, "explanation": { "en": "Compose recomposes (re-runs) functions whose state inputs changed; XML views require you to manually mutate view properties.", "vi": "Compose recompose (chạy lại) các hàm có input state thay đổi; View XML yêu cầu bạn tự tay thay đổi thuộc tính của view." } },
-    { "question": { "en": "What problem does Hilt primarily solve?", "vi": "Hilt chủ yếu giải quyết vấn đề gì?" }, "options": [ { "en": "Dependency injection scoped to Android components", "vi": "Dependency injection theo scope của component Android" }, { "en": "UI rendering performance", "vi": "Hiệu năng render UI" }, { "en": "Database migrations", "vi": "Migration database" }, { "en": "Network request caching", "vi": "Cache request mạng" } ], "answerIndex": 0, "explanation": { "en": "Hilt generates dependency-injection code scoped to Android components (Activity, Fragment, ViewModel), removing manual dependency wiring.", "vi": "Hilt sinh code dependency injection gắn scope theo component Android (Activity, Fragment, ViewModel), loại bỏ việc nối dây dependency thủ công." } },
-    { "question": { "en": "Why does RecyclerView use the ViewHolder pattern?", "vi": "Vì sao RecyclerView dùng pattern ViewHolder?" }, "options": [ { "en": "To cache child View references and recycle row layouts, avoiding repeated findViewById and inflation", "vi": "Để cache tham chiếu View con và tái sử dụng layout dòng, tránh gọi lặp findViewById và inflate" }, { "en": "To make the list scroll in reverse", "vi": "Để làm list cuộn ngược" }, { "en": "To automatically sort list items", "vi": "Để tự động sắp xếp item trong list" }, { "en": "It's required by Kotlin, not a performance choice", "vi": "Nó bắt buộc bởi Kotlin, không phải lựa chọn hiệu năng" } ], "answerIndex": 0, "explanation": { "en": "ViewHolder avoids repeated findViewById calls and lets RecyclerView recycle row Views instead of inflating new ones for every item, keeping scrolling smooth.", "vi": "ViewHolder tránh gọi lặp findViewById và cho phép RecyclerView tái sử dụng View của dòng thay vì inflate mới cho từng item, giúp cuộn mượt hơn." } },
-    { "question": { "en": "What's a key practical difference between LiveData and StateFlow?", "vi": "Khác biệt thực tế quan trọng giữa LiveData và StateFlow là gì?" }, "options": [ { "en": "LiveData is lifecycle-aware out of the box; StateFlow needs explicit lifecycle-aware collection", "vi": "LiveData nhận biết vòng đời sẵn có; StateFlow cần thu thập nhận biết vòng đời một cách tường minh" }, { "en": "StateFlow only works in Java", "vi": "StateFlow chỉ hoạt động trong Java" }, { "en": "LiveData can emit multiple values per event, StateFlow cannot", "vi": "LiveData có thể phát nhiều giá trị mỗi sự kiện, StateFlow thì không" }, { "en": "They are exactly interchangeable with zero differences", "vi": "Chúng hoàn toàn thay thế được nhau, không khác biệt gì" } ], "answerIndex": 0, "explanation": { "en": "LiveData automatically stops delivering updates to a destroyed lifecycle owner; StateFlow requires wrapping collection in something like repeatOnLifecycle to get the same safety.", "vi": "LiveData tự động ngừng gửi cập nhật cho một lifecycle owner đã destroy; StateFlow cần bọc việc collect trong thứ như repeatOnLifecycle để có sự an toàn tương tự." } },
-    { "question": { "en": "When is WorkManager the right choice over a coroutine tied to a screen?", "vi": "Khi nào WorkManager là lựa chọn đúng thay vì coroutine gắn với một màn hình?" }, "options": [ { "en": "When the task is trivial and instant", "vi": "Khi tác vụ đơn giản và tức thời" }, { "en": "When the work must be guaranteed to run even after the app closes or the device reboots", "vi": "Khi công việc phải được đảm bảo chạy kể cả sau khi app đóng hoặc thiết bị reboot" }, { "en": "When you need the result synchronously right now", "vi": "Khi cần kết quả ngay lập tức, đồng bộ" }, { "en": "WorkManager cannot run background work at all", "vi": "WorkManager hoàn toàn không thể chạy công việc nền" } ], "answerIndex": 1, "explanation": { "en": "WorkManager persists scheduled work and reschedules it after process death or reboot, which a screen-scoped coroutine cannot do.", "vi": "WorkManager lưu lại công việc đã lên lịch và lên lịch lại sau khi process chết hoặc reboot, điều mà một coroutine gắn với màn hình không làm được." } },
-    { "question": { "en": "Why is Parcelable generally preferred over Serializable on Android?", "vi": "Vì sao Parcelable thường được ưu tiên hơn Serializable trên Android?" }, "options": [ { "en": "Parcelable avoids reflection and is significantly faster", "vi": "Parcelable tránh reflection và nhanh hơn đáng kể" }, { "en": "Serializable is not supported on Android at all", "vi": "Serializable hoàn toàn không được hỗ trợ trên Android" }, { "en": "Parcelable works only with primitive types", "vi": "Parcelable chỉ hoạt động với kiểu nguyên thủy (primitive)" }, { "en": "There is no performance difference", "vi": "Không có khác biệt về hiệu năng" } ], "answerIndex": 0, "explanation": { "en": "Serializable relies on reflection at runtime, which is slow; Parcelable's generated code marshals fields directly, making it much faster for Intent extras.", "vi": "Serializable dựa vào reflection lúc runtime, khá chậm; code sinh ra của Parcelable marshal field trực tiếp, nhanh hơn nhiều cho Intent extras." } },
-    { "question": { "en": "What is a BroadcastReceiver typically used for?", "vi": "BroadcastReceiver thường được dùng để làm gì?" }, "options": [ { "en": "Reacting to system-wide or app-specific broadcast events", "vi": "Phản ứng với các broadcast event toàn hệ thống hoặc đặc thù của app" }, { "en": "Rendering the UI", "vi": "Render UI" }, { "en": "Persisting data to a database", "vi": "Lưu dữ liệu vào database" }, { "en": "Compiling the app", "vi": "Biên dịch app" } ], "answerIndex": 0, "explanation": { "en": "BroadcastReceivers listen for system or custom broadcasts (connectivity change, battery low, a custom app event) and react without needing an always-running process.", "vi": "BroadcastReceiver lắng nghe broadcast của hệ thống hoặc tuỳ chỉnh (đổi kết nối mạng, pin yếu, sự kiện app tuỳ chỉnh) và phản ứng mà không cần một process luôn chạy." } },
-    { "question": { "en": "What is the main purpose of R8/ProGuard in a release build?", "vi": "Mục đích chính của R8/ProGuard trong bản release là gì?" }, "options": [ { "en": "Shrinking, obfuscating, and optimizing the compiled code", "vi": "Thu gọn, làm rối và tối ưu code đã biên dịch" }, { "en": "Adding new features to the app", "vi": "Thêm tính năng mới cho app" }, { "en": "Speeding up the emulator", "vi": "Tăng tốc emulator" }, { "en": "Formatting Kotlin source code", "vi": "Định dạng code nguồn Kotlin" } ], "answerIndex": 0, "explanation": { "en": "R8/ProGuard remove unused code, rename symbols to obscure names, and optimize bytecode, reducing APK size and adding light reverse-engineering resistance.", "vi": "R8/ProGuard xoá code không dùng, đổi tên symbol thành tên khó hiểu, và tối ưu bytecode, giảm kích thước APK và thêm khả năng chống dịch ngược nhẹ." } }
+    {
+      "question": {
+        "en": "Which callback is the standard place to release resources acquired while the Activity was visible (e.g. unregister a listener)?",
+        "vi": "Callback nào là nơi tiêu chuẩn để giải phóng tài nguyên đã lấy khi Activity đang hiển thị (ví dụ hủy đăng ký listener)?"
+      },
+      "options": [
+        {
+          "en": "onCreate()",
+          "vi": "onCreate()"
+        },
+        {
+          "en": "onPause()",
+          "vi": "onPause()"
+        },
+        {
+          "en": "onDestroy()",
+          "vi": "onDestroy()"
+        },
+        {
+          "en": "onRestart()",
+          "vi": "onRestart()"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "onPause() runs when the Activity loses foreground focus; it's the standard place to release resources acquired in onResume().",
+        "vi": "onPause() chạy khi Activity mất focus foreground; đây là nơi tiêu chuẩn để giải phóng tài nguyên đã lấy trong onResume()."
+      }
+    },
+    {
+      "question": {
+        "en": "What survives a configuration change (like rotation) by default in Jetpack architecture?",
+        "vi": "Điều gì mặc định sống sót qua thay đổi cấu hình (như xoay màn hình) trong kiến trúc Jetpack?"
+      },
+      "options": [
+        {
+          "en": "Activity instance",
+          "vi": "Instance của Activity"
+        },
+        {
+          "en": "ViewModel",
+          "vi": "ViewModel"
+        },
+        {
+          "en": "Fragment instance",
+          "vi": "Instance của Fragment"
+        },
+        {
+          "en": "onCreate's local variables",
+          "vi": "Biến local trong onCreate"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "ViewModel is retained across configuration changes because it's scoped to the ViewModelStore, not the recreated Activity/Fragment instance.",
+        "vi": "ViewModel được giữ lại qua các thay đổi cấu hình vì nó gắn scope với ViewModelStore, không phải với instance Activity/Fragment bị tạo lại."
+      }
+    },
+    {
+      "question": {
+        "en": "What's true about a bound Service?",
+        "vi": "Điều gì đúng về một bound Service?"
+      },
+      "options": [
+        {
+          "en": "It always runs even with no clients bound",
+          "vi": "Nó luôn chạy kể cả khi không có client nào bound"
+        },
+        {
+          "en": "It provides a client-server interface via IBinder and is typically stopped when no clients remain bound",
+          "vi": "Nó cung cấp giao diện client-server qua IBinder và thường bị dừng khi không còn client nào bound"
+        },
+        {
+          "en": "It cannot communicate with the Activity",
+          "vi": "Nó không thể giao tiếp với Activity"
+        },
+        {
+          "en": "It must run on a separate process",
+          "vi": "Nó bắt buộc phải chạy trên process riêng"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "A bound Service offers an IBinder for clients to interact with it and is stopped once all clients unbind.",
+        "vi": "Bound Service cung cấp một IBinder để client tương tác và bị dừng khi tất cả client đã unbind."
+      }
+    },
+    {
+      "question": {
+        "en": "What does apply() on SharedPreferences.Editor guarantee compared to commit()?",
+        "vi": "apply() trên SharedPreferences.Editor đảm bảo điều gì so với commit()?"
+      },
+      "options": [
+        {
+          "en": "Immediate synchronous write with a boolean result",
+          "vi": "Ghi đồng bộ ngay lập tức, trả về kết quả boolean"
+        },
+        {
+          "en": "Asynchronous write to disk, no return value, non-blocking",
+          "vi": "Ghi bất đồng bộ xuống đĩa, không trả về giá trị, không chặn thread"
+        },
+        {
+          "en": "It never actually persists data",
+          "vi": "Nó thực chất không bao giờ lưu dữ liệu"
+        },
+        {
+          "en": "It's identical to commit()",
+          "vi": "Nó giống hệt commit()"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "apply() commits changes to memory immediately and writes to disk asynchronously in the background.",
+        "vi": "apply() commit thay đổi vào bộ nhớ ngay lập tức và ghi xuống đĩa bất đồng bộ ở nền."
+      }
+    },
+    {
+      "question": {
+        "en": "What's the main cause of Context-related memory leaks?",
+        "vi": "Nguyên nhân chính gây memory leak liên quan đến Context là gì?"
+      },
+      "options": [
+        {
+          "en": "Using applicationContext everywhere",
+          "vi": "Dùng applicationContext ở mọi nơi"
+        },
+        {
+          "en": "Holding a static reference to an Activity Context after it's destroyed",
+          "vi": "Giữ một tham chiếu static tới Activity Context sau khi nó đã bị destroy"
+        },
+        {
+          "en": "Using ViewModel",
+          "vi": "Dùng ViewModel"
+        },
+        {
+          "en": "Using Room database",
+          "vi": "Dùng database Room"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "A static/long-lived reference to an Activity keeps its entire view tree from being garbage collected, even after it's destroyed.",
+        "vi": "Một tham chiếu static/sống lâu tới Activity khiến toàn bộ view tree của nó không thể bị garbage collect, kể cả sau khi đã destroy."
+      }
+    },
+    {
+      "question": {
+        "en": "What triggers an ANR dialog?",
+        "vi": "Điều gì kích hoạt hộp thoại ANR?"
+      },
+      "options": [
+        {
+          "en": "A background Service crashing",
+          "vi": "Một Service chạy nền bị crash"
+        },
+        {
+          "en": "The main thread being blocked (about 5s on input events)",
+          "vi": "Main thread bị block (khoảng 5s với input event)"
+        },
+        {
+          "en": "Low disk space",
+          "vi": "Thiếu dung lượng đĩa"
+        },
+        {
+          "en": "A network timeout inside a coroutine",
+          "vi": "Network timeout bên trong một coroutine"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "ANR happens when the main/UI thread can't respond to input or lifecycle events within the system's timeout window.",
+        "vi": "ANR xảy ra khi main/UI thread không thể phản hồi input hoặc sự kiện vòng đời trong khoảng thời gian timeout của hệ thống."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the benefit of Kotlin coroutines over raw Threads for async work?",
+        "vi": "Lợi ích của Kotlin coroutine so với Thread thuần cho công việc bất đồng bộ là gì?"
+      },
+      "options": [
+        {
+          "en": "Coroutines always run in parallel like Threads",
+          "vi": "Coroutine luôn chạy song song như Thread"
+        },
+        {
+          "en": "Coroutines are lightweight and can suspend without blocking an OS thread",
+          "vi": "Coroutine nhẹ và có thể suspend mà không chặn OS thread"
+        },
+        {
+          "en": "Coroutines replace the need for a main thread",
+          "vi": "Coroutine thay thế hoàn toàn nhu cầu main thread"
+        },
+        {
+          "en": "Coroutines can only run network calls",
+          "vi": "Coroutine chỉ chạy được các lời gọi mạng"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "Coroutines are cooperatively scheduled and suspend cheaply, letting thousands run concurrently on a small thread pool.",
+        "vi": "Coroutine được lập lịch cộng tác và suspend với chi phí thấp, cho phép hàng ngàn coroutine chạy đồng thời trên một thread pool nhỏ."
+      }
+    },
+    {
+      "question": {
+        "en": "How are implicit Intents resolved?",
+        "vi": "Implicit Intent được giải quyết (resolve) như thế nào?"
+      },
+      "options": [
+        {
+          "en": "By the exact class name specified",
+          "vi": "Bởi tên class chính xác được chỉ định"
+        },
+        {
+          "en": "By the system matching declared action/data/category against registered IntentFilters",
+          "vi": "Bởi hệ thống khớp action/data/category đã khai báo với các IntentFilter đã đăng ký"
+        },
+        {
+          "en": "At compile time only",
+          "vi": "Chỉ ở compile time"
+        },
+        {
+          "en": "They cannot start Activities in other apps",
+          "vi": "Chúng không thể khởi chạy Activity ở app khác"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "The system matches the Intent's action/category/data against components' <intent-filter> declarations to decide who handles it.",
+        "vi": "Hệ thống khớp action/category/data của Intent với khai báo <intent-filter> của các component để quyết định ai xử lý nó."
+      }
+    },
+    {
+      "question": {
+        "en": "What's the key mental-model difference between Jetpack Compose and the XML View system?",
+        "vi": "Khác biệt cốt lõi về mô hình tư duy giữa Jetpack Compose và hệ thống View XML là gì?"
+      },
+      "options": [
+        {
+          "en": "Compose is imperative, XML Views are declarative",
+          "vi": "Compose mệnh lệnh, View XML khai báo"
+        },
+        {
+          "en": "Compose is declarative (UI as a function of state), XML Views are imperative (mutate View objects directly)",
+          "vi": "Compose khai báo (UI là hàm của state), View XML mệnh lệnh (thay đổi trực tiếp đối tượng View)"
+        },
+        {
+          "en": "There is no real difference",
+          "vi": "Không có khác biệt thực sự"
+        },
+        {
+          "en": "XML Views cannot show dynamic data",
+          "vi": "View XML không thể hiển thị dữ liệu động"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "Compose recomposes (re-runs) functions whose state inputs changed; XML views require you to manually mutate view properties.",
+        "vi": "Compose recompose (chạy lại) các hàm có input state thay đổi; View XML yêu cầu bạn tự tay thay đổi thuộc tính của view."
+      }
+    },
+    {
+      "question": {
+        "en": "What problem does Hilt primarily solve?",
+        "vi": "Hilt chủ yếu giải quyết vấn đề gì?"
+      },
+      "options": [
+        {
+          "en": "Dependency injection scoped to Android components",
+          "vi": "Dependency injection theo scope của component Android"
+        },
+        {
+          "en": "UI rendering performance",
+          "vi": "Hiệu năng render UI"
+        },
+        {
+          "en": "Database migrations",
+          "vi": "Migration database"
+        },
+        {
+          "en": "Network request caching",
+          "vi": "Cache request mạng"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Hilt generates dependency-injection code scoped to Android components (Activity, Fragment, ViewModel), removing manual dependency wiring.",
+        "vi": "Hilt sinh code dependency injection gắn scope theo component Android (Activity, Fragment, ViewModel), loại bỏ việc nối dây dependency thủ công."
+      }
+    },
+    {
+      "question": {
+        "en": "Why does RecyclerView use the ViewHolder pattern?",
+        "vi": "Vì sao RecyclerView dùng pattern ViewHolder?"
+      },
+      "options": [
+        {
+          "en": "To cache child View references and recycle row layouts, avoiding repeated findViewById and inflation",
+          "vi": "Để cache tham chiếu View con và tái sử dụng layout dòng, tránh gọi lặp findViewById và inflate"
+        },
+        {
+          "en": "To make the list scroll in reverse",
+          "vi": "Để làm list cuộn ngược"
+        },
+        {
+          "en": "To automatically sort list items",
+          "vi": "Để tự động sắp xếp item trong list"
+        },
+        {
+          "en": "It's required by Kotlin, not a performance choice",
+          "vi": "Nó bắt buộc bởi Kotlin, không phải lựa chọn hiệu năng"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "ViewHolder avoids repeated findViewById calls and lets RecyclerView recycle row Views instead of inflating new ones for every item, keeping scrolling smooth.",
+        "vi": "ViewHolder tránh gọi lặp findViewById và cho phép RecyclerView tái sử dụng View của dòng thay vì inflate mới cho từng item, giúp cuộn mượt hơn."
+      }
+    },
+    {
+      "question": {
+        "en": "What's a key practical difference between LiveData and StateFlow?",
+        "vi": "Khác biệt thực tế quan trọng giữa LiveData và StateFlow là gì?"
+      },
+      "options": [
+        {
+          "en": "LiveData is lifecycle-aware out of the box; StateFlow needs explicit lifecycle-aware collection",
+          "vi": "LiveData nhận biết vòng đời sẵn có; StateFlow cần thu thập nhận biết vòng đời một cách tường minh"
+        },
+        {
+          "en": "StateFlow only works in Java",
+          "vi": "StateFlow chỉ hoạt động trong Java"
+        },
+        {
+          "en": "LiveData can emit multiple values per event, StateFlow cannot",
+          "vi": "LiveData có thể phát nhiều giá trị mỗi sự kiện, StateFlow thì không"
+        },
+        {
+          "en": "They are exactly interchangeable with zero differences",
+          "vi": "Chúng hoàn toàn thay thế được nhau, không khác biệt gì"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "LiveData automatically stops delivering updates to a destroyed lifecycle owner; StateFlow requires wrapping collection in something like repeatOnLifecycle to get the same safety.",
+        "vi": "LiveData tự động ngừng gửi cập nhật cho một lifecycle owner đã destroy; StateFlow cần bọc việc collect trong thứ như repeatOnLifecycle để có sự an toàn tương tự."
+      }
+    },
+    {
+      "question": {
+        "en": "When is WorkManager the right choice over a coroutine tied to a screen?",
+        "vi": "Khi nào WorkManager là lựa chọn đúng thay vì coroutine gắn với một màn hình?"
+      },
+      "options": [
+        {
+          "en": "When the task is trivial and instant",
+          "vi": "Khi tác vụ đơn giản và tức thời"
+        },
+        {
+          "en": "When the work must be guaranteed to run even after the app closes or the device reboots",
+          "vi": "Khi công việc phải được đảm bảo chạy kể cả sau khi app đóng hoặc thiết bị reboot"
+        },
+        {
+          "en": "When you need the result synchronously right now",
+          "vi": "Khi cần kết quả ngay lập tức, đồng bộ"
+        },
+        {
+          "en": "WorkManager cannot run background work at all",
+          "vi": "WorkManager hoàn toàn không thể chạy công việc nền"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "WorkManager persists scheduled work and reschedules it after process death or reboot, which a screen-scoped coroutine cannot do.",
+        "vi": "WorkManager lưu lại công việc đã lên lịch và lên lịch lại sau khi process chết hoặc reboot, điều mà một coroutine gắn với màn hình không làm được."
+      }
+    },
+    {
+      "question": {
+        "en": "Why is Parcelable generally preferred over Serializable on Android?",
+        "vi": "Vì sao Parcelable thường được ưu tiên hơn Serializable trên Android?"
+      },
+      "options": [
+        {
+          "en": "Parcelable avoids reflection and is significantly faster",
+          "vi": "Parcelable tránh reflection và nhanh hơn đáng kể"
+        },
+        {
+          "en": "Serializable is not supported on Android at all",
+          "vi": "Serializable hoàn toàn không được hỗ trợ trên Android"
+        },
+        {
+          "en": "Parcelable works only with primitive types",
+          "vi": "Parcelable chỉ hoạt động với kiểu nguyên thủy (primitive)"
+        },
+        {
+          "en": "There is no performance difference",
+          "vi": "Không có khác biệt về hiệu năng"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Serializable relies on reflection at runtime, which is slow; Parcelable's generated code marshals fields directly, making it much faster for Intent extras.",
+        "vi": "Serializable dựa vào reflection lúc runtime, khá chậm; code sinh ra của Parcelable marshal field trực tiếp, nhanh hơn nhiều cho Intent extras."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a BroadcastReceiver typically used for?",
+        "vi": "BroadcastReceiver thường được dùng để làm gì?"
+      },
+      "options": [
+        {
+          "en": "Reacting to system-wide or app-specific broadcast events",
+          "vi": "Phản ứng với các broadcast event toàn hệ thống hoặc đặc thù của app"
+        },
+        {
+          "en": "Rendering the UI",
+          "vi": "Render UI"
+        },
+        {
+          "en": "Persisting data to a database",
+          "vi": "Lưu dữ liệu vào database"
+        },
+        {
+          "en": "Compiling the app",
+          "vi": "Biên dịch app"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "BroadcastReceivers listen for system or custom broadcasts (connectivity change, battery low, a custom app event) and react without needing an always-running process.",
+        "vi": "BroadcastReceiver lắng nghe broadcast của hệ thống hoặc tuỳ chỉnh (đổi kết nối mạng, pin yếu, sự kiện app tuỳ chỉnh) và phản ứng mà không cần một process luôn chạy."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the main purpose of R8/ProGuard in a release build?",
+        "vi": "Mục đích chính của R8/ProGuard trong bản release là gì?"
+      },
+      "options": [
+        {
+          "en": "Shrinking, obfuscating, and optimizing the compiled code",
+          "vi": "Thu gọn, làm rối và tối ưu code đã biên dịch"
+        },
+        {
+          "en": "Adding new features to the app",
+          "vi": "Thêm tính năng mới cho app"
+        },
+        {
+          "en": "Speeding up the emulator",
+          "vi": "Tăng tốc emulator"
+        },
+        {
+          "en": "Formatting Kotlin source code",
+          "vi": "Định dạng code nguồn Kotlin"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "R8/ProGuard remove unused code, rename symbols to obscure names, and optimize bytecode, reducing APK size and adding light reverse-engineering resistance.",
+        "vi": "R8/ProGuard xoá code không dùng, đổi tên symbol thành tên khó hiểu, và tối ưu bytecode, giảm kích thước APK và thêm khả năng chống dịch ngược nhẹ."
+      }
+    },
+    {
+      "question": {
+        "en": "Why does a compiler-exhaustive `when` over a sealed class help prevent bugs?",
+        "vi": "Vì sao `when` được compiler kiểm tra đầy đủ trên sealed class giúp ngăn bug?"
+      },
+      "options": [
+        {
+          "en": "It makes the app run faster",
+          "vi": "Giúp app chạy nhanh hơn"
+        },
+        {
+          "en": "Adding a new subclass forces every relevant `when` to be updated, or it won't compile",
+          "vi": "Thêm subclass mới buộc mọi `when` liên quan phải được cập nhật, nếu không sẽ không biên dịch được"
+        },
+        {
+          "en": "It removes the need for unit tests",
+          "vi": "Loại bỏ nhu cầu viết unit test"
+        },
+        {
+          "en": "It only works with data classes",
+          "vi": "Chỉ hoạt động với data class"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "Because the sealed class's subclasses are a closed, known set, the compiler can prove whether a `when` handles every case — a new state can't silently fall through unhandled.",
+        "vi": "Vì các subclass của sealed class là một tập đã biết, đóng, compiler có thể chứng minh liệu một `when` có xử lý đủ mọi case hay không — một state mới không thể âm thầm rơi qua mà không được xử lý."
+      }
+    },
+    {
+      "question": {
+        "en": "When must an app request a dangerous permission at runtime?",
+        "vi": "Khi nào app phải xin một dangerous permission ở runtime?"
+      },
+      "options": [
+        {
+          "en": "Only on the first app launch, automatically",
+          "vi": "Chỉ lần đầu mở app, tự động"
+        },
+        {
+          "en": "Right before using the feature that needs it (e.g. opening the camera)",
+          "vi": "Ngay trước khi dùng tính năng cần nó (ví dụ mở camera)"
+        },
+        {
+          "en": "Never, they're granted at install like normal permissions",
+          "vi": "Không bao giờ, chúng được cấp lúc cài đặt như normal permission"
+        },
+        {
+          "en": "Only if the app targets an old Android version",
+          "vi": "Chỉ khi app target phiên bản Android cũ"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "Best practice is requesting a dangerous permission in context, right before the feature needs it, so the user understands why it's being asked.",
+        "vi": "Best practice là xin dangerous permission đúng ngữ cảnh, ngay trước khi tính năng cần nó, để người dùng hiểu vì sao đang bị hỏi."
+      }
+    },
+    {
+      "question": {
+        "en": "What makes an Android App Link different from a basic deep link?",
+        "vi": "Điều gì khiến Android App Link khác với deep link cơ bản?"
+      },
+      "options": [
+        {
+          "en": "App Links only work offline",
+          "vi": "App Link chỉ hoạt động offline"
+        },
+        {
+          "en": "App Links are verified via a Digital Asset Links file, so Android opens them directly without a chooser dialog",
+          "vi": "App Link được verify qua file Digital Asset Links, nên Android mở thẳng không hiện dialog chọn"
+        },
+        {
+          "en": "App Links can't pass any data",
+          "vi": "App Link không thể truyền dữ liệu"
+        },
+        {
+          "en": "There is no real difference",
+          "vi": "Không có khác biệt thực sự"
+        }
+      ],
+      "answerIndex": 1,
+      "explanation": {
+        "en": "The verification file proves domain ownership, letting Android skip the disambiguation dialog that a basic, unverified deep link would trigger.",
+        "vi": "File verification chứng minh quyền sở hữu domain, cho phép Android bỏ qua dialog hỏi chọn mà một deep link cơ bản, chưa verify sẽ gây ra."
+      }
+    },
+    {
+      "question": {
+        "en": "What do Gradle product flavors let you do?",
+        "vi": "Product flavor trong Gradle cho phép bạn làm gì?"
+      },
+      "options": [
+        {
+          "en": "Build distinct versions of the app (e.g. free/paid, staging/production) from one codebase",
+          "vi": "Build nhiều phiên bản app khác nhau (ví dụ free/paid, staging/production) từ một codebase"
+        },
+        {
+          "en": "Speed up the emulator",
+          "vi": "Tăng tốc emulator"
+        },
+        {
+          "en": "Automatically translate the app",
+          "vi": "Tự động dịch app"
+        },
+        {
+          "en": "Replace the need for build types",
+          "vi": "Thay thế nhu cầu về build type"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Flavors combine with build types (debug/release) to produce distinct build variants, each with its own resources, config, or app ID suffix.",
+        "vi": "Flavor kết hợp với build type (debug/release) để tạo ra các build variant riêng, mỗi cái có resource, config, hoặc app ID suffix riêng."
+      }
+    },
+    {
+      "question": {
+        "en": "What's a key benefit of splitting an app into multiple Gradle modules?",
+        "vi": "Lợi ích chính của việc chia app thành nhiều Gradle module là gì?"
+      },
+      "options": [
+        {
+          "en": "Faster incremental builds and enforced boundaries between features",
+          "vi": "Build tăng dần nhanh hơn và ranh giới rõ ràng giữa các feature"
+        },
+        {
+          "en": "Automatically fewer bugs",
+          "vi": "Tự động ít bug hơn"
+        },
+        {
+          "en": "No need for tests",
+          "vi": "Không cần test"
+        },
+        {
+          "en": "Smaller app icon size",
+          "vi": "Icon app nhỏ hơn"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Gradle only rebuilds changed modules and their dependents, and module boundaries prevent one feature from reaching into another's internals.",
+        "vi": "Gradle chỉ rebuild các module đã đổi và module phụ thuộc vào nó, và ranh giới module ngăn một feature đụng vào phần nội bộ của feature khác."
+      }
+    },
+    {
+      "question": {
+        "en": "What distinguishes StateFlow from SharedFlow?",
+        "vi": "Điều gì phân biệt StateFlow với SharedFlow?"
+      },
+      "options": [
+        {
+          "en": "StateFlow always holds a current value that new collectors get immediately; SharedFlow is more general and doesn't require one",
+          "vi": "StateFlow luôn giữ một giá trị hiện tại mà collector mới nhận ngay; SharedFlow tổng quát hơn và không bắt buộc phải có giá trị"
+        },
+        {
+          "en": "They are identical APIs",
+          "vi": "Chúng là API giống hệt nhau"
+        },
+        {
+          "en": "SharedFlow only works with LiveData",
+          "vi": "SharedFlow chỉ hoạt động với LiveData"
+        },
+        {
+          "en": "StateFlow cannot be collected more than once",
+          "vi": "StateFlow không thể được collect nhiều hơn một lần"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "StateFlow behaves like an observable variable (always has a value); SharedFlow is configurable for pure event streams with no inherent 'current value'.",
+        "vi": "StateFlow hoạt động như một biến quan sát được (luôn có giá trị); SharedFlow có thể cấu hình cho luồng sự kiện thuần, không có 'giá trị hiện tại' vốn có."
+      }
+    }
   ],
   "notes": [
     {
-      "title": { "en": "Activity & Fragment Lifecycle", "vi": "Vòng đời Activity & Fragment" },
+      "title": {
+        "en": "Activity & Fragment Lifecycle",
+        "vi": "Vòng đời Activity & Fragment"
+      },
       "content": {
         "en": "The Activity lifecycle is one of the most common Android interview topics.\n\n```kotlin\noverride fun onCreate(savedInstanceState: Bundle?) {\n    super.onCreate(savedInstanceState)\n    setContentView(R.layout.activity_main)\n}\n\noverride fun onStart() { super.onStart() }\noverride fun onResume() { super.onResume() }\noverride fun onPause() { super.onPause() }\noverride fun onStop() { super.onStop() }\noverride fun onDestroy() { super.onDestroy() }\n```\n\n- **onCreate**: one-time setup — inflate layout, restore saved state.\n- **onStart/onResume**: Activity becomes visible, then interactive.\n- **onPause**: partially obscured (e.g. a dialog appears) — release resources that shouldn't run while not in focus (camera, sensors).\n- **onStop**: fully hidden — release heavier resources.\n- **onDestroy**: final cleanup before the Activity object is discarded.\n\nA Fragment's lifecycle overlays its own callbacks (onCreateView, onViewCreated, onDestroyView) on top of its host Activity's — onDestroyView is important because the Fragment's View can be destroyed (e.g. on backstack) while the Fragment instance itself survives.",
         "vi": "Vòng đời Activity là một trong những chủ đề phỏng vấn Android phổ biến nhất.\n\n```kotlin\noverride fun onCreate(savedInstanceState: Bundle?) {\n    super.onCreate(savedInstanceState)\n    setContentView(R.layout.activity_main)\n}\n\noverride fun onStart() { super.onStart() }\noverride fun onResume() { super.onResume() }\noverride fun onPause() { super.onPause() }\noverride fun onStop() { super.onStop() }\noverride fun onDestroy() { super.onDestroy() }\n```\n\n- **onCreate**: thiết lập một lần — inflate layout, khôi phục state đã lưu.\n- **onStart/onResume**: Activity trở nên hiển thị, rồi tương tác được.\n- **onPause**: bị che một phần (ví dụ có dialog xuất hiện) — giải phóng tài nguyên không nên chạy khi mất focus (camera, sensor).\n- **onStop**: bị ẩn hoàn toàn — giải phóng tài nguyên nặng hơn.\n- **onDestroy**: dọn dẹp cuối cùng trước khi đối tượng Activity bị huỷ.\n\nVòng đời của Fragment có thêm các callback riêng (onCreateView, onViewCreated, onDestroyView) chồng lên vòng đời của Activity host — onDestroyView quan trọng vì View của Fragment có thể bị destroy (ví dụ khi vào backstack) trong khi instance Fragment vẫn còn sống."
       }
     },
     {
-      "title": { "en": "Jetpack ViewModel & Configuration Changes", "vi": "Jetpack ViewModel & thay đổi cấu hình" },
+      "title": {
+        "en": "Jetpack ViewModel & Configuration Changes",
+        "vi": "Jetpack ViewModel & thay đổi cấu hình"
+      },
       "content": {
         "en": "On rotation, Android by default destroys and recreates the Activity to reload resources for the new configuration. Without ViewModel, any in-memory state (network results, scroll position, form input) would be lost unless manually saved to a Bundle.\n\n`ViewModel` is scoped to a `ViewModelStoreOwner` (the Activity/Fragment's lifecycle), and the store itself is retained across the destroy/recreate cycle caused by configuration changes — only cleared when the Activity/Fragment is actually finishing, not just rotating.\n\n```kotlin\nclass UserViewModel : ViewModel() {\n    private val _user = MutableLiveData<User>()\n    val user: LiveData<User> = _user\n\n    fun load(id: String) {\n        viewModelScope.launch {\n            _user.value = repository.getUser(id)\n        }\n    }\n}\n```\n\n`viewModelScope` is a coroutine scope tied to the ViewModel's lifecycle, automatically cancelled when the ViewModel is cleared.",
         "vi": "Khi xoay màn hình, mặc định Android sẽ destroy và tạo lại Activity để nạp lại tài nguyên cho cấu hình mới. Nếu không có ViewModel, mọi state trong bộ nhớ (kết quả mạng, vị trí cuộn, dữ liệu nhập form) sẽ bị mất trừ khi được lưu thủ công vào Bundle.\n\n`ViewModel` gắn scope với một `ViewModelStoreOwner` (vòng đời của Activity/Fragment), và bản thân store được giữ lại qua chu kỳ destroy/tạo lại do thay đổi cấu hình gây ra — chỉ bị xoá khi Activity/Fragment thực sự kết thúc (finishing), chứ không phải chỉ xoay màn hình.\n\n```kotlin\nclass UserViewModel : ViewModel() {\n    private val _user = MutableLiveData<User>()\n    val user: LiveData<User> = _user\n\n    fun load(id: String) {\n        viewModelScope.launch {\n            _user.value = repository.getUser(id)\n        }\n    }\n}\n```\n\n`viewModelScope` là một coroutine scope gắn với vòng đời ViewModel, tự động bị huỷ khi ViewModel bị clear."
       }
     },
     {
-      "title": { "en": "Background Work: Service, WorkManager, Coroutines", "vi": "Công việc nền: Service, WorkManager, Coroutine" },
+      "title": {
+        "en": "Background Work: Service, WorkManager, Coroutines",
+        "vi": "Công việc nền: Service, WorkManager, Coroutine"
+      },
       "content": {
         "en": "Choosing the right background execution tool is a frequent interview question:\n\n- **Coroutines (`viewModelScope`/`lifecycleScope`)** — short-lived async work tied to a UI component's lifecycle, e.g. a single network call.\n- **Service** — work that should continue running with or without a UI, e.g. music playback (foreground Service, with a persistent notification since Android 8+).\n- **WorkManager** — deferrable, guaranteed background work that should survive app restarts and device reboots (e.g. periodic sync, uploading logs), with constraints like 'only on WiFi' or 'only when charging'.\n\nRule of thumb: if the work must survive the triggering screen closing and needs guaranteed execution, prefer WorkManager over a bare coroutine or Service.",
         "vi": "Chọn đúng công cụ chạy nền là câu hỏi phỏng vấn thường gặp:\n\n- **Coroutine (`viewModelScope`/`lifecycleScope`)** — công việc async ngắn hạn, gắn với vòng đời một component UI, ví dụ một lời gọi mạng đơn lẻ.\n- **Service** — công việc cần tiếp tục chạy dù có hay không có UI, ví dụ phát nhạc (foreground Service, kèm notification cố định từ Android 8 trở lên).\n- **WorkManager** — công việc nền có thể trì hoãn nhưng phải đảm bảo chạy, sống sót qua việc app khởi động lại hay thiết bị reboot (ví dụ đồng bộ định kỳ, upload log), có thể kèm điều kiện như 'chỉ khi có WiFi' hay 'chỉ khi đang sạc'.\n\nQuy tắc chung: nếu công việc phải sống sót sau khi màn hình khởi tạo nó đóng lại và cần đảm bảo được thực thi, hãy ưu tiên WorkManager thay vì coroutine hay Service đơn thuần."
       }
     },
     {
-      "title": { "en": "Context & Memory Leaks", "vi": "Context & Memory Leak" },
+      "title": {
+        "en": "Context & Memory Leaks",
+        "vi": "Context & Memory Leak"
+      },
       "content": {
         "en": "Android has two broad categories of Context: **Application Context** (lives as long as the app process) and **Activity Context** (tied to that Activity's lifecycle, and typically holds a reference to the whole view hierarchy).\n\nCommon leak pattern:\n\n```kotlin\nobject Analytics {\n    // Leak: holds an Activity Context forever\n    lateinit var context: Context\n}\n```\n\nIf `Analytics.context` is assigned an Activity Context, that Activity (and every View it holds) can never be garbage collected, even after the user navigates away — a classic memory leak.\n\nFix: pass `context.applicationContext` when a singleton needs a Context, or use a `WeakReference<Activity>` if the Activity reference is genuinely needed temporarily. Tools like LeakCanary are commonly used in interviews as the answer to 'how would you detect this in practice?'",
         "vi": "Android có hai loại Context chính: **Application Context** (sống lâu bằng process của app) và **Activity Context** (gắn với vòng đời Activity đó, và thường giữ tham chiếu tới toàn bộ view hierarchy).\n\nMẫu leak phổ biến:\n\n```kotlin\nobject Analytics {\n    // Leak: giữ Activity Context mãi mãi\n    lateinit var context: Context\n}\n```\n\nNếu `Analytics.context` được gán một Activity Context, Activity đó (và mọi View nó giữ) sẽ không bao giờ được garbage collect, kể cả sau khi người dùng đã rời màn hình — một memory leak kinh điển.\n\nCách sửa: truyền `context.applicationContext` khi một singleton cần Context, hoặc dùng `WeakReference<Activity>` nếu thực sự cần tham chiếu Activity tạm thời. Các công cụ như LeakCanary thường là câu trả lời được kỳ vọng khi phỏng vấn hỏi 'làm sao phát hiện điều này trong thực tế?'"
       }
     },
     {
-      "title": { "en": "Jetpack Compose Basics", "vi": "Kiến thức cơ bản về Jetpack Compose" },
+      "title": {
+        "en": "Jetpack Compose Basics",
+        "vi": "Kiến thức cơ bản về Jetpack Compose"
+      },
       "content": {
         "en": "Compose UI is built from `@Composable` functions that describe UI as a function of state, re-executed ('recomposed') whenever their inputs change.\n\n```kotlin\n@Composable\nfun Counter() {\n    var count by remember { mutableStateOf(0) }\n    Column {\n        Text(\"Count: $count\")\n        Button(onClick = { count++ }) { Text(\"Increment\") }\n    }\n}\n```\n\n`remember { mutableStateOf(...) }` creates state that survives recomposition (but not a configuration change, unless combined with `rememberSaveable`). Compose's compiler tracks which state a composable reads and only recomposes the functions actually affected — you don't manually call anything like `notifyDataSetChanged()`.\n\nInterview framing: compare this to the imperative View system, where you'd manually call `textView.text = \"Count: $count\"` every time the value changes.",
         "vi": "Compose UI được xây dựng từ các hàm `@Composable` mô tả UI như một hàm của state, được chạy lại ('recompose') mỗi khi input của chúng thay đổi.\n\n```kotlin\n@Composable\nfun Counter() {\n    var count by remember { mutableStateOf(0) }\n    Column {\n        Text(\"Count: $count\")\n        Button(onClick = { count++ }) { Text(\"Increment\") }\n    }\n}\n```\n\n`remember { mutableStateOf(...) }` tạo state sống sót qua các lần recomposition (nhưng không sống sót qua thay đổi cấu hình, trừ khi kết hợp với `rememberSaveable`). Compiler của Compose theo dõi composable nào đọc state nào và chỉ recompose đúng những hàm thực sự bị ảnh hưởng — bạn không cần tự gọi thứ gì như `notifyDataSetChanged()`.\n\nGóc nhìn phỏng vấn: so sánh với hệ thống View mệnh lệnh, nơi bạn phải tự gọi `textView.text = \"Count: $count\"` mỗi khi giá trị thay đổi."
       }
     },
     {
-      "title": { "en": "Dependency Injection with Hilt", "vi": "Dependency Injection với Hilt" },
+      "title": {
+        "en": "Dependency Injection with Hilt",
+        "vi": "Dependency Injection với Hilt"
+      },
       "content": {
         "en": "Hilt is built on top of Dagger and reduces its boilerplate by generating components scoped to standard Android classes.\n\n```kotlin\n@HiltAndroidApp\nclass MyApp : Application()\n\n@AndroidEntryPoint\nclass MainActivity : ComponentActivity()\n\n@HiltViewModel\nclass UserViewModel @Inject constructor(\n    private val repository: UserRepository,\n) : ViewModel()\n\n@Module\n@InstallIn(SingletonComponent::class)\nobject NetworkModule {\n    @Provides\n    fun provideApiClient(): ApiClient = ApiClient()\n}\n```\n\n`@Inject` on a constructor tells Hilt how to build that class; `@Provides` in a `@Module` tells it how to build things you don't own (like a third-party ApiClient). Because dependencies are supplied from outside, tests can substitute a fake `UserRepository` without touching `UserViewModel`'s code — the core benefit interviewers are checking for.",
         "vi": "Hilt được xây trên nền Dagger và giảm boilerplate của nó bằng cách sinh ra các component gắn scope theo các class chuẩn của Android.\n\n```kotlin\n@HiltAndroidApp\nclass MyApp : Application()\n\n@AndroidEntryPoint\nclass MainActivity : ComponentActivity()\n\n@HiltViewModel\nclass UserViewModel @Inject constructor(\n    private val repository: UserRepository,\n) : ViewModel()\n\n@Module\n@InstallIn(SingletonComponent::class)\nobject NetworkModule {\n    @Provides\n    fun provideApiClient(): ApiClient = ApiClient()\n}\n```\n\n`@Inject` trên constructor báo cho Hilt biết cách khởi tạo class đó; `@Provides` trong một `@Module` báo cho nó cách khởi tạo những thứ bạn không sở hữu (như một ApiClient bên thứ ba). Vì dependency được cung cấp từ bên ngoài, test có thể thay thế bằng một `UserRepository` giả mà không cần đụng vào code của `UserViewModel` — đây chính là lợi ích cốt lõi mà người phỏng vấn muốn kiểm tra."
       }
     },
     {
-      "title": { "en": "RecyclerView & the ViewHolder Pattern", "vi": "RecyclerView & pattern ViewHolder" },
+      "title": {
+        "en": "RecyclerView & the ViewHolder Pattern",
+        "vi": "RecyclerView & pattern ViewHolder"
+      },
       "content": {
         "en": "RecyclerView renders large or infinite lists efficiently by recycling row Views instead of creating one per item.\n\n```kotlin\nclass UserAdapter(private val users: List<User>) :\n    RecyclerView.Adapter<UserAdapter.ViewHolder>() {\n\n    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {\n        val name: TextView = view.findViewById(R.id.name)\n    }\n\n    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {\n        val view = LayoutInflater.from(parent.context)\n            .inflate(R.layout.item_user, parent, false)\n        return ViewHolder(view)\n    }\n\n    override fun onBindViewHolder(holder: ViewHolder, position: Int) {\n        holder.name.text = users[position].name\n    }\n\n    override fun getItemCount() = users.size\n}\n```\n\n`onCreateViewHolder` inflates a row layout and wraps its child View references in a ViewHolder — called only as many times as needed to fill the screen (plus a small buffer), not once per data item. `onBindViewHolder` reuses an existing ViewHolder and just updates its content as the user scrolls, avoiding both `findViewById` and layout-inflation cost on every scroll frame.",
         "vi": "RecyclerView render các list lớn hoặc vô hạn một cách hiệu quả bằng cách tái sử dụng (recycle) View của dòng thay vì tạo mới cho từng item.\n\n```kotlin\nclass UserAdapter(private val users: List<User>) :\n    RecyclerView.Adapter<UserAdapter.ViewHolder>() {\n\n    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {\n        val name: TextView = view.findViewById(R.id.name)\n    }\n\n    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {\n        val view = LayoutInflater.from(parent.context)\n            .inflate(R.layout.item_user, parent, false)\n        return ViewHolder(view)\n    }\n\n    override fun onBindViewHolder(holder: ViewHolder, position: Int) {\n        holder.name.text = users[position].name\n    }\n\n    override fun getItemCount() = users.size\n}\n```\n\n`onCreateViewHolder` inflate layout của một dòng và bọc tham chiếu các View con trong một ViewHolder — chỉ được gọi đủ số lần để lấp đầy màn hình (cộng thêm một buffer nhỏ), không phải một lần cho mỗi item dữ liệu. `onBindViewHolder` tái sử dụng một ViewHolder đã có và chỉ cập nhật nội dung của nó khi người dùng cuộn, tránh cả chi phí `findViewById` lẫn inflate layout ở mỗi frame cuộn."
       }
     },
     {
-      "title": { "en": "App Architecture: MVVM + Repository Pattern", "vi": "Kiến trúc app: MVVM + Repository Pattern" },
+      "title": {
+        "en": "App Architecture: MVVM + Repository Pattern",
+        "vi": "Kiến trúc app: MVVM + Repository Pattern"
+      },
       "content": {
         "en": "The Android team's recommended architecture layers an app as: **UI (Activity/Fragment/Compose)** → **ViewModel** → **Repository** → **Data sources (Room, network)**.\n\n```kotlin\nclass UserRepository(\n    private val api: UserApi,\n    private val dao: UserDao,\n) {\n    fun getUser(id: String): Flow<User> = flow {\n        emit(dao.getUser(id))          // fast local cache first\n        val fresh = api.fetchUser(id)  // then refresh from network\n        dao.insert(fresh)\n        emit(fresh)\n    }\n}\n```\n\nThe Repository hides *where* data comes from (network vs local DB vs cache) behind one API, so the ViewModel doesn't need to know about Retrofit or Room directly — this is the same dependency-inversion idea as the Repository interface in a Clean Architecture domain layer. It also makes the ViewModel trivially testable: inject a fake Repository and you never touch a real network or database in a unit test.",
         "vi": "Kiến trúc được đội Android khuyến nghị chia app thành các tầng: **UI (Activity/Fragment/Compose)** → **ViewModel** → **Repository** → **Nguồn dữ liệu (Room, network)**.\n\n```kotlin\nclass UserRepository(\n    private val api: UserApi,\n    private val dao: UserDao,\n) {\n    fun getUser(id: String): Flow<User> = flow {\n        emit(dao.getUser(id))          // cache local nhanh trước\n        val fresh = api.fetchUser(id)  // rồi refresh từ network\n        dao.insert(fresh)\n        emit(fresh)\n    }\n}\n```\n\nRepository ẩn đi *nơi* dữ liệu đến từ đâu (network, DB local, hay cache) đằng sau một API duy nhất, nên ViewModel không cần biết trực tiếp về Retrofit hay Room — đây chính là ý tưởng dependency-inversion giống với interface Repository trong tầng domain của Clean Architecture. Nó cũng khiến ViewModel dễ test hơn hẳn: inject một Repository giả và bạn không bao giờ chạm vào network hay database thật trong unit test."
+      }
+    },
+    {
+      "title": {
+        "en": "Modeling UI State with Sealed Classes",
+        "vi": "Mô hình hoá UI State bằng Sealed Class"
+      },
+      "content": {
+        "en": "A common Android interview exercise: model a screen's loading/success/error state so the UI can never render an invalid combination (like showing data and an error at once).\n\n```kotlin\nsealed class UiState<out T> {\n    data object Loading : UiState<Nothing>()\n    data class Success<T>(val data: T) : UiState<T>()\n    data class Error(val message: String) : UiState<Nothing>()\n}\n\n@Composable\nfun UserScreen(state: UiState<User>) {\n    when (state) {\n        is UiState.Loading -> CircularProgressIndicator()\n        is UiState.Success -> UserDetails(state.data)\n        is UiState.Error -> ErrorMessage(state.message)\n    }\n}\n```\n\nBecause `UiState`'s subclasses are sealed (closed, known at compile time), the `when` above needs no `else` branch — and if a fourth state (say, `Empty`) is added later, every `when` over `UiState` fails to compile until updated. This turns 'forgot to handle a state' from a runtime bug into a compile error, which is exactly what interviewers are checking understanding of.",
+        "vi": "Một bài tập phỏng vấn Android thường gặp: mô hình hoá state loading/success/error của một màn hình sao cho UI không bao giờ render một tổ hợp không hợp lệ (như vừa hiện dữ liệu vừa hiện lỗi).\n\n```kotlin\nsealed class UiState<out T> {\n    data object Loading : UiState<Nothing>()\n    data class Success<T>(val data: T) : UiState<T>()\n    data class Error(val message: String) : UiState<Nothing>()\n}\n\n@Composable\nfun UserScreen(state: UiState<User>) {\n    when (state) {\n        is UiState.Loading -> CircularProgressIndicator()\n        is UiState.Success -> UserDetails(state.data)\n        is UiState.Error -> ErrorMessage(state.message)\n    }\n}\n```\n\nVì các subclass của `UiState` là sealed (đóng, biết trước ở compile-time), `when` ở trên không cần nhánh `else` — và nếu sau này thêm state thứ tư (ví dụ `Empty`), mọi `when` trên `UiState` sẽ không biên dịch được cho đến khi cập nhật. Điều này biến 'quên xử lý một state' từ bug lúc runtime thành lỗi compile-time, đúng thứ mà người phỏng vấn muốn kiểm tra hiểu biết."
+      }
+    },
+    {
+      "title": {
+        "en": "Runtime Permissions & Deep Links",
+        "vi": "Runtime Permission & Deep Link"
+      },
+      "content": {
+        "en": "**Runtime permissions**: dangerous permissions (camera, location, contacts, ...) aren't granted at install — the app must request them when needed:\n\n```kotlin\nval launcher = registerForActivityResult(\n    ActivityResultContracts.RequestPermission()\n) { granted ->\n    if (granted) startCamera() else showRationale()\n}\n\nlauncher.launch(Manifest.permission.CAMERA)\n```\n\nBest practice: request in context (right before the feature needs it), and show a rationale if the user previously denied it (`shouldShowRequestPermissionRationale`).\n\n**Deep links**: a basic `<intent-filter>` with a custom scheme or an unverified `https` URL can be claimed by several apps, so Android shows a disambiguation dialog. An **App Link** upgrades an `https` deep link to open your app directly with no dialog, by hosting a `.well-known/assetlinks.json` file on the domain that Android verifies proves you own it — the difference between 'an app that might handle this link' and 'the verified owner of this link.'",
+        "vi": "**Runtime permission**: dangerous permission (camera, vị trí, danh bạ, ...) không được cấp lúc cài đặt — app phải xin khi cần:\n\n```kotlin\nval launcher = registerForActivityResult(\n    ActivityResultContracts.RequestPermission()\n) { granted ->\n    if (granted) startCamera() else showRationale()\n}\n\nlauncher.launch(Manifest.permission.CAMERA)\n```\n\nBest practice: xin đúng ngữ cảnh (ngay trước khi tính năng cần nó), và hiện lời giải thích (rationale) nếu người dùng từng từ chối (`shouldShowRequestPermissionRationale`).\n\n**Deep link**: một `<intent-filter>` cơ bản với custom scheme hoặc URL `https` chưa verify có thể bị nhiều app cùng nhận, nên Android hiện dialog hỏi chọn. **App Link** nâng cấp một deep link `https` để mở thẳng app của bạn, không hiện dialog, bằng cách host file `.well-known/assetlinks.json` trên domain mà Android verify để chứng minh bạn sở hữu nó — khác biệt giữa 'một app có thể xử lý link này' và 'chủ sở hữu đã được verify của link này'."
+      }
+    },
+    {
+      "title": {
+        "en": "Gradle Build Variants & Multi-Module Architecture",
+        "vi": "Gradle Build Variant & Kiến trúc Multi-Module"
+      },
+      "content": {
+        "en": "**Build variants** = build type × product flavor. A build type (`debug`/`release`) controls compilation (minification, debuggable flag); a product flavor lets the same codebase produce different app versions:\n\n```kotlin\nandroid {\n    buildTypes {\n        release { isMinifyEnabled = true }\n        debug { applicationIdSuffix = \".debug\" }\n    }\n    flavorDimensions += \"environment\"\n    productFlavors {\n        create(\"staging\") { buildConfigField(\"String\", \"BASE_URL\", \"\\\"https://staging.api\\\"\") }\n        create(\"production\") { buildConfigField(\"String\", \"BASE_URL\", \"\\\"https://api\\\"\") }\n    }\n}\n```\n\nThis gives `stagingDebug`, `stagingRelease`, `productionDebug`, `productionRelease` — four buildable variants from one codebase.\n\n**Multi-module architecture** splits the app into Gradle modules (`:app`, `:feature:login`, `:core:network`, `:core:database`, ...). Gradle only recompiles a module and its dependents when that module's code changes, which is the main reason large apps adopt it — a change deep in a leaf feature module doesn't force rebuilding unrelated features. Module boundaries also enforce architecture: `:feature:login` can depend on `:core:network`, but two feature modules typically shouldn't depend on each other directly, keeping features decoupled.",
+        "vi": "**Build variant** = build type × product flavor. Build type (`debug`/`release`) kiểm soát việc biên dịch (minify, cờ debuggable); product flavor cho phép cùng một codebase tạo ra nhiều phiên bản app khác nhau:\n\n```kotlin\nandroid {\n    buildTypes {\n        release { isMinifyEnabled = true }\n        debug { applicationIdSuffix = \".debug\" }\n    }\n    flavorDimensions += \"environment\"\n    productFlavors {\n        create(\"staging\") { buildConfigField(\"String\", \"BASE_URL\", \"\\\"https://staging.api\\\"\") }\n        create(\"production\") { buildConfigField(\"String\", \"BASE_URL\", \"\\\"https://api\\\"\") }\n    }\n}\n```\n\nĐiều này tạo ra `stagingDebug`, `stagingRelease`, `productionDebug`, `productionRelease` — bốn build variant có thể build được từ một codebase.\n\n**Kiến trúc multi-module** chia app thành các module Gradle (`:app`, `:feature:login`, `:core:network`, `:core:database`, ...). Gradle chỉ biên dịch lại một module và các module phụ thuộc vào nó khi code của module đó thay đổi, đây là lý do chính các app lớn áp dụng nó — một thay đổi sâu trong một feature module lá không buộc phải rebuild các feature không liên quan. Ranh giới module cũng ép buộc kiến trúc: `:feature:login` có thể phụ thuộc `:core:network`, nhưng hai feature module thường không nên phụ thuộc trực tiếp lẫn nhau, giữ cho các feature tách biệt."
       }
     }
   ]

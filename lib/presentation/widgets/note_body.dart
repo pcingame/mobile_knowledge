@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
-/// Renders note content that may contain fenced ```code``` blocks,
-/// showing code in a monospace box and everything else as normal text.
+import '../theme/app_spacing.dart';
+import '../theme/app_theme.dart';
+
+/// Renders note content that may contain fenced ```lang\ncode\n``` blocks,
+/// showing code in a labeled monospace box and everything else as normal
+/// text with light **bold** support.
 class NoteBody extends StatelessWidget {
   const NoteBody({super.key, required this.content});
 
@@ -9,7 +13,7 @@ class NoteBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final segments = _splitCodeBlocks(content);
+    final segments = _parse(content);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -20,25 +24,51 @@ class NoteBody extends StatelessWidget {
 
   Widget _buildSegment(BuildContext context, _Segment segment) {
     final theme = Theme.of(context);
-    if (segment.isCode) {
+    if (segment.language != null) {
       return Container(
         width: double.infinity,
-        margin: const EdgeInsets.symmetric(vertical: 8),
-        padding: const EdgeInsets.all(12),
+        margin: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
         decoration: BoxDecoration(
           color: theme.colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          border: Border.all(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
         ),
-        child: SelectableText(
-          segment.text,
-          style: const TextStyle(fontFamily: 'monospace', fontSize: 13, height: 1.4),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (segment.language!.isNotEmpty)
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainerHigh,
+                  border: Border(bottom: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5))),
+                ),
+                child: Text(
+                  segment.language!.toUpperCase(),
+                  style: theme.textTheme.labelSmall?.copyWith(letterSpacing: 0.6),
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              child: SelectableText(
+                segment.text,
+                style: const TextStyle(
+                  fontFamily: AppTheme.monoFontFamily,
+                  fontSize: 13,
+                  height: 1.5,
+                ),
+              ),
+            ),
+          ],
         ),
       );
     }
 
-    final baseStyle = theme.textTheme.bodyMedium?.copyWith(height: 1.5);
+    final baseStyle = theme.textTheme.bodyLarge;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
       child: SelectableText.rich(
         TextSpan(children: _parseBold(segment.text, baseStyle)),
       ),
@@ -67,35 +97,41 @@ class NoteBody extends StatelessWidget {
     return spans;
   }
 
-  List<_Segment> _splitCodeBlocks(String raw) {
+  List<_Segment> _parse(String raw) {
     final segments = <_Segment>[];
     final lines = raw.split('\n');
     final buffer = StringBuffer();
+    String? codeLanguage;
     var inCode = false;
 
-    void flush(bool asCode) {
+    void flush() {
       final text = buffer.toString().trim();
       if (text.isNotEmpty) {
-        segments.add(_Segment(text, asCode));
+        segments.add(_Segment(text, inCode ? codeLanguage : null));
       }
       buffer.clear();
     }
 
     for (final line in lines) {
-      if (line.trimLeft().startsWith('```')) {
-        flush(inCode);
+      final fence = line.trimLeft();
+      if (fence.startsWith('```')) {
+        flush();
+        if (!inCode) {
+          codeLanguage = fence.substring(3).trim();
+        }
         inCode = !inCode;
         continue;
       }
       buffer.writeln(line);
     }
-    flush(inCode);
+    flush();
     return segments;
   }
 }
 
 class _Segment {
-  const _Segment(this.text, this.isCode);
+  const _Segment(this.text, this.language);
   final String text;
-  final bool isCode;
+  /// Null for prose; the fence's language tag (possibly empty) for code.
+  final String? language;
 }
