@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../../domain/entities/app_language.dart';
 import '../../domain/entities/flashcard.dart';
 
 class FlashcardTab extends StatefulWidget {
-  const FlashcardTab({super.key, required this.flashcards});
+  const FlashcardTab({super.key, required this.flashcards, required this.language});
 
   final List<Flashcard> flashcards;
+  final AppLanguage language;
 
   @override
   State<FlashcardTab> createState() => _FlashcardTabState();
@@ -52,7 +54,7 @@ class _FlashcardTabState extends State<FlashcardTab> {
                 child: GestureDetector(
                   onTap: () => setState(() => _showAnswer = !_showAnswer),
                   child: _FlashcardFace(
-                    text: _showAnswer ? card.answer : card.question,
+                    text: (_showAnswer ? card.answer : card.question).of(widget.language),
                     isAnswer: _showAnswer,
                   ),
                 ),

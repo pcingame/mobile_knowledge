@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../../domain/entities/app_language.dart';
 import '../../domain/entities/quiz_question.dart';
 
 class QuizTab extends StatefulWidget {
-  const QuizTab({super.key, required this.questions});
+  const QuizTab({super.key, required this.questions, required this.language});
 
   final List<QuizQuestion> questions;
+  final AppLanguage language;
 
   @override
   State<QuizTab> createState() => _QuizTabState();
@@ -70,7 +72,7 @@ class _QuizTabState extends State<QuizTab> {
         children: [
           Text('Câu ${_index + 1}/${widget.questions.length}', style: theme.textTheme.labelLarge),
           const SizedBox(height: 8),
-          Text(_current.question, style: theme.textTheme.titleMedium),
+          Text(_current.question.of(widget.language), style: theme.textTheme.titleMedium),
           const SizedBox(height: 16),
           for (var i = 0; i < _current.options.length; i++) _buildOption(context, i),
           if (answered) ...[
@@ -81,7 +83,7 @@ class _QuizTabState extends State<QuizTab> {
                 color: theme.colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Text(_current.explanation, style: theme.textTheme.bodySmall),
+              child: Text(_current.explanation.of(widget.language), style: theme.textTheme.bodySmall),
             ),
             const SizedBox(height: 16),
             FilledButton(
@@ -96,7 +98,7 @@ class _QuizTabState extends State<QuizTab> {
 
   Widget _buildOption(BuildContext context, int i) {
     final theme = Theme.of(context);
-    final option = _current.options[i];
+    final option = _current.options[i].of(widget.language);
     final answered = _selected != null;
 
     Color? tileColor;

@@ -18,6 +18,12 @@ void main() {
     expect(find.text('Flutter & Dart'), findsOneWidget);
     expect(find.text('Android Native'), findsOneWidget);
     expect(find.text('iOS Native'), findsOneWidget);
+    // Default language is English; the general topic's title differs per language.
+    expect(find.text('General Mobile Knowledge'), findsOneWidget);
+
+    // Toggling to Vietnamese re-renders every topic title in Vietnamese.
+    await tester.tap(find.text('VI'));
+    await tester.pumpAndSettle();
     expect(find.text('Kiến thức chung Mobile'), findsOneWidget);
   });
 }

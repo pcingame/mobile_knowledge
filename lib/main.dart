@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'domain/entities/app_language.dart';
 import 'domain/usecases/get_topics.dart';
 import 'injection_container.dart';
 import 'presentation/screens/home_screen.dart';
@@ -9,9 +10,11 @@ void main() {
 }
 
 class KnowledgeMobileApp extends StatelessWidget {
-  const KnowledgeMobileApp({super.key, required this.getTopics});
+  KnowledgeMobileApp({super.key, required this.getTopics, ValueNotifier<AppLanguage>? language})
+      : language = language ?? ValueNotifier(AppLanguage.en);
 
   final GetTopics getTopics;
+  final ValueNotifier<AppLanguage> language;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,7 @@ class KnowledgeMobileApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo, brightness: Brightness.dark),
         useMaterial3: true,
       ),
-      home: HomeScreen(getTopics: getTopics),
+      home: HomeScreen(getTopics: getTopics, language: language),
     );
   }
 }

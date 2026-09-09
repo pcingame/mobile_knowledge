@@ -1,4 +1,5 @@
 import 'flashcard.dart';
+import 'localized_text.dart';
 import 'note.dart';
 import 'quiz_question.dart';
 
@@ -6,7 +7,7 @@ import 'quiz_question.dart';
 /// all three study modes for that subject.
 class Topic {
   final String id;
-  final String title;
+  final LocalizedText title;
   final List<Flashcard> flashcards;
   final List<QuizQuestion> quiz;
   final List<Note> notes;

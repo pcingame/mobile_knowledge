@@ -1,9 +1,11 @@
+import 'localized_text.dart';
+
 /// A multiple-choice question used in the quiz study mode.
 class QuizQuestion {
-  final String question;
-  final List<String> options;
+  final LocalizedText question;
+  final List<LocalizedText> options;
   final int answerIndex;
-  final String explanation;
+  final LocalizedText explanation;
 
   const QuizQuestion({
     required this.question,

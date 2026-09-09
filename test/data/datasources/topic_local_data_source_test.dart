@@ -20,9 +20,12 @@ void main() {
 
   String jsonFor(String id) => jsonEncode({
         'id': id,
-        'title': 'Title for $id',
+        'title': {'en': 'Title for $id', 'vi': 'Tiêu đề cho $id'},
         'flashcards': [
-          {'question': 'Q', 'answer': 'A'},
+          {
+            'question': {'en': 'Q', 'vi': 'C'},
+            'answer': {'en': 'A', 'vi': 'D'},
+          },
         ],
         'quiz': [],
         'notes': [],
@@ -36,7 +39,7 @@ void main() {
     final topics = await dataSource.getTopics();
 
     expect(topics.map((t) => t.id).toList(), topicAssetIds);
-    expect(topics.first.flashcards.single.question, 'Q');
+    expect(topics.first.flashcards.single.question.en, 'Q');
     for (final id in topicAssetIds) {
       verify(() => bundle.loadString('assets/data/$id.json')).called(1);
     }

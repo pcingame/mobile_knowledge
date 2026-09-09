@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import 'package:knowledge_mobile/data/datasources/topic_local_data_source.dart';
+import 'package:knowledge_mobile/data/models/localized_text_model.dart';
 import 'package:knowledge_mobile/data/models/topic_model.dart';
 import 'package:knowledge_mobile/data/repositories/topic_repository_impl.dart';
 
@@ -18,7 +19,13 @@ void main() {
 
   test('delegates getTopics to the local data source', () async {
     const models = [
-      TopicModel(id: 't1', title: 'Topic 1', flashcards: [], quiz: [], notes: []),
+      TopicModel(
+        id: 't1',
+        title: LocalizedTextModel(en: 'Topic 1', vi: 'Chủ đề 1'),
+        flashcards: [],
+        quiz: [],
+        notes: [],
+      ),
     ];
     when(() => dataSource.getTopics()).thenAnswer((_) async => models);
 

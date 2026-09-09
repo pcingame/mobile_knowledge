@@ -1,4 +1,5 @@
 import '../../domain/entities/quiz_question.dart';
+import 'localized_text_model.dart';
 
 class QuizQuestionModel extends QuizQuestion {
   const QuizQuestionModel({
@@ -10,10 +11,12 @@ class QuizQuestionModel extends QuizQuestion {
 
   factory QuizQuestionModel.fromJson(Map<String, dynamic> json) {
     return QuizQuestionModel(
-      question: json['question'] as String,
-      options: List<String>.from(json['options'] as List),
+      question: LocalizedTextModel.fromJson(json['question'] as Map<String, dynamic>),
+      options: (json['options'] as List)
+          .map((e) => LocalizedTextModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
       answerIndex: json['answerIndex'] as int,
-      explanation: json['explanation'] as String,
+      explanation: LocalizedTextModel.fromJson(json['explanation'] as Map<String, dynamic>),
     );
   }
 }
