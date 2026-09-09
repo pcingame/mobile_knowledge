@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../models/topic.dart';
-import 'flashcard_tab.dart';
-import 'notes_tab.dart';
-import 'quiz_tab.dart';
+import '../../domain/entities/topic.dart';
+import '../widgets/flashcard_tab.dart';
+import '../widgets/notes_tab.dart';
+import '../widgets/quiz_tab.dart';
 
 class TopicScreen extends StatelessWidget {
   const TopicScreen({super.key, required this.topic});

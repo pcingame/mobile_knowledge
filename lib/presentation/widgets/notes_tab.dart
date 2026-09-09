@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../models/note.dart';
-import 'note_detail_screen.dart';
+import '../../domain/entities/note.dart';
+import '../screens/note_detail_screen.dart';
 
 class NotesTab extends StatelessWidget {
   const NotesTab({super.key, required this.notes});

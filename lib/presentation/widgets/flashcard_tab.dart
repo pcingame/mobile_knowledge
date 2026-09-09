@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/flashcard.dart';
+import '../../domain/entities/flashcard.dart';
 
 class FlashcardTab extends StatefulWidget {
   const FlashcardTab({super.key, required this.flashcards});

@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../data/topic_repository.dart';
-import '../models/topic.dart';
+import '../../domain/entities/topic.dart';
+import '../../domain/usecases/get_topics.dart';
 import 'topic_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required this.getTopics});
+
+  final GetTopics getTopics;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _repository = TopicRepository();
-  late final Future<List<Topic>> _topicsFuture = _repository.loadAll();
+  late final Future<List<Topic>> _topicsFuture = widget.getTopics();
 
   static const _icons = <String, IconData>{
     'flutter_dart': Icons.flutter_dash,

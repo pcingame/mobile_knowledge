@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
-import 'screens/home_screen.dart';
+import 'domain/usecases/get_topics.dart';
+import 'injection_container.dart';
+import 'presentation/screens/home_screen.dart';
 
 void main() {
-  runApp(const KnowledgeMobileApp());
+  runApp(KnowledgeMobileApp(getTopics: InjectionContainer.build()));
 }
 
 class KnowledgeMobileApp extends StatelessWidget {
-  const KnowledgeMobileApp({super.key});
+  const KnowledgeMobileApp({super.key, required this.getTopics});
+
+  final GetTopics getTopics;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +26,7 @@ class KnowledgeMobileApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo, brightness: Brightness.dark),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: HomeScreen(getTopics: getTopics),
     );
   }
 }

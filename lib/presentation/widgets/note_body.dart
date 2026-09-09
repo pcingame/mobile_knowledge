@@ -35,6 +35,7 @@ class NoteBody extends StatelessWidget {
         ),
       );
     }
+
     final baseStyle = theme.textTheme.bodyMedium?.copyWith(height: 1.5);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),

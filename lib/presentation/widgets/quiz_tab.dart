@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/quiz_question.dart';
+import '../../domain/entities/quiz_question.dart';
 
 class QuizTab extends StatefulWidget {
   const QuizTab({super.key, required this.questions});
