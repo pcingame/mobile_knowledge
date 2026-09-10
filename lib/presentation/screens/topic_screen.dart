@@ -72,55 +72,17 @@ class TopicScreen extends StatelessWidget {
                     const SizedBox(width: AppSpacing.lg),
                   ],
                   bottom: PreferredSize(
-                    // Tab with both an icon and text needs Material's
-                    // 72px intrinsic height, plus the padding below, plus
-                    // a small buffer for this font's line-height metrics.
-                    preferredSize: const Size.fromHeight(72 + AppSpacing.md + 8),
+                    preferredSize: const Size.fromHeight(_kTabBarHeight + AppSpacing.sm + AppSpacing.md),
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(
                         AppSpacing.lg,
-                        0,
+                        AppSpacing.sm,
                         AppSpacing.lg,
                         AppSpacing.md,
                       ),
-                      child: TabBar(
-                        splashBorderRadius: BorderRadius.circular(
-                          AppRadius.pill,
-                        ),
-                        indicator: BoxDecoration(
-                          color: scheme.onPrimary.withValues(alpha: 0.18),
-                          borderRadius: BorderRadius.circular(AppRadius.pill),
-                        ),
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        dividerColor: Colors.transparent,
-                        labelColor: scheme.onPrimary,
-                        unselectedLabelColor: scheme.onPrimary.withValues(
-                          alpha: 0.6,
-                        ),
-                        labelStyle: const TextStyle(
-                          fontFamily: AppTheme.displayFontFamily,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 13,
-                        ),
-                        unselectedLabelStyle: const TextStyle(
-                          fontFamily: AppTheme.displayFontFamily,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13,
-                        ),
-                        tabs: const [
-                          Tab(
-                            icon: Icon(Icons.style_rounded, size: 20),
-                            text: 'Flashcard',
-                          ),
-                          Tab(
-                            icon: Icon(Icons.quiz_rounded, size: 20),
-                            text: 'Quiz',
-                          ),
-                          Tab(
-                            icon: Icon(Icons.notes_rounded, size: 20),
-                            text: 'Ghi chú',
-                          ),
-                        ],
+                      child: _TopicTabBar(
+                        onPrimary: scheme.onPrimary,
+                        selectedLabelColor: scheme.primary,
                       ),
                     ),
                   ),
@@ -147,6 +109,84 @@ class TopicScreen extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+const _kTabBarHeight = 44.0;
+
+/// A compact pill-shaped segmented control for the Flashcard/Quiz/Notes
+/// tabs — icon and label sit side by side instead of Material's default
+/// stacked layout, so the whole bar reads as one tight, balanced group
+/// instead of three tall, disconnected buttons.
+class _TopicTabBar extends StatelessWidget {
+  const _TopicTabBar({
+    required this.onPrimary,
+    required this.selectedLabelColor,
+  });
+
+  final Color onPrimary;
+  final Color selectedLabelColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: _kTabBarHeight,
+      padding: const EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: onPrimary.withValues(alpha: 0.14),
+        borderRadius: BorderRadius.circular(AppRadius.pill),
+      ),
+      child: TabBar(
+        splashBorderRadius: BorderRadius.circular(AppRadius.pill),
+        indicatorPadding: EdgeInsets.zero,
+        indicator: BoxDecoration(
+          color: onPrimary,
+          borderRadius: BorderRadius.circular(AppRadius.pill),
+        ),
+        indicatorSize: TabBarIndicatorSize.tab,
+        dividerColor: Colors.transparent,
+        labelColor: selectedLabelColor,
+        unselectedLabelColor: onPrimary.withValues(alpha: 0.75),
+        labelStyle: const TextStyle(
+          fontFamily: AppTheme.displayFontFamily,
+          fontWeight: FontWeight.w700,
+          fontSize: 13,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontFamily: AppTheme.displayFontFamily,
+          fontWeight: FontWeight.w600,
+          fontSize: 13,
+        ),
+        tabs: const [
+          _PillTab(icon: Icons.style_rounded, label: 'Flashcard'),
+          _PillTab(icon: Icons.quiz_rounded, label: 'Quiz'),
+          _PillTab(icon: Icons.notes_rounded, label: 'Ghi chú'),
+        ],
+      ),
+    );
+  }
+}
+
+class _PillTab extends StatelessWidget {
+  const _PillTab({required this.icon, required this.label});
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tab(
+      height: _kTabBarHeight - 6,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16),
+          const SizedBox(width: 6),
+          Flexible(child: Text(label, overflow: TextOverflow.ellipsis)),
+        ],
+      ),
     );
   }
 }

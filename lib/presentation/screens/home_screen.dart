@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(52),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(AppSpacing.xl, 0, AppSpacing.lg, AppSpacing.sm),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: LanguageToggle(
