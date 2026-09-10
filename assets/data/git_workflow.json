@@ -1,0 +1,1011 @@
+{
+  "id": "git_workflow",
+  "title": {
+    "en": "Git & Team Workflow",
+    "vi": "Git & Quy trình Làm việc"
+  },
+  "flashcards": [
+    {
+      "question": {
+        "en": "git merge vs git rebase — what's the core difference?",
+        "vi": "git merge khác git rebase ở điểm cốt lõi nào?"
+      },
+      "answer": {
+        "en": "git merge combines two branches' histories with a new merge commit, preserving exactly what happened and when — non-destructive. git rebase replays one branch's commits on top of another, producing a linear history as if they'd been written sequentially — rewrites commit hashes, so it's unsafe on commits others have already pulled.",
+        "vi": "git merge kết hợp lịch sử của hai nhánh bằng một merge commit mới, giữ nguyên chính xác những gì đã xảy ra và khi nào — không phá huỷ. git rebase phát lại các commit của một nhánh lên trên nhánh kia, tạo ra lịch sử tuyến tính như thể chúng được viết tuần tự — viết lại hash commit, nên không an toàn với commit người khác đã pull."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a merge conflict, and what causes one?",
+        "vi": "Merge conflict là gì, và nguyên nhân gây ra nó?"
+      },
+      "answer": {
+        "en": "A merge conflict happens when Git can't automatically reconcile changes because two branches modified the same lines of the same file (or one deleted a file the other edited) differently — Git marks the conflicting regions in the file with <<<<<<< / ======= / >>>>>>> markers and requires a human to pick or combine the correct result.",
+        "vi": "Merge conflict xảy ra khi Git không thể tự động hoà giải thay đổi vì hai nhánh sửa cùng dòng của cùng file (hoặc một bên xoá file mà bên kia sửa) theo cách khác nhau — Git đánh dấu vùng xung đột trong file bằng ký hiệu <<<<<<< / ======= / >>>>>>> và cần con người chọn hoặc kết hợp kết quả đúng."
+      }
+    },
+    {
+      "question": {
+        "en": "git fetch vs git pull?",
+        "vi": "git fetch khác git pull thế nào?"
+      },
+      "answer": {
+        "en": "git fetch downloads new commits/branches from the remote into your local repo's remote-tracking branches, without touching your working branch. git pull does a fetch and then immediately merges (or rebases, with --rebase) the fetched changes into your current branch — pull is fetch + integrate in one step.",
+        "vi": "git fetch tải commit/nhánh mới từ remote về các remote-tracking branch cục bộ, không đụng tới nhánh làm việc của bạn. git pull thực hiện fetch rồi ngay lập tức merge (hoặc rebase, với --rebase) thay đổi đã fetch vào nhánh hiện tại — pull là fetch + tích hợp trong một bước."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a feature branch workflow?",
+        "vi": "Feature branch workflow là gì?"
+      },
+      "answer": {
+        "en": "Each new feature or fix is developed on its own short-lived branch off the main line, opened as a pull request when ready, reviewed, and merged back — keeping the main branch always releasable and isolating in-progress work from everyone else's.",
+        "vi": "Mỗi tính năng hoặc bản sửa mới được phát triển trên nhánh riêng, ngắn hạn, tách ra từ nhánh chính, mở pull request khi sẵn sàng, được review, rồi merge lại — giữ nhánh chính luôn có thể phát hành và cô lập công việc đang làm dở khỏi mọi người khác."
+      }
+    },
+    {
+      "question": {
+        "en": "Trunk-based development vs GitFlow — how do they differ?",
+        "vi": "Trunk-based development khác GitFlow thế nào?"
+      },
+      "answer": {
+        "en": "Trunk-based development has everyone commit small, frequent changes directly (or via very short-lived branches) to a single main branch, often behind feature flags — optimized for continuous integration/delivery. GitFlow uses several long-lived branches (develop, release, feature, hotfix) with a more structured, less frequent release process — better suited to apps with scheduled, versioned releases (like most mobile apps going through store review).",
+        "vi": "Trunk-based development để mọi người commit thay đổi nhỏ, thường xuyên trực tiếp (hoặc qua nhánh rất ngắn hạn) vào một nhánh chính duy nhất, thường đằng sau feature flag — tối ưu cho continuous integration/delivery. GitFlow dùng nhiều nhánh tồn tại lâu (develop, release, feature, hotfix) với quy trình phát hành có cấu trúc hơn, ít thường xuyên hơn — phù hợp hơn với app có phát hành theo lịch, theo phiên bản (như hầu hết mobile app phải qua review của store)."
+      }
+    },
+    {
+      "question": {
+        "en": "What makes a pull request (code review) valuable beyond just catching bugs?",
+        "vi": "Điều gì làm cho pull request (code review) có giá trị ngoài việc chỉ bắt lỗi?"
+      },
+      "answer": {
+        "en": "Beyond catching defects, review spreads knowledge of the codebase across the team, keeps style/architecture consistent, gives a second perspective on design tradeoffs before they're locked in, and creates a natural point to discuss alternatives — all things a solo commit straight to main would skip.",
+        "vi": "Ngoài việc bắt lỗi, review lan truyền kiến thức về codebase khắp team, giữ style/kiến trúc nhất quán, cho góc nhìn thứ hai về đánh đổi thiết kế trước khi bị chốt, và tạo điểm tự nhiên để thảo luận phương án thay thế — tất cả những điều một commit đơn độc thẳng vào main sẽ bỏ lỡ."
+      }
+    },
+    {
+      "question": {
+        "en": "Squash merge vs merge commit vs rebase merge — when would you pick each?",
+        "vi": "Squash merge, merge commit, và rebase merge — khi nào nên chọn cái nào?"
+      },
+      "answer": {
+        "en": "Squash merge collapses a PR's many small commits into one clean commit on main — good when a feature's in-progress commits ('wip', 'fix typo') aren't individually meaningful. A regular merge commit preserves the full branch history including its own shape — useful when that history has value. Rebase merge replays the branch's commits individually onto main with no merge commit — keeps a fully linear history when each commit is already clean and meaningful on its own.",
+        "vi": "Squash merge gộp nhiều commit nhỏ của một PR thành một commit sạch trên main — tốt khi các commit đang làm dở của tính năng ('wip', 'sửa lỗi chính tả') không có ý nghĩa riêng lẻ. Merge commit thông thường giữ nguyên toàn bộ lịch sử nhánh gồm cả hình dạng của nó — hữu ích khi lịch sử đó có giá trị. Rebase merge phát lại từng commit của nhánh lên main mà không có merge commit — giữ lịch sử hoàn toàn tuyến tính khi mỗi commit đã sạch và có ý nghĩa riêng."
+      }
+    },
+    {
+      "question": {
+        "en": "What does git cherry-pick do?",
+        "vi": "git cherry-pick làm gì?"
+      },
+      "answer": {
+        "en": "cherry-pick applies one specific commit's changes from another branch onto your current branch, without merging the whole branch — useful for porting a single bug fix to a release branch without pulling in unrelated in-progress work.",
+        "vi": "cherry-pick áp dụng thay đổi của một commit cụ thể từ nhánh khác vào nhánh hiện tại, không merge toàn bộ nhánh — hữu ích để đưa một bản sửa lỗi đơn lẻ sang nhánh release mà không kéo theo công việc đang làm dở không liên quan."
+      }
+    },
+    {
+      "question": {
+        "en": "What is git stash used for?",
+        "vi": "git stash dùng để làm gì?"
+      },
+      "answer": {
+        "en": "stash temporarily shelves uncommitted changes (both staged and unstaged) so you get a clean working directory — e.g. to switch branches to fix an urgent bug — then `git stash pop` brings those changes back later without needing a throwaway commit.",
+        "vi": "stash tạm thời cất đi các thay đổi chưa commit (cả staged và unstaged) để có working directory sạch — ví dụ để chuyển nhánh sửa một lỗi khẩn cấp — rồi `git stash pop` mang những thay đổi đó trở lại sau mà không cần tạo commit tạm bỏ đi."
+      }
+    },
+    {
+      "question": {
+        "en": "What is git bisect used for?",
+        "vi": "git bisect dùng để làm gì?"
+      },
+      "answer": {
+        "en": "bisect finds the exact commit that introduced a bug via binary search: you mark a known-good and known-bad commit, and Git checks out commits in between, asking 'good or bad?' at each step, narrowing the range in O(log n) checks instead of manually testing every commit.",
+        "vi": "bisect tìm chính xác commit đã gây ra một lỗi bằng tìm kiếm nhị phân: bạn đánh dấu một commit đã biết là tốt và một commit đã biết là lỗi, Git checkout các commit ở giữa, hỏi 'tốt hay lỗi?' ở mỗi bước, thu hẹp khoảng theo O(log n) lần kiểm tra thay vì test thủ công từng commit."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a .gitignore file for?",
+        "vi": ".gitignore file dùng để làm gì?"
+      },
+      "answer": {
+        "en": "`.gitignore` lists file/folder patterns Git should never track or show as untracked (build output, local secrets, IDE settings, dependency caches like `node_modules` or `build/`) — keeping the repo focused on source and avoiding accidentally committing generated or machine-specific files.",
+        "vi": "`.gitignore` liệt kê mẫu file/thư mục mà Git không bao giờ nên theo dõi hay hiện là untracked (output build, bí mật cục bộ, cài đặt IDE, cache dependency như `node_modules` hay `build/`) — giữ repo tập trung vào mã nguồn và tránh vô tình commit file được sinh ra hoặc riêng của từng máy."
+      }
+    },
+    {
+      "question": {
+        "en": "What is git blame used for?",
+        "vi": "git blame dùng để làm gì?"
+      },
+      "answer": {
+        "en": "blame annotates each line of a file with the commit (and author) that last changed it — useful for understanding why a specific line exists, tracking down who to ask about a decision, or finding the commit that introduced a bug on that exact line.",
+        "vi": "blame chú thích mỗi dòng của một file với commit (và tác giả) đã sửa nó lần cuối — hữu ích để hiểu vì sao một dòng cụ thể tồn tại, tìm ra ai để hỏi về một quyết định, hoặc tìm commit đã đưa vào lỗi ở đúng dòng đó."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a git hook, and what's a common use for a pre-commit hook?",
+        "vi": "Git hook là gì, và pre-commit hook thường dùng để làm gì?"
+      },
+      "answer": {
+        "en": "A git hook is a script Git runs automatically at a specific point in the workflow (before a commit, before a push, after a merge). A pre-commit hook commonly runs a linter/formatter or fast tests, blocking the commit if they fail — catching simple mistakes before they even reach a PR.",
+        "vi": "Git hook là một script Git tự động chạy tại một thời điểm cụ thể trong quy trình (trước commit, trước push, sau merge). Pre-commit hook thường chạy linter/formatter hoặc test nhanh, chặn commit nếu chúng thất bại — bắt lỗi đơn giản trước cả khi chúng tới được PR."
+      }
+    },
+    {
+      "question": {
+        "en": "What are conventional commits, and what problem do they solve?",
+        "vi": "Conventional commits là gì, và giải quyết vấn đề gì?"
+      },
+      "answer": {
+        "en": "Conventional commits is a convention for structuring commit messages (`feat: add dark mode`, `fix: crash on empty list`, `chore: bump deps`) with a type prefix indicating what kind of change it is — this makes history skimmable, and lets tooling auto-generate changelogs or even determine the next semver bump from commit history alone.",
+        "vi": "Conventional commits là một quy ước cấu trúc commit message (`feat: add dark mode`, `fix: crash on empty list`, `chore: bump deps`) với tiền tố loại cho biết đây là thay đổi gì — điều này giúp lịch sử dễ lướt qua, và cho phép công cụ tự động sinh changelog hoặc thậm chí xác định bước nhảy semver tiếp theo chỉ từ lịch sử commit."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the difference between a monorepo and a polyrepo, from a day-to-day workflow angle?",
+        "vi": "Khác biệt giữa monorepo và polyrepo, nhìn từ góc độ quy trình làm việc hàng ngày, là gì?"
+      },
+      "answer": {
+        "en": "A monorepo holds multiple projects/packages in one repository, making cross-project changes and shared tooling/CI easy in one place at the cost of a bigger repo and needing path-scoped CI to avoid running everything on every change. A polyrepo keeps each project in its own repository, isolating concerns but making a change that spans multiple projects (and coordinating their versions) more effort.",
+        "vi": "Monorepo giữ nhiều project/package trong một repo, giúp thay đổi xuyên project và công cụ/CI dùng chung dễ dàng ở một chỗ, đánh đổi bằng repo lớn hơn và cần CI theo phạm vi đường dẫn để tránh chạy mọi thứ ở mỗi thay đổi. Polyrepo giữ mỗi project trong repo riêng, cô lập mối quan tâm nhưng làm một thay đổi trải trên nhiều project (và phối hợp phiên bản của chúng) tốn công hơn."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a sprint retrospective for, in Scrum?",
+        "vi": "Sprint retrospective trong Scrum dùng để làm gì?"
+      },
+      "answer": {
+        "en": "A retrospective is a recurring meeting (usually at the end of each sprint) where the team reflects on how they worked — what went well, what didn't, what to try differently — and commits to a small number of concrete process improvements for the next sprint, rather than discussing the product itself.",
+        "vi": "Retrospective là một cuộc họp lặp lại (thường vào cuối mỗi sprint) nơi team nhìn lại cách họ đã làm việc — điều gì tốt, điều gì không, điều gì nên thử khác — và cam kết với một số ít cải tiến quy trình cụ thể cho sprint tiếp theo, thay vì thảo luận về chính sản phẩm."
+      }
+    },
+    {
+      "question": {
+        "en": "Why do many Agile teams use story points instead of hours to estimate work?",
+        "vi": "Vì sao nhiều team Agile dùng story point thay vì giờ để ước lượng công việc?"
+      },
+      "answer": {
+        "en": "Story points estimate relative complexity/effort/uncertainty (often via a Fibonacci-like scale) rather than a specific time duration — this avoids the false precision and inconsistent 'hours' definition between engineers (a junior's hour vs a senior's hour), and stays stable even as a team's actual velocity (points delivered per sprint) changes over time.",
+        "vi": "Story point ước lượng độ phức tạp/công sức/không chắc chắn tương đối (thường theo thang gần giống Fibonacci) thay vì một khoảng thời gian cụ thể — điều này tránh độ chính xác giả tạo và định nghĩa 'giờ' không nhất quán giữa các kỹ sư (giờ của junior so với giờ của senior), và vẫn ổn định kể cả khi velocity thực tế của team (điểm hoàn thành mỗi sprint) thay đổi theo thời gian."
+      }
+    },
+    {
+      "question": {
+        "en": "Scrum vs Kanban — what's the key structural difference?",
+        "vi": "Scrum khác Kanban ở điểm cấu trúc then chốt nào?"
+      },
+      "answer": {
+        "en": "Scrum organizes work into fixed-length sprints with a committed scope decided upfront (sprint planning) and a review/retro at the end. Kanban has no fixed iterations — work flows continuously through a board with work-in-progress limits per column, and priorities can be reordered anytime rather than being locked for a sprint.",
+        "vi": "Scrum tổ chức công việc thành các sprint có độ dài cố định với phạm vi cam kết quyết định trước (sprint planning) và review/retro vào cuối. Kanban không có chu kỳ cố định — công việc chảy liên tục qua một board với giới hạn công việc-đang-làm theo từng cột, và độ ưu tiên có thể sắp xếp lại bất cứ lúc nào thay vì bị khoá trong một sprint."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a Definition of Done (DoD)?",
+        "vi": "Definition of Done (DoD) là gì?"
+      },
+      "answer": {
+        "en": "A Definition of Done is the team's agreed checklist of what 'finished' means for any piece of work (e.g. code reviewed, tests passing, documentation updated, deployed to staging) — without one, 'done' means different things to different people, and work that's actually 80% complete gets reported as done.",
+        "vi": "Definition of Done là checklist đã thống nhất của team về ý nghĩa 'hoàn thành' cho bất kỳ công việc nào (ví dụ code đã review, test pass, tài liệu đã cập nhật, đã deploy lên staging) — không có nó, 'hoàn thành' có nghĩa khác nhau với mỗi người, và công việc thực ra mới xong 80% lại được báo cáo là đã xong."
+      }
+    },
+    {
+      "question": {
+        "en": "What is pair programming, and when is it most useful?",
+        "vi": "Pair programming là gì, và hữu ích nhất khi nào?"
+      },
+      "answer": {
+        "en": "Pair programming has two developers work at one workstation — one 'driving' (typing) and one 'navigating' (reviewing, thinking ahead) — swapping roles periodically. It's most useful for onboarding a new team member, tackling a particularly tricky/risky change, or spreading knowledge of an unfamiliar part of the codebase, though it's not efficient as a default for all work.",
+        "vi": "Pair programming để hai lập trình viên cùng làm việc trên một máy — một người 'lái' (gõ code) và một người 'điều hướng' (review, nghĩ trước) — đổi vai định kỳ. Hữu ích nhất khi onboard thành viên mới, xử lý một thay đổi đặc biệt hóc búa/rủi ro, hoặc lan truyền kiến thức về một phần codebase chưa quen thuộc, dù không hiệu quả nếu dùng làm mặc định cho mọi công việc."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a blameless post-mortem, and why 'blameless' specifically?",
+        "vi": "Blameless post-mortem là gì, và vì sao đặc biệt là 'không đổ lỗi'?"
+      },
+      "answer": {
+        "en": "A post-mortem (incident retrospective) documents what happened, why, and what will change to prevent recurrence, after an outage or major bug. 'Blameless' means the analysis focuses on systemic/process causes (missing test coverage, unclear alerting, no code review on that path) rather than blaming an individual — because blame makes people hide mistakes instead of reporting them, which is worse for the team's ability to actually learn and improve.",
+        "vi": "Post-mortem (nhìn lại sự cố) ghi lại điều gì đã xảy ra, vì sao, và điều gì sẽ thay đổi để ngăn tái diễn, sau một sự cố hay bug lớn. 'Không đổ lỗi' nghĩa là phân tích tập trung vào nguyên nhân hệ thống/quy trình (thiếu test coverage, cảnh báo không rõ ràng, không có code review trên đường đó) thay vì đổ lỗi cho một cá nhân — vì đổ lỗi khiến người ta giấu lỗi thay vì báo cáo, điều này tệ hơn cho khả năng thực sự học hỏi và cải thiện của team."
+      }
+    },
+    {
+      "question": {
+        "en": "git revert vs git reset — what's the key difference?",
+        "vi": "git revert khác git reset ở điểm then chốt nào?"
+      },
+      "answer": {
+        "en": "git revert creates a new commit that undoes a previous commit's changes, preserving history (safe on a shared/pushed branch). git reset moves the branch pointer backward, discarding (or unstaging) commits — rewrites history, so it's unsafe to use on commits already pushed and shared with others.",
+        "vi": "git revert tạo một commit mới để hoàn tác thay đổi của một commit trước đó, giữ nguyên lịch sử (an toàn trên nhánh đã chia sẻ/push). git reset di chuyển con trỏ nhánh về sau, bỏ đi (hoặc unstage) commit — viết lại lịch sử, nên không an toàn khi dùng trên commit đã push và chia sẻ với người khác."
+      }
+    },
+    {
+      "question": {
+        "en": "What does a force push do, and why is it risky on a shared branch?",
+        "vi": "Force push làm gì, và vì sao rủi ro trên nhánh dùng chung?"
+      },
+      "answer": {
+        "en": "A force push (`git push --force`) overwrites the remote branch's history with your local history, even if they've diverged — if someone else already pulled the commits you're overwriting, their local history now conflicts with the remote, and their unpushed work can be silently lost or orphaned. `--force-with-lease` is a safer variant that refuses to overwrite if the remote has commits you haven't seen.",
+        "vi": "Force push (`git push --force`) ghi đè lịch sử của nhánh remote bằng lịch sử cục bộ của bạn, kể cả khi chúng đã phân nhánh — nếu người khác đã pull các commit bạn đang ghi đè, lịch sử cục bộ của họ giờ xung đột với remote, và công việc chưa push của họ có thể âm thầm bị mất hoặc mồ côi. `--force-with-lease` là phiên bản an toàn hơn, từ chối ghi đè nếu remote có commit bạn chưa thấy."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a draft pull request used for?",
+        "vi": "Draft pull request dùng để làm gì?"
+      },
+      "answer": {
+        "en": "A draft PR signals work-in-progress — visible to the team for early feedback or CI status, but explicitly not ready for a full review or merge. It's useful for getting early sanity-checking on direction before investing more time, without implying 'please review this now.'",
+        "vi": "Draft PR báo hiệu công việc đang làm dở — team có thể thấy để phản hồi sớm hoặc xem trạng thái CI, nhưng tường minh là chưa sẵn sàng để review đầy đủ hay merge. Hữu ích để kiểm tra sớm tính hợp lý của hướng đi trước khi đầu tư thêm thời gian, mà không ngụ ý 'hãy review cái này ngay.'"
+      }
+    },
+    {
+      "question": {
+        "en": "What is a linear commit history, and why do some teams enforce it?",
+        "vi": "Lịch sử commit tuyến tính là gì, và vì sao một số team ép buộc điều đó?"
+      },
+      "answer": {
+        "en": "A linear history has no merge commits — every commit sits in a single straight line, usually enforced by requiring rebase (or squash) merges instead of regular merge commits. Teams enforce it because it makes `git log`, `git bisect`, and `git blame` simpler to read and reason about, at the cost of losing the exact shape of how a branch was developed.",
+        "vi": "Lịch sử tuyến tính không có merge commit — mọi commit nằm trên một đường thẳng duy nhất, thường được ép buộc bằng cách yêu cầu rebase (hoặc squash) merge thay vì merge commit thông thường. Team ép buộc điều này vì nó giúp `git log`, `git bisect`, và `git blame` dễ đọc và suy luận hơn, đánh đổi bằng việc mất đi hình dạng chính xác của cách một nhánh đã được phát triển."
+      }
+    }
+  ],
+  "quiz": [
+    {
+      "question": {
+        "en": "Why is git rebase considered unsafe on commits that others have already pulled?",
+        "vi": "Vì sao git rebase bị coi là không an toàn trên các commit mà người khác đã pull?"
+      },
+      "options": [
+        {
+          "en": "It rewrites commit hashes, so anyone who already has the old commits will get conflicting history",
+          "vi": "Nó viết lại hash commit, nên ai đã có commit cũ sẽ gặp lịch sử xung đột"
+        },
+        {
+          "en": "It permanently deletes the remote repository",
+          "vi": "Nó xoá vĩnh viễn repository trên remote"
+        },
+        {
+          "en": "It only works on the main branch",
+          "vi": "Nó chỉ hoạt động trên nhánh main"
+        },
+        {
+          "en": "It requires an internet connection to run locally",
+          "vi": "Nó cần kết nối internet để chạy cục bộ"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Rebase replays commits, giving them new hashes; anyone who already pulled the originals now has a diverged, conflicting history from the rewritten branch.",
+        "vi": "Rebase phát lại commit, cho chúng hash mới; ai đã pull bản gốc giờ có lịch sử phân nhánh, xung đột với nhánh đã bị viết lại."
+      }
+    },
+    {
+      "question": {
+        "en": "What causes a merge conflict?",
+        "vi": "Điều gì gây ra merge conflict?"
+      },
+      "options": [
+        {
+          "en": "Two branches changed the same lines of the same file in incompatible ways",
+          "vi": "Hai nhánh đã thay đổi cùng dòng của cùng file theo cách không tương thích"
+        },
+        {
+          "en": "A commit message is too long",
+          "vi": "Commit message quá dài"
+        },
+        {
+          "en": "The repository has too many files",
+          "vi": "Repository có quá nhiều file"
+        },
+        {
+          "en": "Git was installed incorrectly",
+          "vi": "Git đã được cài đặt sai"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Git can auto-merge non-overlapping changes, but when the same region of a file was edited differently on both sides, it can't decide automatically and flags a conflict.",
+        "vi": "Git có thể tự merge các thay đổi không chồng lấp, nhưng khi cùng một vùng của file bị sửa khác nhau ở cả hai bên, nó không thể tự quyết định và đánh dấu xung đột."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the key difference between git fetch and git pull?",
+        "vi": "Khác biệt then chốt giữa git fetch và git pull là gì?"
+      },
+      "options": [
+        {
+          "en": "pull performs a fetch and then immediately merges/rebases into your current branch; fetch only downloads",
+          "vi": "pull thực hiện fetch rồi ngay lập tức merge/rebase vào nhánh hiện tại; fetch chỉ tải về"
+        },
+        {
+          "en": "fetch deletes local changes; pull does not",
+          "vi": "fetch xoá thay đổi cục bộ; pull thì không"
+        },
+        {
+          "en": "pull only works with GitHub, fetch works with any remote",
+          "vi": "pull chỉ hoạt động với GitHub, fetch hoạt động với mọi remote"
+        },
+        {
+          "en": "They are exactly identical commands",
+          "vi": "Chúng là hai lệnh hoàn toàn giống hệt nhau"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "fetch is a safe, non-destructive download of remote changes; pull additionally integrates them into your current branch right away.",
+        "vi": "fetch là một lần tải về an toàn, không phá huỷ các thay đổi từ remote; pull còn tích hợp chúng vào nhánh hiện tại ngay lập tức."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the main goal of a feature branch workflow?",
+        "vi": "Mục tiêu chính của feature branch workflow là gì?"
+      },
+      "options": [
+        {
+          "en": "Keeping the main branch always releasable while isolating in-progress work",
+          "vi": "Giữ nhánh chính luôn có thể phát hành trong khi cô lập công việc đang làm dở"
+        },
+        {
+          "en": "Making every commit go directly to production instantly",
+          "vi": "Làm mọi commit đi thẳng vào production ngay lập tức"
+        },
+        {
+          "en": "Eliminating the need for code review entirely",
+          "vi": "Loại bỏ hoàn toàn nhu cầu code review"
+        },
+        {
+          "en": "Preventing more than one developer from ever working at once",
+          "vi": "Ngăn nhiều hơn một developer làm việc cùng lúc"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "By developing each change on its own branch until it's reviewed and ready, main stays stable and shippable at (almost) any point.",
+        "vi": "Bằng cách phát triển mỗi thay đổi trên nhánh riêng cho tới khi được review và sẵn sàng, main luôn ổn định và có thể phát hành ở (gần như) mọi thời điểm."
+      }
+    },
+    {
+      "question": {
+        "en": "Which workflow is generally better suited to an app with scheduled, versioned releases (like a mobile app going through store review)?",
+        "vi": "Quy trình nào nói chung phù hợp hơn với app có phát hành theo lịch, theo phiên bản (như mobile app phải qua review của store)?"
+      },
+      "options": [
+        {
+          "en": "GitFlow",
+          "vi": "GitFlow"
+        },
+        {
+          "en": "Pure trunk-based development with no release branches",
+          "vi": "Trunk-based development thuần tuý không có nhánh release"
+        },
+        {
+          "en": "Committing directly to main with no branches at all",
+          "vi": "Commit trực tiếp vào main không dùng nhánh nào cả"
+        },
+        {
+          "en": "There is no difference for this use case",
+          "vi": "Không có khác biệt nào cho trường hợp này"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "GitFlow's release/hotfix branches map naturally onto a versioned, store-reviewed release cadence, unlike trunk-based development's continuous-deployment assumption.",
+        "vi": "Nhánh release/hotfix của GitFlow ánh xạ tự nhiên vào nhịp phát hành theo phiên bản, qua review của store, khác với giả định triển khai liên tục của trunk-based development."
+      }
+    },
+    {
+      "question": {
+        "en": "Besides catching bugs, what does code review provide a team?",
+        "vi": "Ngoài việc bắt lỗi, code review mang lại điều gì cho team?"
+      },
+      "options": [
+        {
+          "en": "Spreads codebase knowledge across the team and keeps style/architecture consistent",
+          "vi": "Lan truyền kiến thức codebase khắp team và giữ style/kiến trúc nhất quán"
+        },
+        {
+          "en": "Makes the code run faster automatically",
+          "vi": "Tự động làm code chạy nhanh hơn"
+        },
+        {
+          "en": "Removes the need for any automated tests",
+          "vi": "Loại bỏ nhu cầu có bất kỳ test tự động nào"
+        },
+        {
+          "en": "Guarantees the app will never crash",
+          "vi": "Đảm bảo app sẽ không bao giờ crash"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Review is as much a knowledge-sharing and consistency mechanism as a defect-catching one.",
+        "vi": "Review vừa là cơ chế chia sẻ kiến thức và giữ nhất quán, vừa là cơ chế bắt lỗi."
+      }
+    },
+    {
+      "question": {
+        "en": "When is a squash merge most appropriate?",
+        "vi": "Khi nào squash merge phù hợp nhất?"
+      },
+      "options": [
+        {
+          "en": "When a PR's individual in-progress commits ('wip', 'fix typo') aren't meaningful on their own",
+          "vi": "Khi các commit đang làm dở riêng lẻ của một PR ('wip', 'sửa lỗi chính tả') không có ý nghĩa riêng"
+        },
+        {
+          "en": "When you want to preserve every single intermediate commit exactly as written",
+          "vi": "Khi muốn giữ nguyên từng commit trung gian đúng như đã viết"
+        },
+        {
+          "en": "Only when there are no conflicts at all",
+          "vi": "Chỉ khi hoàn toàn không có xung đột"
+        },
+        {
+          "en": "Never — squash merges are always discouraged",
+          "vi": "Không bao giờ — squash merge luôn bị khuyến cáo không nên dùng"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Squash collapses messy in-progress history into one clean commit on main, which is exactly the case where individual commits carry little value.",
+        "vi": "Squash gộp lịch sử đang làm dở lộn xộn thành một commit sạch trên main, đúng là trường hợp các commit riêng lẻ mang ít giá trị."
+      }
+    },
+    {
+      "question": {
+        "en": "What does git cherry-pick let you do?",
+        "vi": "git cherry-pick cho phép bạn làm gì?"
+      },
+      "options": [
+        {
+          "en": "Apply one specific commit from another branch onto your current branch without merging the whole branch",
+          "vi": "Áp dụng một commit cụ thể từ nhánh khác vào nhánh hiện tại mà không merge toàn bộ nhánh"
+        },
+        {
+          "en": "Delete a specific commit from all branches permanently",
+          "vi": "Xoá vĩnh viễn một commit cụ thể khỏi mọi nhánh"
+        },
+        {
+          "en": "Automatically resolve every merge conflict",
+          "vi": "Tự động giải quyết mọi merge conflict"
+        },
+        {
+          "en": "Rename a branch",
+          "vi": "Đổi tên một nhánh"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "cherry-pick copies one commit's changes onto the current branch — a common way to port a single fix to a release branch.",
+        "vi": "cherry-pick sao chép thay đổi của một commit vào nhánh hiện tại — cách phổ biến để đưa một bản sửa lỗi đơn lẻ sang nhánh release."
+      }
+    },
+    {
+      "question": {
+        "en": "What does git stash do?",
+        "vi": "git stash làm gì?"
+      },
+      "options": [
+        {
+          "en": "Temporarily shelves uncommitted changes so the working directory becomes clean",
+          "vi": "Tạm thời cất đi các thay đổi chưa commit để working directory trở nên sạch"
+        },
+        {
+          "en": "Permanently deletes uncommitted changes",
+          "vi": "Xoá vĩnh viễn các thay đổi chưa commit"
+        },
+        {
+          "en": "Creates a new remote repository",
+          "vi": "Tạo một repository remote mới"
+        },
+        {
+          "en": "Pushes all local branches to the remote at once",
+          "vi": "Push mọi nhánh cục bộ lên remote cùng lúc"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Stash saves uncommitted work aside so you can switch context cleanly, and `git stash pop` restores it later.",
+        "vi": "Stash cất công việc chưa commit sang một bên để có thể chuyển ngữ cảnh gọn gàng, và `git stash pop` khôi phục nó sau."
+      }
+    },
+    {
+      "question": {
+        "en": "What technique does git bisect use to find the commit that introduced a bug?",
+        "vi": "git bisect dùng kỹ thuật nào để tìm commit đã đưa vào một lỗi?"
+      },
+      "options": [
+        {
+          "en": "Binary search between a known-good and known-bad commit",
+          "vi": "Tìm kiếm nhị phân giữa một commit đã biết là tốt và một commit đã biết là lỗi"
+        },
+        {
+          "en": "Scanning every commit in chronological order one by one",
+          "vi": "Quét từng commit theo thứ tự thời gian, lần lượt một cái"
+        },
+        {
+          "en": "Asking every contributor individually",
+          "vi": "Hỏi từng người đóng góp một cách riêng lẻ"
+        },
+        {
+          "en": "Running a static analysis tool on the latest commit only",
+          "vi": "Chạy công cụ phân tích tĩnh chỉ trên commit mới nhất"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "bisect halves the search range at each step, checking out a commit in the middle and asking 'good or bad?', reaching the culprit in O(log n) steps.",
+        "vi": "bisect chia đôi khoảng tìm kiếm ở mỗi bước, checkout một commit ở giữa và hỏi 'tốt hay lỗi?', tìm ra thủ phạm trong O(log n) bước."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the purpose of a .gitignore file?",
+        "vi": "Mục đích của một file .gitignore là gì?"
+      },
+      "options": [
+        {
+          "en": "Telling Git which files/folders to never track (build output, secrets, IDE settings)",
+          "vi": "Báo cho Git biết file/thư mục nào không bao giờ nên theo dõi (output build, bí mật, cài đặt IDE)"
+        },
+        {
+          "en": "Automatically deleting files older than 30 days",
+          "vi": "Tự động xoá file cũ hơn 30 ngày"
+        },
+        {
+          "en": "Encrypting the entire repository",
+          "vi": "Mã hoá toàn bộ repository"
+        },
+        {
+          "en": "Listing which branches are allowed to be pushed",
+          "vi": "Liệt kê nhánh nào được phép push"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": ".gitignore keeps generated or machine-specific files out of version control so the repo stays focused on actual source.",
+        "vi": ".gitignore giữ file được sinh ra hoặc riêng của từng máy ngoài version control để repo tập trung vào mã nguồn thực sự."
+      }
+    },
+    {
+      "question": {
+        "en": "What does git blame show for each line of a file?",
+        "vi": "git blame hiển thị gì cho mỗi dòng của một file?"
+      },
+      "options": [
+        {
+          "en": "The commit (and author) that last changed that line",
+          "vi": "Commit (và tác giả) đã sửa dòng đó lần cuối"
+        },
+        {
+          "en": "How many times the file has been opened",
+          "vi": "File đã được mở bao nhiêu lần"
+        },
+        {
+          "en": "The file's total line count only",
+          "vi": "Chỉ tổng số dòng của file"
+        },
+        {
+          "en": "A prediction of future bugs in that line",
+          "vi": "Một dự đoán về lỗi tương lai ở dòng đó"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "blame annotates each line with its last-modifying commit, useful for tracing why a line exists or who to ask about it.",
+        "vi": "blame chú thích mỗi dòng với commit sửa nó lần cuối, hữu ích để truy vết vì sao một dòng tồn tại hoặc hỏi ai về nó."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a common use for a pre-commit git hook?",
+        "vi": "Một cách dùng phổ biến cho pre-commit git hook là gì?"
+      },
+      "options": [
+        {
+          "en": "Running a linter/formatter or fast tests, blocking the commit if they fail",
+          "vi": "Chạy linter/formatter hoặc test nhanh, chặn commit nếu chúng thất bại"
+        },
+        {
+          "en": "Automatically merging every branch into main",
+          "vi": "Tự động merge mọi nhánh vào main"
+        },
+        {
+          "en": "Sending the commit message to a printer",
+          "vi": "Gửi commit message tới máy in"
+        },
+        {
+          "en": "Deleting the .git folder",
+          "vi": "Xoá thư mục .git"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Pre-commit hooks catch simple, fast-to-check mistakes (formatting, lint errors) before they're even committed, let alone reach a PR.",
+        "vi": "Pre-commit hook bắt các lỗi đơn giản, kiểm tra nhanh (định dạng, lỗi lint) trước cả khi được commit, chứ chưa nói tới việc tới được PR."
+      }
+    },
+    {
+      "question": {
+        "en": "What does a 'feat:' prefix mean under the conventional commits convention?",
+        "vi": "Tiền tố 'feat:' nghĩa là gì theo quy ước conventional commits?"
+      },
+      "options": [
+        {
+          "en": "The commit introduces a new feature",
+          "vi": "Commit đưa vào một tính năng mới"
+        },
+        {
+          "en": "The commit fixes a bug",
+          "vi": "Commit sửa một lỗi"
+        },
+        {
+          "en": "The commit only updates documentation",
+          "vi": "Commit chỉ cập nhật tài liệu"
+        },
+        {
+          "en": "The commit is a work-in-progress placeholder",
+          "vi": "Commit là một placeholder đang làm dở"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Conventional commits use type prefixes like feat/fix/chore to categorize the change, which is what lets tooling auto-generate changelogs from history.",
+        "vi": "Conventional commits dùng tiền tố loại như feat/fix/chore để phân loại thay đổi, đây là điều cho phép công cụ tự sinh changelog từ lịch sử."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a key cost of a monorepo compared to a polyrepo?",
+        "vi": "Chi phí chính của monorepo so với polyrepo là gì?"
+      },
+      "options": [
+        {
+          "en": "A bigger repository that needs path-scoped CI to avoid running everything on every change",
+          "vi": "Một repository lớn hơn, cần CI theo phạm vi đường dẫn để tránh chạy mọi thứ ở mỗi thay đổi"
+        },
+        {
+          "en": "It becomes impossible to use Git at all",
+          "vi": "Hoàn toàn không thể dùng Git"
+        },
+        {
+          "en": "Every project must be written in the same programming language",
+          "vi": "Mọi project phải viết bằng cùng một ngôn ngữ lập trình"
+        },
+        {
+          "en": "Code review becomes technically impossible",
+          "vi": "Code review về mặt kỹ thuật trở nên bất khả thi"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "A monorepo trades cross-project convenience for a larger repo that needs smarter CI (only testing/building what actually changed).",
+        "vi": "Monorepo đánh đổi sự tiện lợi xuyên project để lấy một repo lớn hơn cần CI thông minh hơn (chỉ test/build những gì thực sự thay đổi)."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the focus of a sprint retrospective, as opposed to a sprint review?",
+        "vi": "Trọng tâm của sprint retrospective, khác với sprint review, là gì?"
+      },
+      "options": [
+        {
+          "en": "How the team worked (process), not the product itself",
+          "vi": "Cách team đã làm việc (quy trình), không phải chính sản phẩm"
+        },
+        {
+          "en": "Demoing the finished product to stakeholders",
+          "vi": "Demo sản phẩm hoàn thành cho stakeholder"
+        },
+        {
+          "en": "Writing the next sprint's code",
+          "vi": "Viết code cho sprint tiếp theo"
+        },
+        {
+          "en": "Deciding the company's yearly budget",
+          "vi": "Quyết định ngân sách hàng năm của công ty"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "A retrospective looks inward at team process and collaboration, while a sprint review typically demos the product increment to stakeholders.",
+        "vi": "Retrospective nhìn vào bên trong về quy trình và cộng tác của team, trong khi sprint review thường demo phần sản phẩm tăng thêm cho stakeholder."
+      }
+    },
+    {
+      "question": {
+        "en": "Why do story points avoid the 'false precision' problem that hour-based estimates have?",
+        "vi": "Vì sao story point tránh được vấn đề 'độ chính xác giả tạo' mà ước lượng theo giờ gặp phải?"
+      },
+      "options": [
+        {
+          "en": "They measure relative complexity/effort rather than a specific time duration that varies per person",
+          "vi": "Chúng đo độ phức tạp/công sức tương đối thay vì một khoảng thời gian cụ thể vốn khác nhau ở mỗi người"
+        },
+        {
+          "en": "They are always exactly accurate to the minute",
+          "vi": "Chúng luôn chính xác tuyệt đối tới từng phút"
+        },
+        {
+          "en": "They eliminate the need for any estimation at all",
+          "vi": "Chúng loại bỏ hoàn toàn nhu cầu ước lượng"
+        },
+        {
+          "en": "They are assigned randomly by the tool",
+          "vi": "Chúng được gán ngẫu nhiên bởi công cụ"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "An 'hour' means different things depending on who's estimating (a junior's hour vs a senior's), while a relative complexity scale avoids that inconsistency.",
+        "vi": "Một 'giờ' có ý nghĩa khác nhau tuỳ vào ai đang ước lượng (giờ của junior so với senior), trong khi thang đo độ phức tạp tương đối tránh được sự không nhất quán đó."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the key structural difference between Scrum and Kanban?",
+        "vi": "Khác biệt cấu trúc then chốt giữa Scrum và Kanban là gì?"
+      },
+      "options": [
+        {
+          "en": "Scrum uses fixed-length sprints with committed scope; Kanban has continuous flow with no fixed iterations",
+          "vi": "Scrum dùng sprint có độ dài cố định với phạm vi cam kết; Kanban có luồng liên tục không có chu kỳ cố định"
+        },
+        {
+          "en": "Kanban requires a daily standup and Scrum does not",
+          "vi": "Kanban yêu cầu standup hàng ngày còn Scrum thì không"
+        },
+        {
+          "en": "Scrum has no concept of a backlog",
+          "vi": "Scrum không có khái niệm backlog"
+        },
+        {
+          "en": "They are the exact same methodology with different names",
+          "vi": "Chúng là hoàn toàn cùng một phương pháp với tên gọi khác nhau"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Scrum's defining feature is the fixed sprint with planning and a locked scope; Kanban instead uses a continuously flowing board with WIP limits.",
+        "vi": "Đặc trưng của Scrum là sprint cố định với planning và phạm vi bị khoá; Kanban thay vào đó dùng một board chảy liên tục với giới hạn công việc-đang-làm."
+      }
+    },
+    {
+      "question": {
+        "en": "What problem does a Definition of Done solve?",
+        "vi": "Definition of Done giải quyết vấn đề gì?"
+      },
+      "options": [
+        {
+          "en": "Different people meaning different things by 'done,' leading to work reported finished when it isn't",
+          "vi": "Mỗi người hiểu 'hoàn thành' theo nghĩa khác nhau, dẫn tới công việc được báo cáo xong khi thực ra chưa"
+        },
+        {
+          "en": "Slow build times in CI",
+          "vi": "Thời gian build chậm trong CI"
+        },
+        {
+          "en": "The need for a project manager",
+          "vi": "Nhu cầu có một project manager"
+        },
+        {
+          "en": "Merge conflicts in Git",
+          "vi": "Xung đột merge trong Git"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "A shared, explicit checklist for 'done' (reviewed, tested, documented, deployed) removes ambiguity about whether work is actually complete.",
+        "vi": "Một checklist chung, tường minh cho 'hoàn thành' (đã review, đã test, đã có tài liệu, đã deploy) loại bỏ sự mơ hồ về việc công việc có thực sự xong hay không."
+      }
+    },
+    {
+      "question": {
+        "en": "Why does a blameless post-mortem avoid attributing an incident to an individual's mistake?",
+        "vi": "Vì sao blameless post-mortem tránh quy sự cố cho lỗi của một cá nhân?"
+      },
+      "options": [
+        {
+          "en": "Blame makes people hide mistakes instead of reporting them, which hurts the team's ability to actually learn from incidents",
+          "vi": "Đổ lỗi khiến người ta giấu lỗi thay vì báo cáo, điều này gây hại cho khả năng thực sự học hỏi từ sự cố của team"
+        },
+        {
+          "en": "It is legally required in every company",
+          "vi": "Đây là yêu cầu pháp lý bắt buộc ở mọi công ty"
+        },
+        {
+          "en": "Individuals are never actually responsible for anything",
+          "vi": "Cá nhân không bao giờ thực sự chịu trách nhiệm về bất cứ điều gì"
+        },
+        {
+          "en": "It makes the incident resolve itself automatically",
+          "vi": "Nó làm sự cố tự giải quyết"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Focusing on systemic/process causes rather than blame encourages honest reporting, which is essential for genuinely preventing recurrence.",
+        "vi": "Tập trung vào nguyên nhân hệ thống/quy trình thay vì đổ lỗi khuyến khích báo cáo trung thực, điều thiết yếu để thực sự ngăn tái diễn."
+      }
+    },
+    {
+      "question": {
+        "en": "Why is git revert generally safer than git reset on a branch that's already been pushed and shared?",
+        "vi": "Vì sao git revert nói chung an toàn hơn git reset trên một nhánh đã được push và chia sẻ?"
+      },
+      "options": [
+        {
+          "en": "revert adds a new commit undoing changes, preserving history, instead of rewriting it",
+          "vi": "revert thêm một commit mới hoàn tác thay đổi, giữ nguyên lịch sử, thay vì viết lại nó"
+        },
+        {
+          "en": "reset is faster to type than revert",
+          "vi": "reset gõ nhanh hơn revert"
+        },
+        {
+          "en": "revert only works on the main branch",
+          "vi": "revert chỉ hoạt động trên nhánh main"
+        },
+        {
+          "en": "They are functionally identical in every way",
+          "vi": "Chúng hoàn toàn giống hệt nhau về mặt chức năng"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "revert's new commit is safe to push and pull like any other commit; reset rewrites history, which conflicts with what collaborators already have.",
+        "vi": "Commit mới của revert an toàn để push và pull như bất kỳ commit nào khác; reset viết lại lịch sử, xung đột với những gì cộng tác viên đã có."
+      }
+    },
+    {
+      "question": {
+        "en": "What does a draft pull request signal to the rest of the team?",
+        "vi": "Draft pull request báo hiệu điều gì cho phần còn lại của team?"
+      },
+      "options": [
+        {
+          "en": "The work is visible for early feedback/CI status but not yet ready for full review or merge",
+          "vi": "Công việc hiển thị để phản hồi sớm/xem trạng thái CI nhưng chưa sẵn sàng cho review đầy đủ hay merge"
+        },
+        {
+          "en": "The PR has already been merged",
+          "vi": "PR đã được merge"
+        },
+        {
+          "en": "The PR will be automatically deleted in 24 hours",
+          "vi": "PR sẽ tự động bị xoá sau 24 giờ"
+        },
+        {
+          "en": "The branch has no commits yet",
+          "vi": "Nhánh chưa có commit nào"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Draft status communicates 'in progress, not ready for a full review yet' without hiding the work entirely.",
+        "vi": "Trạng thái draft truyền đạt 'đang làm, chưa sẵn sàng review đầy đủ' mà không hoàn toàn ẩn công việc đi."
+      }
+    }
+  ],
+  "notes": [
+    {
+      "title": {
+        "en": "Git Branching Strategies: GitFlow vs Trunk-Based vs Feature Branches",
+        "vi": "Chiến lược Branching trong Git: GitFlow, Trunk-Based, và Feature Branch"
+      },
+      "content": {
+        "en": "How a team organizes branches shapes its whole release cadence:\n\n- **Feature branches**: the baseline pattern — each change gets its own short-lived branch off main, merged back via PR once reviewed. Simple, works with almost any release process.\n- **GitFlow**: adds structure on top — long-lived `develop` and `main` branches, `release/*` branches to stabilize a version, `hotfix/*` for urgent production fixes. Fits teams with scheduled, versioned releases (like most mobile apps going through app store review), at the cost of more ceremony.\n- **Trunk-based development**: everyone merges small, frequent changes directly to a single trunk (often behind feature flags to hide incomplete work from users), with very short-lived or no feature branches. Fits continuous deployment, where every merge can ship.\n\nMobile teams often land closer to GitFlow or a lightweight hybrid, since app releases are inherently batched by store review — but feature flags (letting incomplete work merge to main safely) are increasingly borrowed from the trunk-based world regardless of which branching strategy is used.",
+        "vi": "Cách một team tổ chức nhánh định hình toàn bộ nhịp phát hành:\n\n- **Feature branch**: mẫu cơ bản — mỗi thay đổi có nhánh riêng, ngắn hạn tách từ main, merge lại qua PR khi đã review. Đơn giản, hoạt động với hầu hết mọi quy trình phát hành.\n- **GitFlow**: thêm cấu trúc lên trên — nhánh `develop` và `main` tồn tại lâu, nhánh `release/*` để ổn định một phiên bản, `hotfix/*` cho bản sửa production khẩn cấp. Phù hợp team có phát hành theo lịch, theo phiên bản (như hầu hết mobile app phải qua review của app store), đánh đổi bằng nhiều nghi thức hơn.\n- **Trunk-based development**: mọi người merge thay đổi nhỏ, thường xuyên trực tiếp vào một trunk duy nhất (thường đằng sau feature flag để ẩn công việc chưa xong khỏi người dùng), với nhánh feature rất ngắn hạn hoặc không có. Phù hợp triển khai liên tục, nơi mọi lần merge đều có thể phát hành.\n\nTeam mobile thường gần với GitFlow hoặc một dạng lai nhẹ nhàng hơn, vì việc phát hành app vốn dĩ bị gộp theo đợt do review của store — nhưng feature flag (cho phép công việc chưa xong merge vào main an toàn) ngày càng được mượn từ thế giới trunk-based bất kể dùng chiến lược branching nào."
+      }
+    },
+    {
+      "title": {
+        "en": "Merge, Rebase, and Squash: Choosing How History Looks",
+        "vi": "Merge, Rebase, và Squash: Chọn Hình dạng Lịch sử"
+      },
+      "content": {
+        "en": "Combining a branch back into main can be done three ways, each producing different history:\n\n- **Merge commit**: `git merge` creates a new commit with two parents, preserving exactly how the branch diverged and was developed — non-destructive, safe on shared branches, but leaves a less linear history.\n- **Rebase**: `git rebase main` replays your branch's commits on top of main's latest state one by one, producing a linear history with no merge commit — but it rewrites commit hashes, so it must never be done on a branch others have already pulled from.\n- **Squash merge**: collapses an entire branch's commits into a single new commit on main — cleanest history when a branch's intermediate commits ('wip', 'address review comments') aren't individually meaningful, at the cost of losing that fine-grained history.\n\nMany teams standardize on 'rebase your feature branch on main before opening/updating a PR' (to resolve conflicts early, on your own branch) combined with 'squash merge the PR into main' (for a clean, one-commit-per-feature history) — getting the benefits of both without rebasing anything shared.",
+        "vi": "Đưa một nhánh trở lại main có thể làm theo ba cách, mỗi cách tạo ra lịch sử khác nhau:\n\n- **Merge commit**: `git merge` tạo một commit mới với hai commit cha, giữ nguyên chính xác cách nhánh đã phân nhánh và được phát triển — không phá huỷ, an toàn trên nhánh dùng chung, nhưng để lại lịch sử kém tuyến tính hơn.\n- **Rebase**: `git rebase main` phát lại các commit của nhánh bạn lên trên trạng thái mới nhất của main từng cái một, tạo ra lịch sử tuyến tính không có merge commit — nhưng nó viết lại hash commit, nên tuyệt đối không được làm trên nhánh người khác đã pull.\n- **Squash merge**: gộp toàn bộ commit của một nhánh thành một commit mới duy nhất trên main — lịch sử sạch nhất khi các commit trung gian của nhánh ('wip', 'sửa theo góp ý review') không có ý nghĩa riêng, đánh đổi bằng việc mất lịch sử chi tiết đó.\n\nNhiều team chuẩn hoá theo 'rebase nhánh feature của bạn lên main trước khi mở/cập nhật PR' (để giải quyết xung đột sớm, trên nhánh riêng của bạn) kết hợp với 'squash merge PR vào main' (để có lịch sử sạch, một commit mỗi tính năng) — có được lợi ích của cả hai mà không rebase bất cứ thứ gì dùng chung."
+      }
+    },
+    {
+      "title": {
+        "en": "Resolving Merge Conflicts",
+        "vi": "Giải quyết Merge Conflict"
+      },
+      "content": {
+        "en": "A merge conflict marks the disputed region of a file with `<<<<<<< HEAD` (your side), `=======` (a divider), and `>>>>>>> branch-name` (their side). Resolving it means editing the file to the correct final content — keeping one side, the other, a combination, or something new entirely — then removing the conflict markers, staging the file (`git add`), and completing the merge/rebase (`git commit`, or `git rebase --continue`).\n\nA few habits reduce how often and how painfully conflicts happen: merging/rebasing main into your feature branch frequently (small, frequent conflicts are far easier to resolve than one giant conflict after weeks of divergence), keeping PRs small and focused (less surface area to conflict on), and — for generated files (lockfiles, formatted output) — agreeing on a team convention (e.g. 'always regenerate, never hand-resolve') rather than manually merging machine-generated content line by line.",
+        "vi": "Merge conflict đánh dấu vùng tranh chấp của một file bằng `<<<<<<< HEAD` (phía bạn), `=======` (dấu phân cách), và `>>>>>>> tên-nhánh` (phía họ). Giải quyết nghĩa là sửa file thành nội dung cuối cùng đúng — giữ một bên, bên kia, kết hợp, hoặc thứ gì đó hoàn toàn mới — rồi xoá các dấu đánh dấu xung đột, stage file (`git add`), và hoàn tất merge/rebase (`git commit`, hoặc `git rebase --continue`).\n\nVài thói quen giúp giảm tần suất và mức độ đau đầu của xung đột: merge/rebase main vào nhánh feature của bạn thường xuyên (xung đột nhỏ, thường xuyên dễ giải quyết hơn nhiều so với một xung đột khổng lồ sau nhiều tuần phân nhánh), giữ PR nhỏ và tập trung (ít bề mặt để xung đột hơn), và — với file sinh ra (lockfile, output đã format) — thống nhất một quy ước của team (ví dụ 'luôn sinh lại, không bao giờ tự giải quyết tay') thay vì tự tay merge nội dung do máy sinh ra từng dòng."
+      }
+    },
+    {
+      "title": {
+        "en": "Effective Code Review Practices",
+        "vi": "Thực hành Code Review Hiệu quả"
+      },
+      "content": {
+        "en": "Code review's value (catching bugs, spreading knowledge, keeping consistency) depends heavily on how it's done:\n\n- **For the author**: keep PRs small and focused on one logical change — a 2000-line PR gets a rubber-stamp approval, not real review. Write a clear PR description explaining *why*, not just *what* (the diff already shows what).\n- **For the reviewer**: distinguish blocking issues (bugs, security, architecture problems) from nitpicks (style preference) — label the latter clearly (e.g. prefix with 'nit:') so the author knows what's optional. Review promptly; a PR that sits for days blocks the author and encourages large, hard-to-review batches next time.\n- **For both**: assume good intent, ask questions instead of asserting when unsure ('why this approach over X?' vs 'this is wrong'), and remember the goal is a better codebase, not winning an argument.\n\nMany teams also use automated checks (linting, tests, formatting) to handle what a human reviewer shouldn't have to — freeing review comments for things a machine genuinely can't judge, like design tradeoffs.",
+        "vi": "Giá trị của code review (bắt lỗi, lan truyền kiến thức, giữ nhất quán) phụ thuộc rất nhiều vào cách nó được thực hiện:\n\n- **Với người viết**: giữ PR nhỏ và tập trung vào một thay đổi logic — một PR 2000 dòng chỉ nhận được approval qua loa, không phải review thực sự. Viết mô tả PR rõ ràng giải thích *vì sao*, không chỉ *cái gì* (diff đã cho thấy cái gì rồi).\n- **Với người review**: phân biệt vấn đề chặn (lỗi, bảo mật, vấn đề kiến trúc) với nitpick (sở thích cá nhân về style) — đánh dấu rõ ràng cái sau (ví dụ tiền tố 'nit:') để người viết biết điều gì là tuỳ chọn. Review kịp thời; một PR nằm im nhiều ngày chặn người viết và khuyến khích các đợt PR lớn, khó review hơn ở lần sau.\n- **Với cả hai**: giả định ý tốt, đặt câu hỏi thay vì khẳng định khi không chắc ('vì sao chọn cách này thay vì X?' thay vì 'cái này sai'), và nhớ rằng mục tiêu là codebase tốt hơn, không phải thắng một cuộc tranh luận.\n\nNhiều team còn dùng kiểm tra tự động (lint, test, format) để xử lý những gì người review không nên phải làm — giải phóng comment review cho những thứ máy thực sự không thể đánh giá được, như đánh đổi thiết kế."
+      }
+    },
+    {
+      "title": {
+        "en": "Everyday Git Debugging: bisect, blame, stash & cherry-pick",
+        "vi": "Debug Git Hàng ngày: bisect, blame, stash & cherry-pick"
+      },
+      "content": {
+        "en": "Four commands that come up constantly once a codebase and its history grow:\n\n- **`git blame <file>`**: shows which commit/author last touched each line — the fastest way to find who to ask about a confusing piece of code, or which commit introduced it.\n- **`git bisect start` / `bisect good` / `bisect bad`**: binary-searches history between a known-good and known-bad commit to pinpoint exactly which commit introduced a regression — far faster than manually checking out commits one at a time, especially with `git bisect run <test-script>` to automate the good/bad judgment.\n- **`git stash`**: shelves uncommitted work so you can switch branches cleanly (e.g. to fix an urgent bug), then `git stash pop` brings it back — avoids a throwaway 'wip' commit just to switch context.\n- **`git cherry-pick <commit>`**: applies one specific commit's diff onto the current branch — the standard way to port a single fix to a release/hotfix branch without merging in unrelated work from main.\n\nKnowing these well turns 'something broke and I don't know why or when' from a dread into a routine, mechanical investigation.",
+        "vi": "Bốn lệnh xuất hiện liên tục khi codebase và lịch sử của nó phát triển:\n\n- **`git blame <file>`**: hiện commit/tác giả đã sửa mỗi dòng lần cuối — cách nhanh nhất để tìm ai để hỏi về một đoạn code khó hiểu, hoặc commit nào đã đưa nó vào.\n- **`git bisect start` / `bisect good` / `bisect bad`**: tìm kiếm nhị phân trong lịch sử giữa một commit đã biết là tốt và một commit đã biết là lỗi để xác định chính xác commit nào đã đưa vào một regression — nhanh hơn nhiều so với checkout thủ công từng commit, đặc biệt khi dùng `git bisect run <test-script>` để tự động hoá việc đánh giá tốt/lỗi.\n- **`git stash`**: cất công việc chưa commit sang một bên để có thể chuyển nhánh gọn gàng (ví dụ để sửa một lỗi khẩn cấp), rồi `git stash pop` mang nó trở lại — tránh phải tạo một commit 'wip' bỏ đi chỉ để chuyển ngữ cảnh.\n- **`git cherry-pick <commit>`**: áp dụng diff của một commit cụ thể vào nhánh hiện tại — cách chuẩn để đưa một bản sửa lỗi đơn lẻ sang nhánh release/hotfix mà không merge vào công việc không liên quan từ main.\n\nNắm vững những lệnh này biến 'có gì đó hỏng và tôi không biết vì sao hay khi nào' từ nỗi sợ hãi thành một cuộc điều tra thường lệ, có phương pháp."
+      }
+    },
+    {
+      "title": {
+        "en": "Git Hooks & Pre-Commit Checks",
+        "vi": "Git Hook & Kiểm tra Pre-Commit"
+      },
+      "content": {
+        "en": "A git hook is a script Git runs automatically at a defined point in the workflow — `pre-commit` (before a commit is created), `commit-msg` (to validate/reformat the message), `pre-push` (before pushing to a remote), `post-merge` (after a merge completes), among others. Hooks live in `.git/hooks/` locally by default (not version-controlled), which is why teams typically use a tool like Husky (JS) or `pre-commit` (Python-based, language-agnostic) to define hooks in a versioned config file that installs them for everyone automatically.\n\nCommon uses: running a formatter/linter and blocking the commit if it fails (catching style issues before they reach a PR at all), running fast unit tests before push, or validating commit messages follow a convention (e.g. conventional commits). The tradeoff is speed — a pre-commit hook that's too slow gets bypassed (`git commit --no-verify`) or resented, so hooks are usually kept to fast, high-value checks, leaving slower checks (full test suite, integration tests) to CI instead.",
+        "vi": "Git hook là một script Git tự động chạy tại một thời điểm xác định trong quy trình — `pre-commit` (trước khi một commit được tạo), `commit-msg` (để kiểm tra/định dạng lại message), `pre-push` (trước khi push lên remote), `post-merge` (sau khi merge hoàn tất), và nhiều loại khác. Hook mặc định nằm trong `.git/hooks/` cục bộ (không nằm trong version control), đây là lý do team thường dùng công cụ như Husky (JS) hoặc `pre-commit` (dựa trên Python, không phụ thuộc ngôn ngữ) để định nghĩa hook trong một file cấu hình có version control tự động cài cho mọi người.\n\nCách dùng phổ biến: chạy formatter/linter và chặn commit nếu thất bại (bắt vấn đề style trước cả khi tới được PR), chạy unit test nhanh trước khi push, hoặc kiểm tra commit message theo đúng quy ước (ví dụ conventional commits). Đánh đổi là tốc độ — một pre-commit hook quá chậm sẽ bị bỏ qua (`git commit --no-verify`) hoặc bị ghét, nên hook thường được giữ ở mức kiểm tra nhanh, giá trị cao, để lại kiểm tra chậm hơn (bộ test đầy đủ, integration test) cho CI."
+      }
+    },
+    {
+      "title": {
+        "en": "Conventional Commits & Commit Message Conventions",
+        "vi": "Conventional Commits & Quy ước Commit Message"
+      },
+      "content": {
+        "en": "A commit message convention gives structure to what's otherwise free-form text. **Conventional Commits** is a widely-adopted format: `<type>[optional scope]: <description>`, e.g. `feat(auth): add biometric login`, `fix(quiz): prevent double-scoring on rapid taps`, `chore: bump flutter to 3.13`. Common types: `feat` (new feature), `fix` (bug fix), `refactor` (no behavior change), `docs`, `test`, `chore` (tooling/deps), with `!` or a `BREAKING CHANGE:` footer marking a breaking change.\n\nThe payoff isn't just readability — tooling (like `semantic-release` or `standard-version`) can parse commit history since the last release to auto-generate a changelog and even determine the next version number automatically (a `fix` bumps patch, a `feat` bumps minor, a breaking change bumps major) — turning what's normally a manual, error-prone release-notes step into something derived directly from disciplined commit messages.",
+        "vi": "Quy ước commit message tạo cấu trúc cho thứ vốn dĩ là văn bản tự do. **Conventional Commits** là một định dạng được áp dụng rộng rãi: `<type>[phạm vi tuỳ chọn]: <mô tả>`, ví dụ `feat(auth): add biometric login`, `fix(quiz): prevent double-scoring on rapid taps`, `chore: bump flutter to 3.13`. Các type phổ biến: `feat` (tính năng mới), `fix` (sửa lỗi), `refactor` (không đổi hành vi), `docs`, `test`, `chore` (công cụ/dependency), với `!` hoặc footer `BREAKING CHANGE:` đánh dấu thay đổi phá vỡ tương thích.\n\nGiá trị không chỉ nằm ở khả năng đọc — công cụ (như `semantic-release` hay `standard-version`) có thể parse lịch sử commit kể từ lần phát hành trước để tự sinh changelog và thậm chí tự xác định số phiên bản tiếp theo (một `fix` tăng patch, một `feat` tăng minor, một breaking change tăng major) — biến thứ vốn thường là bước ghi chú phát hành thủ công, dễ sai thành thứ được suy ra trực tiếp từ commit message có kỷ luật."
+      }
+    },
+    {
+      "title": {
+        "en": "Scrum vs Kanban: Choosing a Team Process",
+        "vi": "Scrum và Kanban: Chọn Quy trình cho Team"
+      },
+      "content": {
+        "en": "Both are Agile frameworks for organizing team work, but structured differently:\n\n- **Scrum**: work is organized into fixed-length sprints (commonly 1-2 weeks). Sprint planning commits to a scope upfront; the sprint review demos what was built; the retrospective reflects on process. Priorities are generally locked for the sprint's duration — good for teams that benefit from a predictable rhythm and clear short-term commitments.\n- **Kanban**: no fixed iterations — work items flow continuously through columns (e.g. Todo → In Progress → Review → Done) on a board, with **WIP (work-in-progress) limits** per column preventing the team from starting more than it can finish. Priorities can shift at any time. Good for teams with unpredictable, interrupt-driven work (support, ops) where locking a two-week plan doesn't fit reality.\n\nMany teams run a hybrid ('Scrumban'): sprint-like cadence for planning and retros, but a continuous-flow board with WIP limits for the actual day-to-day work.",
+        "vi": "Cả hai đều là framework Agile để tổ chức công việc của team, nhưng có cấu trúc khác nhau:\n\n- **Scrum**: công việc được tổ chức thành sprint có độ dài cố định (thường 1-2 tuần). Sprint planning cam kết phạm vi trước; sprint review demo những gì đã xây dựng; retrospective nhìn lại quy trình. Độ ưu tiên nói chung bị khoá trong suốt sprint — tốt cho team hưởng lợi từ nhịp điệu dự đoán được và cam kết ngắn hạn rõ ràng.\n- **Kanban**: không có chu kỳ cố định — các hạng mục công việc chảy liên tục qua các cột (ví dụ Cần làm → Đang làm → Review → Xong) trên một board, với **giới hạn WIP (công việc-đang-làm)** theo từng cột ngăn team bắt đầu nhiều hơn những gì có thể hoàn thành. Độ ưu tiên có thể thay đổi bất cứ lúc nào. Tốt cho team có công việc khó đoán, bị gián đoạn thường xuyên (hỗ trợ, vận hành) nơi khoá kế hoạch hai tuần không phù hợp thực tế.\n\nNhiều team chạy dạng lai ('Scrumban'): nhịp điệu giống sprint cho planning và retro, nhưng board chảy liên tục với giới hạn WIP cho công việc hàng ngày thực tế."
+      }
+    },
+    {
+      "title": {
+        "en": "Agile Estimation: Story Points & Velocity",
+        "vi": "Ước lượng Agile: Story Point & Velocity"
+      },
+      "content": {
+        "en": "Story points estimate relative size/complexity/uncertainty of work, typically on a Fibonacci-like scale (1, 2, 3, 5, 8, 13...) chosen deliberately to force coarser distinctions as size grows — the gap between 'this is a 1 or a 2' matters less than the gap between 'this is a 5 or an 8'. A team's **velocity** (points completed per sprint, averaged over recent sprints) then lets them forecast roughly how much work fits in a future sprint or how long a backlog will take, without pretending to know exact hours.\n\nThe common failure mode is treating points as if they were hours in disguise, or comparing velocity between different teams (it's a team-relative unit, not a universal one — a '5' on one team means nothing on another). Used correctly, points are a planning tool, not a performance metric — a team's velocity naturally settles over a few sprints as everyone calibrates to the same scale.",
+        "vi": "Story point ước lượng kích thước/độ phức tạp/không chắc chắn tương đối của công việc, thường theo thang gần giống Fibonacci (1, 2, 3, 5, 8, 13...) được chọn có chủ đích để buộc phân biệt thô hơn khi kích thước tăng — khoảng cách giữa 'đây là 1 hay 2' ít quan trọng hơn khoảng cách giữa 'đây là 5 hay 8'. **Velocity** của một team (điểm hoàn thành mỗi sprint, tính trung bình qua các sprint gần đây) sau đó cho phép dự báo sơ bộ bao nhiêu công việc vừa với một sprint tương lai hoặc backlog sẽ mất bao lâu, mà không giả vờ biết chính xác số giờ.\n\nSai lầm thường gặp là coi point như giờ trá hình, hoặc so sánh velocity giữa các team khác nhau (đây là đơn vị tương đối theo từng team, không phải đơn vị phổ quát — một '5' ở team này không có ý nghĩa gì với team khác). Dùng đúng cách, point là công cụ lập kế hoạch, không phải chỉ số hiệu suất — velocity của một team tự nhiên ổn định sau vài sprint khi mọi người hiệu chỉnh theo cùng một thang đo."
+      }
+    },
+    {
+      "title": {
+        "en": "Definition of Done & Definition of Ready",
+        "vi": "Definition of Done & Definition of Ready"
+      },
+      "content": {
+        "en": "A **Definition of Done (DoD)** is the team's explicit, shared checklist for what 'finished' means for any piece of work — e.g. code reviewed and approved, automated tests passing, documentation updated, deployed to a staging environment. Without one, 'done' silently means different things to different people, and work that's actually 80% complete (no tests, no review) can get reported and planned around as finished.\n\nA related, less common but equally useful concept is a **Definition of Ready** — a checklist for whether a work item is actually ready to be picked up (requirements clear, dependencies identified, acceptance criteria defined) before it enters a sprint, preventing a team from committing to vague, underspecified work that stalls mid-sprint waiting for clarification. Together, these two checklists bound work at both ends: don't start something until it's ready, don't call something finished until it's actually done.",
+        "vi": "**Definition of Done (DoD)** là checklist tường minh, đã thống nhất của team cho ý nghĩa 'hoàn thành' của bất kỳ công việc nào — ví dụ code đã review và được duyệt, test tự động pass, tài liệu đã cập nhật, đã deploy lên môi trường staging. Không có nó, 'hoàn thành' âm thầm có nghĩa khác nhau với mỗi người, và công việc thực ra mới xong 80% (không test, không review) có thể được báo cáo và lập kế hoạch như thể đã xong.\n\nMột khái niệm liên quan, ít phổ biến hơn nhưng cũng hữu ích không kém là **Definition of Ready** — một checklist cho việc một hạng mục công việc có thực sự sẵn sàng để bắt đầu hay không (yêu cầu rõ ràng, dependency đã xác định, tiêu chí chấp nhận đã định nghĩa) trước khi nó vào một sprint, ngăn team cam kết với công việc mơ hồ, thiếu chi tiết bị kẹt giữa sprint chờ làm rõ. Kết hợp lại, hai checklist này giới hạn công việc ở cả hai đầu: không bắt đầu thứ gì đó cho tới khi nó sẵn sàng, không gọi thứ gì đó là hoàn thành cho tới khi nó thực sự xong."
+      }
+    },
+    {
+      "title": {
+        "en": "Blameless Post-Mortems & Incident Retrospectives",
+        "vi": "Blameless Post-Mortem & Nhìn lại Sự cố"
+      },
+      "content": {
+        "en": "After a significant incident (an outage, a bad release causing widespread crashes), a post-mortem documents: a timeline of what happened, the root cause(s), the impact, and concrete follow-up actions to prevent recurrence — written up and shared, not just discussed and forgotten.\n\nThe **blameless** framing is deliberate: analysis focuses on systemic and process gaps (why didn't a test catch this? why wasn't there an alert? why did the review process not flag this risk?) rather than an individual's mistake. This isn't about avoiding accountability — it's a recognition that humans will make mistakes regardless, and a culture that punishes the person who happened to trigger an incident teaches everyone to hide problems and avoid reporting near-misses, which starves the team of the information it needs to actually prevent the next one. A good post-mortem produces a short list of specific, assigned action items (add a specific test, add a specific alert, fix a specific gap in the deploy process) — not vague resolutions like 'be more careful.'",
+        "vi": "Sau một sự cố đáng kể (một lần gián đoạn dịch vụ, một bản phát hành lỗi gây crash trên diện rộng), một post-mortem ghi lại: dòng thời gian những gì đã xảy ra, (các) nguyên nhân gốc, tác động, và các hành động tiếp theo cụ thể để ngăn tái diễn — được viết ra và chia sẻ, không chỉ thảo luận rồi quên đi.\n\nCách đóng khung **không đổ lỗi** là có chủ đích: phân tích tập trung vào khoảng trống hệ thống và quy trình (vì sao một test không bắt được điều này? vì sao không có cảnh báo? vì sao quy trình review không gắn cờ rủi ro này?) thay vì lỗi của một cá nhân. Điều này không phải để tránh trách nhiệm — đây là sự thừa nhận rằng con người dù sao cũng sẽ mắc lỗi, và một văn hoá trừng phạt người tình cờ kích hoạt sự cố sẽ dạy mọi người giấu vấn đề và tránh báo cáo những lần suýt xảy ra sự cố, điều này làm team đói thông tin cần để thực sự ngăn chặn lần tiếp theo. Một post-mortem tốt tạo ra một danh sách ngắn các hành động cụ thể, có người phụ trách (thêm một test cụ thể, thêm một cảnh báo cụ thể, sửa một khoảng trống cụ thể trong quy trình deploy) — không phải giải pháp mơ hồ như 'cẩn thận hơn.'"
+      }
+    }
+  ]
+}

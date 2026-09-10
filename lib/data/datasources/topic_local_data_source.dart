@@ -11,6 +11,8 @@ const List<String> topicAssetIds = [
   'android',
   'ios',
   'general',
+  'system_design',
+  'git_workflow',
 ];
 
 abstract class TopicLocalDataSource {

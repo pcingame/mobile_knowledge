@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/app_language.dart';
+import '../../domain/entities/quiz_attempt.dart';
 import '../../domain/entities/topic.dart';
+import '../../domain/repositories/progress_repository.dart';
 import '../theme/app_spacing.dart';
 
 /// One topic row on the home screen: icon, title, and a small row of
@@ -12,17 +14,21 @@ class TopicCard extends StatelessWidget {
     required this.topic,
     required this.language,
     required this.onTap,
+    required this.progressRepository,
   });
 
   final Topic topic;
   final AppLanguage language;
   final VoidCallback onTap;
+  final ProgressRepository progressRepository;
 
   static const _icons = <String, IconData>{
     'flutter_dart': Icons.flutter_dash_rounded,
     'android': Icons.android_rounded,
     'ios': Icons.phone_iphone_rounded,
     'general': Icons.public_rounded,
+    'system_design': Icons.account_tree_rounded,
+    'git_workflow': Icons.merge_type_rounded,
   };
 
   /// Cycles through the color scheme's harmonious container tones so each
@@ -46,6 +52,22 @@ class TopicCard extends StatelessWidget {
     final tone = _tone(theme.colorScheme);
     final isEn = language == AppLanguage.en;
 
+    return AnimatedBuilder(
+      animation: progressRepository,
+      builder: (context, _) {
+        final best = progressRepository.bestQuizAttempt(topic.id);
+        return _card(context, theme, tone, isEn, best);
+      },
+    );
+  }
+
+  Widget _card(
+    BuildContext context,
+    ThemeData theme,
+    ({Color bg, Color fg}) tone,
+    bool isEn,
+    QuizAttempt? best,
+  ) {
     return Material(
       color: theme.cardTheme.color,
       shape: theme.cardTheme.shape,
@@ -92,6 +114,13 @@ class TopicCard extends StatelessWidget {
                               ? '${topic.notes.length} ${topic.notes.length == 1 ? 'note' : 'notes'}'
                               : '${topic.notes.length} bài viết',
                         ),
+                        if (best != null)
+                          _CountChip(
+                            icon: Icons.emoji_events_rounded,
+                            label: isEn
+                                ? 'Best ${best.score}/${best.total}'
+                                : 'Tốt nhất ${best.score}/${best.total}',
+                          ),
                       ],
                     ),
                   ],

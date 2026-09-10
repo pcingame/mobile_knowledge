@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/app_language.dart';
+import '../../domain/entities/quiz_attempt.dart';
 import '../../domain/entities/quiz_question.dart';
+import '../../domain/repositories/progress_repository.dart';
 import '../theme/app_spacing.dart';
+import '../theme/app_theme.dart';
 
 class QuizTab extends StatefulWidget {
-  const QuizTab({super.key, required this.questions, required this.language});
+  const QuizTab({
+    super.key,
+    required this.questions,
+    required this.language,
+    required this.topicId,
+    required this.progressRepository,
+  });
 
   final List<QuizQuestion> questions;
   final AppLanguage language;
+  final String topicId;
+  final ProgressRepository progressRepository;
 
   @override
   State<QuizTab> createState() => _QuizTabState();
@@ -33,6 +44,7 @@ class _QuizTabState extends State<QuizTab> {
 
   void _next() {
     if (_index == widget.questions.length - 1) {
+      widget.progressRepository.recordQuizAttempt(widget.topicId, _score, widget.questions.length);
       setState(() => _finished = true);
       return;
     }
@@ -62,14 +74,25 @@ class _QuizTabState extends State<QuizTab> {
       );
     }
     if (_finished) {
-      return _QuizResult(score: _score, total: widget.questions.length, isEn: _isEn, onRestart: _restart);
+      return _QuizResult(
+        score: _score,
+        total: widget.questions.length,
+        isEn: _isEn,
+        onRestart: _restart,
+        best: widget.progressRepository.bestQuizAttempt(widget.topicId),
+      );
     }
 
     final theme = Theme.of(context);
     final answered = _selected != null;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(AppSpacing.xl, AppSpacing.lg, AppSpacing.xl, AppSpacing.xl),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.xl,
+        AppSpacing.lg,
+        AppSpacing.xl,
+        AppSpacing.xl,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -78,15 +101,24 @@ class _QuizTabState extends State<QuizTab> {
               Expanded(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(AppRadius.pill),
-                  child: LinearProgressIndicator(value: (_index + 1) / widget.questions.length, minHeight: 6),
+                  child: LinearProgressIndicator(
+                    value: (_index + 1) / widget.questions.length,
+                    minHeight: 6,
+                  ),
                 ),
               ),
               const SizedBox(width: AppSpacing.md),
-              Text('${_index + 1}/${widget.questions.length}', style: theme.textTheme.labelMedium),
+              Text(
+                '${_index + 1}/${widget.questions.length}',
+                style: theme.textTheme.labelMedium,
+              ),
             ],
           ),
           const SizedBox(height: AppSpacing.xl),
-          Text(_current.question.of(widget.language), style: theme.textTheme.titleLarge),
+          Text(
+            _current.question.of(widget.language),
+            style: theme.textTheme.titleLarge,
+          ),
           const SizedBox(height: AppSpacing.lg),
           for (var i = 0; i < _current.options.length; i++) ...[
             _OptionTile(
@@ -95,10 +127,10 @@ class _QuizTabState extends State<QuizTab> {
               state: !answered
                   ? _OptionState.idle
                   : i == _current.answerIndex
-                      ? _OptionState.correct
-                      : i == _selected
-                          ? _OptionState.wrong
-                          : _OptionState.disabled,
+                  ? _OptionState.correct
+                  : i == _selected
+                  ? _OptionState.wrong
+                  : _OptionState.disabled,
               onTap: () => _selectOption(i),
             ),
             const SizedBox(height: AppSpacing.sm),
@@ -114,10 +146,17 @@ class _QuizTabState extends State<QuizTab> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.lightbulb_rounded, size: 18, color: theme.colorScheme.primary),
+                  Icon(
+                    Icons.lightbulb_rounded,
+                    size: 18,
+                    color: theme.colorScheme.primary,
+                  ),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
-                    child: Text(_current.explanation.of(widget.language), style: theme.textTheme.bodySmall),
+                    child: Text(
+                      _current.explanation.of(widget.language),
+                      style: theme.textTheme.bodySmall,
+                    ),
                   ),
                 ],
               ),
@@ -144,7 +183,12 @@ class _QuizTabState extends State<QuizTab> {
 enum _OptionState { idle, correct, wrong, disabled }
 
 class _OptionTile extends StatelessWidget {
-  const _OptionTile({required this.letter, required this.text, required this.state, required this.onTap});
+  const _OptionTile({
+    required this.letter,
+    required this.text,
+    required this.state,
+    required this.onTap,
+  });
 
   final String letter;
   final String text;
@@ -186,7 +230,10 @@ class _OptionTile extends StatelessWidget {
       duration: const Duration(milliseconds: 200),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.md),
-        border: Border.all(color: borderColor, width: state == _OptionState.idle ? 1 : 1.5),
+        border: Border.all(
+          color: borderColor,
+          width: state == _OptionState.idle ? 1 : 1.5,
+        ),
       ),
       child: Material(
         color: Colors.transparent,
@@ -194,24 +241,44 @@ class _OptionTile extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(AppRadius.md),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.md),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.md,
+            ),
             child: Row(
               children: [
-                CircleAvatar(radius: 14, backgroundColor: badgeBg, child: Text(
-                  letter,
-                  style: TextStyle(fontFamily: 'Sora', fontWeight: FontWeight.w700, fontSize: 12, color: badgeFg),
-                )),
+                CircleAvatar(
+                  radius: 14,
+                  backgroundColor: badgeBg,
+                  child: Text(
+                    letter,
+                    style: TextStyle(
+                      fontFamily: AppTheme.displayFontFamily,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12,
+                      color: badgeFg,
+                    ),
+                  ),
+                ),
                 const SizedBox(width: AppSpacing.md),
                 Expanded(
                   child: Text(
                     text,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: state == _OptionState.disabled ? scheme.onSurface.withValues(alpha: 0.5) : null,
-                        ),
+                      color: state == _OptionState.disabled
+                          ? scheme.onSurface.withValues(alpha: 0.5)
+                          : null,
+                    ),
                   ),
                 ),
                 if (trailing != null)
-                  Icon(trailing, size: 20, color: state == _OptionState.correct ? scheme.primary : scheme.error),
+                  Icon(
+                    trailing,
+                    size: 20,
+                    color: state == _OptionState.correct
+                        ? scheme.primary
+                        : scheme.error,
+                  ),
               ],
             ),
           ),
@@ -222,12 +289,19 @@ class _OptionTile extends StatelessWidget {
 }
 
 class _QuizResult extends StatelessWidget {
-  const _QuizResult({required this.score, required this.total, required this.isEn, required this.onRestart});
+  const _QuizResult({
+    required this.score,
+    required this.total,
+    required this.isEn,
+    required this.onRestart,
+    required this.best,
+  });
 
   final int score;
   final int total;
   final bool isEn;
   final VoidCallback onRestart;
+  final QuizAttempt? best;
 
   @override
   Widget build(BuildContext context) {
@@ -268,7 +342,9 @@ class _QuizResult extends StatelessWidget {
                       Text('$percent%', style: theme.textTheme.headlineMedium),
                       Text(
                         '$score/$total',
-                        style: theme.textTheme.labelMedium?.copyWith(color: scheme.onSurfaceVariant),
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),
@@ -283,11 +359,24 @@ class _QuizResult extends StatelessWidget {
             const SizedBox(height: AppSpacing.sm),
             Text(
               isEn
-                  ? (ratio >= 0.8 ? 'Great work — you know this well.' : 'Review the misses and try again.')
-                  : (ratio >= 0.8 ? 'Rất tốt — bạn nắm chắc phần này.' : 'Xem lại câu sai rồi làm lại nhé.'),
+                  ? (ratio >= 0.8
+                        ? 'Great work — you know this well.'
+                        : 'Review the misses and try again.')
+                  : (ratio >= 0.8
+                        ? 'Rất tốt — bạn nắm chắc phần này.'
+                        : 'Xem lại câu sai rồi làm lại nhé.'),
               style: theme.textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
+            if (best != null && (best!.score != score || best!.total != total)) ...[
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                isEn
+                    ? 'Best score: ${best!.score}/${best!.total}'
+                    : 'Điểm tốt nhất: ${best!.score}/${best!.total}',
+                style: theme.textTheme.labelMedium?.copyWith(color: scheme.primary),
+              ),
+            ],
             const SizedBox(height: AppSpacing.xxl),
             FilledButton.icon(
               onPressed: onRestart,

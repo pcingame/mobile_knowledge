@@ -264,6 +264,216 @@
         "en": "It exposes Objective-C headers to Swift code in the same target (auto-generated when you add an .m file to a Swift project and accept Xcode's prompt), enabling interop with older Objective-C libraries or legacy code that hasn't been ported to Swift.",
         "vi": "Nó phơi bày các header Objective-C cho code Swift trong cùng target (tự sinh khi bạn thêm file .m vào project Swift và chấp nhận prompt của Xcode), cho phép tương tác (interop) với các thư viện Objective-C cũ hoặc code legacy chưa được chuyển sang Swift."
       }
+    },
+    {
+      "question": {
+        "en": "What is the difference between @State and @StateObject in SwiftUI ownership terms?",
+        "vi": "@State khác @StateObject thế nào về mặt sở hữu trong SwiftUI?"
+      },
+      "answer": {
+        "en": "@State owns simple value-type data (Int, String, a struct) local to one view. @StateObject owns a reference-type ObservableObject and guarantees SwiftUI creates it exactly once for that view's identity, surviving that view's own re-evaluations — the view is the source-of-truth owner of the object's lifetime.",
+        "vi": "@State sở hữu dữ liệu kiểu value đơn giản (Int, String, một struct) cục bộ trong một view. @StateObject sở hữu một ObservableObject kiểu reference và đảm bảo SwiftUI chỉ tạo nó đúng một lần cho định danh của view đó, sống sót qua các lần đánh giá lại của chính view — view là chủ sở hữu nguồn chân lý cho vòng đời của object."
+      }
+    },
+    {
+      "question": {
+        "en": "What does @EnvironmentObject provide in SwiftUI?",
+        "vi": "@EnvironmentObject cung cấp gì trong SwiftUI?"
+      },
+      "answer": {
+        "en": "@EnvironmentObject injects a shared ObservableObject implicitly down the view hierarchy (set once via .environmentObject() on an ancestor), so deeply nested views can read/observe it without it being passed explicitly through every intermediate view's initializer.",
+        "vi": "@EnvironmentObject tiêm ngầm một ObservableObject dùng chung xuống cây view (thiết lập một lần qua .environmentObject() ở ancestor), để các view nằm sâu có thể đọc/quan sát nó mà không cần truyền tường minh qua initializer của từng view trung gian."
+      }
+    },
+    {
+      "question": {
+        "en": "What is Swift's guard statement used for?",
+        "vi": "Câu lệnh guard trong Swift dùng để làm gì?"
+      },
+      "answer": {
+        "en": "guard performs an early-exit check: if the condition fails, the else block must exit the current scope (return, throw, break, continue). Unlike an if-let, values bound in a successful guard-let remain available for the rest of the enclosing scope, which keeps code flatter than nested if-lets.",
+        "vi": "guard thực hiện kiểm tra thoát sớm: nếu điều kiện thất bại, block else bắt buộc phải thoát khỏi scope hiện tại (return, throw, break, continue). Khác với if-let, giá trị được bind trong guard-let thành công vẫn khả dụng cho phần còn lại của scope bao quanh, giúp code phẳng hơn thay vì lồng nhiều if-let."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the difference between a Swift struct and a class?",
+        "vi": "Struct khác class thế nào trong Swift?"
+      },
+      "answer": {
+        "en": "struct is a value type — copied on assignment/passing, has no identity, and is stack-allocated when possible (fast, thread-safe by copy). class is a reference type — assignment shares the same instance, supports inheritance and identity comparison (===), and is heap-allocated with ARC-managed lifetime.",
+        "vi": "struct là kiểu value — được copy khi gán/truyền, không có định danh, và thường được cấp phát trên stack khi có thể (nhanh, an toàn luồng nhờ copy). class là kiểu reference — gán sẽ dùng chung một instance, hỗ trợ kế thừa và so sánh định danh (===), và được cấp phát trên heap với vòng đời quản lý bởi ARC."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a protocol with an associated type (like Swift's Collection) used for?",
+        "vi": "Protocol có associated type (như Collection của Swift) dùng để làm gì?"
+      },
+      "answer": {
+        "en": "An associated type lets a protocol declare a placeholder type that conforming types fill in concretely (e.g. `associatedtype Element`), enabling generic, type-safe abstractions like Collection or Sequence without the protocol committing to one specific element type ahead of time — this is also why such protocols can't be used as a plain existential type without `any`/`some`.",
+        "vi": "Associated type cho phép một protocol khai báo một kiểu placeholder mà các kiểu tuân theo sẽ điền cụ thể (ví dụ `associatedtype Element`), cho phép abstraction generic, an toàn kiểu như Collection hay Sequence mà protocol không cần cam kết trước một kiểu element cụ thể — cũng là lý do các protocol này không dùng được như existential type thông thường nếu không có `any`/`some`."
+      }
+    },
+    {
+      "question": {
+        "en": "What does SwiftUI's `some View` opaque return type mean?",
+        "vi": "Kiểu trả về opaque `some View` trong SwiftUI nghĩa là gì?"
+      },
+      "answer": {
+        "en": "`some View` tells the caller a function returns a specific, concrete type conforming to View, without naming that type — the compiler knows the exact type at compile time (unlike `any View`, a boxed existential), which is why it's used almost everywhere in SwiftUI for performance and type-preserving composition.",
+        "vi": "`some View` báo cho bên gọi biết hàm trả về một kiểu cụ thể, xác định tuân theo View, mà không nêu tên kiểu đó — trình biên dịch biết chính xác kiểu lúc biên dịch (khác với `any View`, một existential được đóng hộp), đó là lý do nó được dùng gần như khắp nơi trong SwiftUI vì hiệu năng và giữ nguyên kiểu khi kết hợp."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a Swift closure capture list ([weak self]) for?",
+        "vi": "Capture list ([weak self]) của closure trong Swift dùng để làm gì?"
+      },
+      "answer": {
+        "en": "A closure captures references to variables it uses from its enclosing scope, including `self` by default with strong capture — if that closure is stored by the object it captured (e.g. as a callback property), that creates a retain cycle. `[weak self]` captures self weakly, breaking the cycle at the cost of self becoming Optional inside the closure.",
+        "vi": "Closure mặc định capture các biến nó dùng từ scope bao quanh dưới dạng tham chiếu mạnh, bao gồm cả `self` — nếu closure đó được chính object đã capture lưu lại (ví dụ như một thuộc tính callback), điều đó tạo ra retain cycle. `[weak self]` capture self dưới dạng weak, phá vỡ vòng lặp, đánh đổi bằng việc self trở thành Optional bên trong closure."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a Task in Swift concurrency, and how does it relate to structured concurrency?",
+        "vi": "Task trong Swift concurrency là gì, và liên quan thế nào tới structured concurrency?"
+      },
+      "answer": {
+        "en": "A Task is the unit of asynchronous work in Swift concurrency; `Task { ... }` creates an unstructured task tied to nothing in particular, while `async let` and `TaskGroup` create structured child tasks whose lifetime is bound to their enclosing scope — cancelling the parent scope cancels its structured children automatically.",
+        "vi": "Task là đơn vị công việc bất đồng bộ trong Swift concurrency; `Task { ... }` tạo một unstructured task không gắn với gì cụ thể, trong khi `async let` và `TaskGroup` tạo các child task có cấu trúc với vòng đời gắn với scope bao quanh — huỷ scope cha sẽ tự động huỷ các child task có cấu trúc đó."
+      }
+    },
+    {
+      "question": {
+        "en": "What does @MainActor do in Swift concurrency?",
+        "vi": "@MainActor làm gì trong Swift concurrency?"
+      },
+      "answer": {
+        "en": "@MainActor marks a type, function, or property as isolated to the main thread — calls to it from another actor/task are automatically hopped to the main thread by the compiler, replacing the old pattern of manually dispatching UI updates via DispatchQueue.main.async, and catching UI-thread mistakes at compile time.",
+        "vi": "@MainActor đánh dấu một type, function, hoặc property bị cô lập vào main thread — lệnh gọi tới nó từ actor/task khác được compiler tự động chuyển sang main thread, thay thế mẫu cũ là chủ động dispatch cập nhật UI qua DispatchQueue.main.async, và bắt lỗi liên quan main thread lúc biên dịch."
+      }
+    },
+    {
+      "question": {
+        "en": "What is SwiftData and how does it relate to Core Data?",
+        "vi": "SwiftData là gì và liên quan thế nào tới Core Data?"
+      },
+      "answer": {
+        "en": "SwiftData is Apple's newer, Swift-native persistence framework (introduced in iOS 17) built on top of Core Data's engine but with a much lighter, macro-based API (@Model, @Query) instead of the .xcdatamodeld editor and NSManagedObject boilerplate — a modern alternative for new projects, while Core Data remains relevant for existing apps and more advanced/custom needs.",
+        "vi": "SwiftData là framework lưu trữ thuần Swift mới hơn của Apple (ra mắt ở iOS 17) xây trên engine của Core Data nhưng có API nhẹ hơn nhiều, dựa trên macro (@Model, @Query) thay vì trình soạn .xcdatamodeld và code lặp NSManagedObject — một lựa chọn hiện đại cho dự án mới, trong khi Core Data vẫn quan trọng với app hiện có và nhu cầu nâng cao/tuỳ chỉnh hơn."
+      }
+    },
+    {
+      "question": {
+        "en": "What's the purpose of a LazyVStack/LazyHStack vs a plain VStack/HStack in SwiftUI?",
+        "vi": "LazyVStack/LazyHStack khác VStack/HStack thường thế nào trong SwiftUI?"
+      },
+      "answer": {
+        "en": "A plain VStack/HStack eagerly creates and lays out all its children immediately, even off-screen ones. Lazy versions (LazyVStack/LazyHStack, typically inside a ScrollView) create children only as they're about to become visible, which is essential for performance with long or dynamically-sized lists.",
+        "vi": "VStack/HStack thường tạo và layout toàn bộ children ngay lập tức, kể cả những cái ngoài màn hình. Phiên bản lazy (LazyVStack/LazyHStack, thường đặt trong ScrollView) chỉ tạo children khi chúng sắp hiển thị, điều này rất quan trọng cho hiệu năng với danh sách dài hoặc kích thước động."
+      }
+    },
+    {
+      "question": {
+        "en": "What does the @Published property wrapper do inside an ObservableObject?",
+        "vi": "Property wrapper @Published làm gì bên trong một ObservableObject?"
+      },
+      "answer": {
+        "en": "@Published automatically calls objectWillChange.send() right before the property's value changes, notifying any SwiftUI view (or Combine subscriber) observing that object so it can update. Without @Published, changing a property on an ObservableObject wouldn't trigger any UI update on its own.",
+        "vi": "@Published tự động gọi objectWillChange.send() ngay trước khi giá trị của thuộc tính thay đổi, báo cho bất kỳ view SwiftUI (hoặc subscriber Combine) đang quan sát object đó để cập nhật. Không có @Published, việc thay đổi thuộc tính trên ObservableObject sẽ không tự kích hoạt cập nhật UI nào."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the difference between throw/try/catch and a Result type for error handling in Swift?",
+        "vi": "Khác biệt giữa throw/try/catch và kiểu Result trong xử lý lỗi Swift là gì?"
+      },
+      "answer": {
+        "en": "throws/try/catch propagates errors implicitly through the call chain and is Swift's native mechanism, well-suited to synchronous and (with async) asynchronous throwing functions. Result<Success, Failure> represents success/failure explicitly as a return value you can store, pass around, or transform with map/flatMap — useful when you need to hold onto a not-yet-handled outcome (e.g. in a completion-handler-based API) rather than handle it immediately.",
+        "vi": "throws/try/catch lan truyền lỗi ngầm định qua chuỗi lệnh gọi và là cơ chế bản địa của Swift, phù hợp với hàm đồng bộ và (với async) hàm bất đồng bộ có throw. Result<Success, Failure> biểu diễn thành công/thất bại tường minh dưới dạng giá trị trả về có thể lưu, truyền đi, hoặc biến đổi bằng map/flatMap — hữu ích khi cần giữ lại một kết quả chưa xử lý ngay (ví dụ trong API dựa trên completion handler) thay vì xử lý ngay lập tức."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the App Store's TestFlight used for?",
+        "vi": "TestFlight của App Store dùng để làm gì?"
+      },
+      "answer": {
+        "en": "TestFlight distributes pre-release builds to internal team members (no review needed, up to 100 testers) and external testers (requires a lightweight Beta App Review, up to 10,000 testers) before a public App Store release, letting you gather crash reports and feedback on a real build ahead of shipping.",
+        "vi": "TestFlight phân phối bản build trước khi phát hành cho thành viên nội bộ (không cần review, tối đa 100 tester) và tester bên ngoài (cần Beta App Review nhẹ, tối đa 10.000 tester) trước khi phát hành chính thức trên App Store, cho phép thu thập báo cáo crash và phản hồi trên bản build thật trước khi ra mắt."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a Swift async sequence (AsyncSequence)?",
+        "vi": "AsyncSequence trong Swift là gì?"
+      },
+      "answer": {
+        "en": "AsyncSequence is the async counterpart to Sequence — an asynchronous, pull-based stream of values you iterate with `for await value in sequence`, each element awaited one at a time. It's the structured-concurrency way to model an ongoing stream of async events (e.g. NotificationCenter.notifications(named:), or URLSession bytes streaming).",
+        "vi": "AsyncSequence là phiên bản bất đồng bộ tương ứng với Sequence — một luồng giá trị bất đồng bộ, kiểu pull, duyệt bằng `for await value in sequence`, mỗi phần tử được await lần lượt. Đây là cách theo structured concurrency để mô hình hoá một luồng sự kiện bất đồng bộ liên tục (ví dụ NotificationCenter.notifications(named:), hay stream byte của URLSession)."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the difference between a UIWindowScene and a UIWindow in modern iOS?",
+        "vi": "UIWindowScene khác UIWindow thế nào trong iOS hiện đại?"
+      },
+      "answer": {
+        "en": "Since multi-window support (iOS 13+), a UIWindowScene represents one instance of the app's UI (e.g. one window on iPad multitasking or Mac Catalyst), managed by SceneDelegate, and a UIWindow is the actual root view container that belongs to a specific scene — an app can have multiple scenes, each with its own window(s), instead of the single-window assumption from older iOS.",
+        "vi": "Từ khi hỗ trợ đa cửa sổ (iOS 13+), UIWindowScene đại diện cho một instance UI của app (ví dụ một cửa sổ trong multitasking iPad hay Mac Catalyst), được quản lý bởi SceneDelegate, còn UIWindow là container view gốc thực sự thuộc về một scene cụ thể — một app có thể có nhiều scene, mỗi scene có cửa sổ riêng, thay vì giả định một cửa sổ duy nhất như iOS cũ."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the purpose of Swift Package Manager (SPM)?",
+        "vi": "Mục đích của Swift Package Manager (SPM) là gì?"
+      },
+      "answer": {
+        "en": "SPM is Apple's built-in dependency manager, integrated directly into Xcode: it fetches, builds, and links source or binary Swift packages declared in a Package.swift manifest, without needing a separate tool like CocoaPods or Carthage — the current default choice for most new projects due to native Xcode integration.",
+        "vi": "SPM là trình quản lý dependency tích hợp sẵn của Apple, gắn trực tiếp vào Xcode: nó tải, build, và link source hoặc binary của các Swift package được khai báo trong manifest Package.swift, không cần công cụ riêng như CocoaPods hay Carthage — lựa chọn mặc định hiện nay cho hầu hết dự án mới nhờ tích hợp sẵn với Xcode."
+      }
+    },
+    {
+      "question": {
+        "en": "What does @discardableResult do in Swift?",
+        "vi": "@discardableResult làm gì trong Swift?"
+      },
+      "answer": {
+        "en": "@discardableResult suppresses the compiler's 'unused result' warning when a function's return value is ignored at a call site, useful for functions where the return value is often useful but sometimes safely ignorable (e.g. an array's `.remove(at:)` returning the removed element).",
+        "vi": "@discardableResult tắt cảnh báo 'unused result' của trình biên dịch khi giá trị trả về của hàm bị bỏ qua tại nơi gọi, hữu ích cho các hàm mà giá trị trả về thường hữu ích nhưng đôi khi an toàn để bỏ qua (ví dụ `.remove(at:)` của array trả về phần tử đã xoá)."
+      }
+    },
+    {
+      "question": {
+        "en": "What is dependency injection via an @Environment value in SwiftUI (e.g. \\.dismiss)?",
+        "vi": "Dependency injection qua giá trị @Environment trong SwiftUI (ví dụ \\.dismiss) là gì?"
+      },
+      "answer": {
+        "en": "SwiftUI's environment carries implicit, ambient values (like the current dismiss action, color scheme, or a custom EnvironmentKey you define) down the view tree automatically, readable via @Environment(\\.key) without manual parameter threading — a lightweight built-in alternative to a full DI framework for values many views need.",
+        "vi": "Environment của SwiftUI mang các giá trị ngầm định, xung quanh (như hành động dismiss hiện tại, color scheme, hay một EnvironmentKey tuỳ chỉnh do bạn định nghĩa) xuống cây view tự động, đọc được qua @Environment(\\.key) mà không cần truyền tham số thủ công — một giải pháp nhẹ, có sẵn thay cho DI framework đầy đủ cho các giá trị nhiều view cần dùng."
+      }
+    },
+    {
+      "question": {
+        "en": "What is view identity in SwiftUI and why does it matter for animations and state?",
+        "vi": "Định danh (identity) của view trong SwiftUI là gì, và vì sao quan trọng với animation và state?"
+      },
+      "answer": {
+        "en": "SwiftUI tracks whether a view at a given position is 'the same view' across updates (structural identity by type+position, or explicit identity via `.id()`). If identity is preserved, SwiftUI animates/transitions the existing view's changed properties and keeps its @State; if identity changes (e.g. `.id()` changes), SwiftUI treats it as a brand-new view instance, resetting @State and often producing a different transition (insert/remove instead of a smooth property change).",
+        "vi": "SwiftUI theo dõi xem một view ở một vị trí cho trước có phải 'cùng một view' qua các lần cập nhật hay không (định danh cấu trúc theo kiểu+vị trí, hoặc định danh tường minh qua `.id()`). Nếu định danh được giữ nguyên, SwiftUI animate/chuyển tiếp các thuộc tính thay đổi của view hiện có và giữ nguyên @State; nếu định danh thay đổi (ví dụ `.id()` đổi), SwiftUI coi đó là một instance view hoàn toàn mới, reset @State và thường tạo ra transition khác (chèn/xoá thay vì thay đổi thuộc tính mượt mà)."
+      }
+    },
+    {
+      "question": {
+        "en": "What's the difference between App Transport Security (ATS) requirements and a simple HTTPS URL?",
+        "vi": "Yêu cầu của App Transport Security (ATS) khác gì so với một URL HTTPS đơn giản?"
+      },
+      "answer": {
+        "en": "ATS is iOS's default networking policy requiring HTTPS with modern TLS (1.2+) and reasonably strong ciphers for all network connections by default — plain HTTPS alone isn't automatically compliant if it uses weak/older TLS. Apps that genuinely need to connect to a non-compliant endpoint must declare narrowly-scoped exceptions in Info.plist (NSAppTransportSecurity), which Apple reviews as a red flag if overused.",
+        "vi": "ATS là chính sách mạng mặc định của iOS yêu cầu HTTPS với TLS hiện đại (1.2+) và cipher đủ mạnh cho mọi kết nối mạng theo mặc định — chỉ HTTPS đơn thuần không tự động tuân thủ nếu dùng TLS yếu/cũ. App thực sự cần kết nối tới endpoint không tuân thủ phải khai báo ngoại lệ phạm vi hẹp trong Info.plist (NSAppTransportSecurity), điều mà Apple xem là dấu hiệu đáng ngờ nếu lạm dụng."
+      }
     }
   ],
   "quiz": [
@@ -904,6 +1114,586 @@
         "en": "It lists Objective-C headers Swift code in the same target should see, enabling interop with legacy Objective-C code or libraries.",
         "vi": "Nó liệt kê các header Objective-C mà code Swift trong cùng target nên thấy được, cho phép tương tác với code hoặc thư viện Objective-C legacy."
       }
+    },
+    {
+      "question": {
+        "en": "Why does SwiftUI guarantee @StateObject creates its object only once for a view's identity?",
+        "vi": "Vì sao SwiftUI đảm bảo @StateObject chỉ tạo object của nó đúng một lần cho định danh của view?"
+      },
+      "options": [
+        {
+          "en": "So the object's lifetime and internal state survive the view being re-evaluated/redrawn",
+          "vi": "Để vòng đời và state nội bộ của object sống sót qua việc view được đánh giá lại/vẽ lại"
+        },
+        {
+          "en": "To make the app compile faster",
+          "vi": "Để app biên dịch nhanh hơn"
+        },
+        {
+          "en": "Because ObservableObject cannot be a class",
+          "vi": "Vì ObservableObject không thể là class"
+        },
+        {
+          "en": "To automatically encrypt the object's properties",
+          "vi": "Để tự động mã hoá các thuộc tính của object"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "If SwiftUI re-created the object on every view re-evaluation, its internal state (and any in-flight work) would reset constantly — @StateObject's single-creation guarantee is what makes it safe as the object's owner.",
+        "vi": "Nếu SwiftUI tạo lại object mỗi lần view được đánh giá lại, state nội bộ (và bất kỳ công việc đang chạy) sẽ liên tục bị reset — đảm bảo chỉ tạo một lần của @StateObject là điều khiến nó an toàn khi làm chủ sở hữu object."
+      }
+    },
+    {
+      "question": {
+        "en": "What problem does @EnvironmentObject solve compared to passing an object through every initializer?",
+        "vi": "@EnvironmentObject giải quyết vấn đề gì so với việc truyền object qua từng initializer?"
+      },
+      "options": [
+        {
+          "en": "It avoids threading the same dependency explicitly through many intermediate views that don't use it themselves",
+          "vi": "Nó tránh phải truyền tường minh cùng một dependency qua nhiều view trung gian mà bản thân chúng không dùng tới"
+        },
+        {
+          "en": "It makes the object immutable",
+          "vi": "Nó làm cho object trở thành bất biến"
+        },
+        {
+          "en": "It removes the need for ObservableObject conformance",
+          "vi": "Nó loại bỏ nhu cầu tuân theo ObservableObject"
+        },
+        {
+          "en": "It automatically persists the object to disk",
+          "vi": "Nó tự động lưu object xuống đĩa"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Environment injection lets deeply nested views read a shared object directly without every view in between needing to accept and forward it as a parameter.",
+        "vi": "Tiêm qua environment cho phép view nằm sâu đọc trực tiếp một object dùng chung mà không cần mọi view ở giữa phải nhận và chuyển tiếp nó như một tham số."
+      }
+    },
+    {
+      "question": {
+        "en": "What must happen in the else branch of a Swift `guard` statement?",
+        "vi": "Điều gì bắt buộc phải xảy ra trong nhánh else của câu lệnh `guard` trong Swift?"
+      },
+      "options": [
+        {
+          "en": "The current scope must exit (return, throw, break, continue, or a call to a Never-returning function)",
+          "vi": "Scope hiện tại phải thoát (return, throw, break, continue, hoặc gọi một hàm trả về Never)"
+        },
+        {
+          "en": "It must call fatalError() specifically",
+          "vi": "Nó bắt buộc phải gọi cụ thể fatalError()"
+        },
+        {
+          "en": "Nothing — the else branch is optional",
+          "vi": "Không cần gì cả — nhánh else là tuỳ chọn"
+        },
+        {
+          "en": "It must log an error message",
+          "vi": "Nó bắt buộc phải log một thông báo lỗi"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "The compiler enforces that guard's else block leaves the current scope somehow, which is what makes values bound in the guard's condition safely available afterward.",
+        "vi": "Trình biên dịch bắt buộc block else của guard phải thoát khỏi scope hiện tại bằng cách nào đó, đây là điều khiến các giá trị được bind trong điều kiện của guard an toàn khả dụng sau đó."
+      }
+    },
+    {
+      "question": {
+        "en": "What happens when a Swift struct instance is assigned to a new variable?",
+        "vi": "Điều gì xảy ra khi một instance struct Swift được gán cho một biến mới?"
+      },
+      "options": [
+        {
+          "en": "A copy is made — the two variables hold independent values",
+          "vi": "Một bản sao được tạo — hai biến giữ giá trị độc lập với nhau"
+        },
+        {
+          "en": "Both variables reference the exact same instance",
+          "vi": "Cả hai biến đều tham chiếu tới đúng một instance"
+        },
+        {
+          "en": "The original variable becomes invalid",
+          "vi": "Biến gốc trở nên không hợp lệ"
+        },
+        {
+          "en": "It causes a compile-time error",
+          "vi": "Nó gây lỗi biên dịch"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "struct is a value type; assignment (and passing to a function) copies its value, so mutating one variable's copy does not affect the other — unlike a class instance, which is shared by reference.",
+        "vi": "struct là kiểu value; gán (và truyền vào hàm) sẽ copy giá trị của nó, nên thay đổi bản copy của một biến không ảnh hưởng biến kia — khác với instance class, được chia sẻ theo tham chiếu."
+      }
+    },
+    {
+      "question": {
+        "en": "Why can't a protocol with an associated type generally be used as `SomeProtocol` (without `any`/`some`)?",
+        "vi": "Vì sao một protocol có associated type nói chung không thể dùng như `SomeProtocol` (không có `any`/`some`)?"
+      },
+      "options": [
+        {
+          "en": "The compiler doesn't know the concrete placeholder type at the use site, so it can't build a fixed-layout existential without a specific mechanism for it",
+          "vi": "Trình biên dịch không biết kiểu placeholder cụ thể tại nơi sử dụng, nên không thể xây dựng existential có layout cố định nếu không có cơ chế riêng cho nó"
+        },
+        {
+          "en": "Associated types are not allowed in Swift protocols",
+          "vi": "Associated type không được phép trong protocol của Swift"
+        },
+        {
+          "en": "Protocols with associated types can only be used in Objective-C code",
+          "vi": "Protocol có associated type chỉ dùng được trong code Objective-C"
+        },
+        {
+          "en": "It's a Swift bug that will be removed in a future version",
+          "vi": "Đây là một lỗi của Swift sẽ bị loại bỏ trong phiên bản tương lai"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Without knowing what concrete type fills the associated type placeholder, the compiler can't lay out a value for the protocol type directly — hence `any`/`some` (or generic constraints) are needed to use such protocols as types.",
+        "vi": "Không biết kiểu cụ thể nào điền vào placeholder của associated type, trình biên dịch không thể bố trí bộ nhớ cho một giá trị của kiểu protocol trực tiếp — vì vậy cần `any`/`some` (hoặc ràng buộc generic) để dùng các protocol này như kiểu dữ liệu."
+      }
+    },
+    {
+      "question": {
+        "en": "What does SwiftUI's `some View` opaque return type guarantee that `any View` does not?",
+        "vi": "Kiểu trả về opaque `some View` của SwiftUI đảm bảo điều gì mà `any View` không có?"
+      },
+      "options": [
+        {
+          "en": "A single, fixed concrete type known at compile time, avoiding the overhead/indirection of a boxed existential",
+          "vi": "Một kiểu cụ thể, cố định, xác định lúc biên dịch, tránh chi phí/gián tiếp của một existential đóng hộp"
+        },
+        {
+          "en": "That the view will never change its content",
+          "vi": "View sẽ không bao giờ thay đổi nội dung"
+        },
+        {
+          "en": "Thread safety for the view",
+          "vi": "An toàn luồng cho view"
+        },
+        {
+          "en": "Automatic localization of all text inside it",
+          "vi": "Tự động bản địa hoá mọi text bên trong nó"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "`some View` tells the compiler exactly which concrete type is returned (even though the caller doesn't name it), enabling static dispatch and avoiding the boxing/indirection cost of a type-erased `any View`.",
+        "vi": "`some View` báo cho trình biên dịch biết chính xác kiểu cụ thể nào được trả về (dù bên gọi không nêu tên nó), cho phép dispatch tĩnh và tránh chi phí boxing/gián tiếp của `any View` đã xoá kiểu."
+      }
+    },
+    {
+      "question": {
+        "en": "Why would you write `[weak self]` in a closure stored as a property on the same object?",
+        "vi": "Vì sao nên viết `[weak self]` trong một closure được lưu làm thuộc tính của chính object đó?"
+      },
+      "options": [
+        {
+          "en": "To avoid a retain cycle — self would otherwise strongly retain the closure, which strongly retains self",
+          "vi": "Để tránh retain cycle — nếu không, self sẽ giữ mạnh closure, và closure lại giữ mạnh self"
+        },
+        {
+          "en": "To make the closure execute synchronously",
+          "vi": "Để làm closure thực thi đồng bộ"
+        },
+        {
+          "en": "It is required syntax for all Swift closures",
+          "vi": "Đây là cú pháp bắt buộc cho mọi closure trong Swift"
+        },
+        {
+          "en": "To prevent the closure from capturing any variables at all",
+          "vi": "Để ngăn closure capture bất kỳ biến nào"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "If self holds a strong reference to a closure that itself strongly captures self, neither can ever be deallocated — [weak self] breaks that cycle at the cost of self being Optional inside the closure.",
+        "vi": "Nếu self giữ tham chiếu mạnh tới một closure mà chính closure đó lại capture self mạnh, không cái nào có thể bị giải phóng — [weak self] phá vỡ vòng lặp đó, đánh đổi bằng việc self trở thành Optional bên trong closure."
+      }
+    },
+    {
+      "question": {
+        "en": "What distinguishes a structured child task (async let / TaskGroup) from an unstructured `Task { }`?",
+        "vi": "Điều gì phân biệt một child task có cấu trúc (async let / TaskGroup) với `Task { }` không có cấu trúc?"
+      },
+      "options": [
+        {
+          "en": "Its lifetime and cancellation are automatically bound to the enclosing scope",
+          "vi": "Vòng đời và việc huỷ của nó gắn tự động với scope bao quanh"
+        },
+        {
+          "en": "It cannot call async functions",
+          "vi": "Nó không thể gọi hàm async"
+        },
+        {
+          "en": "It always runs on a background thread only",
+          "vi": "Nó luôn chỉ chạy trên luồng nền"
+        },
+        {
+          "en": "It has no return value",
+          "vi": "Nó không có giá trị trả về"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "async let and TaskGroup children are structured — cancelling or exiting the enclosing scope propagates cancellation to them automatically, unlike a standalone Task { } which lives independently.",
+        "vi": "Child task của async let và TaskGroup có cấu trúc — huỷ hoặc thoát khỏi scope bao quanh sẽ tự động lan truyền việc huỷ tới chúng, khác với một Task { } độc lập tồn tại riêng biệt."
+      }
+    },
+    {
+      "question": {
+        "en": "What does marking a class or function @MainActor guarantee?",
+        "vi": "Đánh dấu một class hoặc function @MainActor đảm bảo điều gì?"
+      },
+      "options": [
+        {
+          "en": "Calls to it are automatically executed on the main thread, checked/hopped by the compiler and runtime",
+          "vi": "Lệnh gọi tới nó tự động được thực thi trên main thread, được kiểm tra/chuyển bởi compiler và runtime"
+        },
+        {
+          "en": "It runs faster than non-actor code",
+          "vi": "Nó chạy nhanh hơn code không phải actor"
+        },
+        {
+          "en": "It cannot be called from a background thread under any circumstance, even with await",
+          "vi": "Nó không thể được gọi từ luồng nền trong bất kỳ trường hợp nào, kể cả với await"
+        },
+        {
+          "en": "It disables Combine publishers",
+          "vi": "Nó vô hiệu hoá Combine publisher"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "@MainActor isolates the marked code to the main thread; calling it from elsewhere requires an (often implicit, compiler-inserted) hop to the main actor, replacing manual DispatchQueue.main.async calls.",
+        "vi": "@MainActor cô lập code được đánh dấu vào main thread; gọi nó từ nơi khác cần một lần chuyển (thường ngầm định, do compiler chèn vào) sang main actor, thay thế lệnh gọi DispatchQueue.main.async thủ công."
+      }
+    },
+    {
+      "question": {
+        "en": "What is SwiftData's relationship to Core Data?",
+        "vi": "SwiftData liên quan thế nào tới Core Data?"
+      },
+      "options": [
+        {
+          "en": "SwiftData is a newer, macro-based Swift API built on Core Data's underlying engine",
+          "vi": "SwiftData là API Swift mới hơn, dựa trên macro, xây trên engine bên dưới của Core Data"
+        },
+        {
+          "en": "SwiftData completely replaces and removes Core Data from iOS",
+          "vi": "SwiftData hoàn toàn thay thế và loại bỏ Core Data khỏi iOS"
+        },
+        {
+          "en": "SwiftData only works with SwiftUI, never with UIKit apps",
+          "vi": "SwiftData chỉ hoạt động với SwiftUI, không bao giờ với app UIKit"
+        },
+        {
+          "en": "They are unrelated, competing frameworks from different teams",
+          "vi": "Chúng là hai framework không liên quan, cạnh tranh nhau từ các team khác nhau"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "SwiftData provides a lighter, more Swift-idiomatic API (@Model, @Query) over the same persistence engine Core Data uses, rather than being an unrelated replacement.",
+        "vi": "SwiftData cung cấp một API nhẹ hơn, thuần Swift hơn (@Model, @Query) trên cùng engine lưu trữ mà Core Data dùng, chứ không phải một thay thế không liên quan."
+      }
+    },
+    {
+      "question": {
+        "en": "Why use LazyVStack instead of VStack inside a ScrollView with many items?",
+        "vi": "Vì sao nên dùng LazyVStack thay vì VStack trong một ScrollView có nhiều item?"
+      },
+      "options": [
+        {
+          "en": "LazyVStack only creates children as they're about to appear on screen, saving memory and layout cost for off-screen content",
+          "vi": "LazyVStack chỉ tạo children khi chúng sắp xuất hiện trên màn hình, tiết kiệm bộ nhớ và chi phí layout cho nội dung ngoài màn hình"
+        },
+        {
+          "en": "LazyVStack supports more colors than VStack",
+          "vi": "LazyVStack hỗ trợ nhiều màu hơn VStack"
+        },
+        {
+          "en": "VStack cannot be scrolled at all",
+          "vi": "VStack hoàn toàn không thể cuộn được"
+        },
+        {
+          "en": "LazyVStack automatically caches data to disk",
+          "vi": "LazyVStack tự động cache dữ liệu xuống đĩa"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "A plain VStack eagerly builds every child immediately regardless of visibility; LazyVStack defers child creation until just before it scrolls into view, which is critical for long lists.",
+        "vi": "VStack thường dựng ngay mọi children bất kể có hiển thị hay không; LazyVStack trì hoãn việc tạo children tới ngay trước khi nó cuộn vào tầm nhìn, điều này rất quan trọng với danh sách dài."
+      }
+    },
+    {
+      "question": {
+        "en": "What does @Published do when the value it wraps changes?",
+        "vi": "@Published làm gì khi giá trị nó bọc thay đổi?"
+      },
+      "options": [
+        {
+          "en": "Automatically calls objectWillChange.send() so observers update",
+          "vi": "Tự động gọi objectWillChange.send() để các observer cập nhật"
+        },
+        {
+          "en": "Persists the new value to disk",
+          "vi": "Lưu giá trị mới xuống đĩa"
+        },
+        {
+          "en": "Prevents the value from ever being read again",
+          "vi": "Ngăn giá trị đó không bao giờ được đọc lại"
+        },
+        {
+          "en": "Encrypts the value in memory",
+          "vi": "Mã hoá giá trị đó trong bộ nhớ"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "@Published wraps the property so any change triggers objectWillChange.send() on the enclosing ObservableObject, which is what SwiftUI views (or Combine subscribers) react to.",
+        "vi": "@Published bọc thuộc tính sao cho mọi thay đổi kích hoạt objectWillChange.send() trên ObservableObject bao quanh, đây là điều mà view SwiftUI (hoặc subscriber Combine) phản ứng theo."
+      }
+    },
+    {
+      "question": {
+        "en": "When is Swift's Result<Success, Failure> type particularly useful compared to throws?",
+        "vi": "Kiểu Result<Success, Failure> của Swift đặc biệt hữu ích khi nào so với throws?"
+      },
+      "options": [
+        {
+          "en": "When an outcome needs to be stored, passed around, or handled later rather than immediately (e.g. a completion handler)",
+          "vi": "Khi một kết quả cần được lưu lại, truyền đi, hoặc xử lý sau thay vì ngay lập tức (ví dụ một completion handler)"
+        },
+        {
+          "en": "When performance is the only concern, since Result is always faster than throws",
+          "vi": "Khi hiệu năng là mối quan tâm duy nhất, vì Result luôn nhanh hơn throws"
+        },
+        {
+          "en": "Result can only be used with synchronous code",
+          "vi": "Result chỉ dùng được với code đồng bộ"
+        },
+        {
+          "en": "throws cannot represent a Failure case at all",
+          "vi": "throws hoàn toàn không thể biểu diễn trường hợp Failure"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Because Result is a regular value, it can be stored and handled asynchronously later, which fits completion-handler-based APIs better than throws, which propagates immediately up the call stack.",
+        "vi": "Vì Result là một giá trị thông thường, nó có thể được lưu lại và xử lý bất đồng bộ sau, phù hợp hơn với API dựa trên completion handler so với throws, vốn lan truyền ngay lập tức lên call stack."
+      }
+    },
+    {
+      "question": {
+        "en": "What's the main purpose of TestFlight?",
+        "vi": "Mục đích chính của TestFlight là gì?"
+      },
+      "options": [
+        {
+          "en": "Distributing pre-release builds to internal/external testers for feedback before a public release",
+          "vi": "Phân phối bản build trước khi phát hành cho tester nội bộ/bên ngoài để lấy phản hồi trước khi ra mắt công khai"
+        },
+        {
+          "en": "Running unit tests automatically on every commit",
+          "vi": "Tự động chạy unit test ở mỗi commit"
+        },
+        {
+          "en": "Compiling Swift code faster",
+          "vi": "Biên dịch code Swift nhanh hơn"
+        },
+        {
+          "en": "Managing App Store pricing and subscriptions",
+          "vi": "Quản lý giá cả và subscription trên App Store"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "TestFlight is Apple's beta distribution tool, separate from CI test runners, letting real testers run a near-final build and report crashes/feedback ahead of public release.",
+        "vi": "TestFlight là công cụ phân phối beta của Apple, tách biệt với CI chạy test, cho phép tester thật chạy bản build gần cuối cùng và báo crash/phản hồi trước khi phát hành công khai."
+      }
+    },
+    {
+      "question": {
+        "en": "How do you consume values from an AsyncSequence?",
+        "vi": "Làm sao để lấy giá trị từ một AsyncSequence?"
+      },
+      "options": [
+        {
+          "en": "with `for await value in sequence { ... }`",
+          "vi": "bằng `for await value in sequence { ... }`"
+        },
+        {
+          "en": "with a completion handler closure only",
+          "vi": "chỉ bằng closure completion handler"
+        },
+        {
+          "en": "AsyncSequence values cannot be iterated, only counted",
+          "vi": "Giá trị của AsyncSequence không thể duyệt, chỉ đếm được"
+        },
+        {
+          "en": "with NotificationCenter.default.post",
+          "vi": "bằng NotificationCenter.default.post"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "`for await` is the structured-concurrency syntax for pulling values from an AsyncSequence one at a time, awaiting each in turn.",
+        "vi": "`for await` là cú pháp thuộc structured concurrency để lấy giá trị từ AsyncSequence từng cái một, await lần lượt."
+      }
+    },
+    {
+      "question": {
+        "en": "What changed about window management starting with iOS 13's SceneDelegate?",
+        "vi": "Điều gì thay đổi về quản lý cửa sổ kể từ SceneDelegate của iOS 13?"
+      },
+      "options": [
+        {
+          "en": "An app can have multiple UIWindowScene instances (e.g. multiple windows on iPad), instead of one single implicit window",
+          "vi": "Một app có thể có nhiều instance UIWindowScene (ví dụ nhiều cửa sổ trên iPad), thay vì chỉ một cửa sổ ngầm định duy nhất"
+        },
+        {
+          "en": "UIWindow was removed entirely from the SDK",
+          "vi": "UIWindow bị loại bỏ hoàn toàn khỏi SDK"
+        },
+        {
+          "en": "AppDelegate can no longer handle any lifecycle events",
+          "vi": "AppDelegate không còn xử lý được bất kỳ sự kiện vòng đời nào"
+        },
+        {
+          "en": "Every app is now required to support multiple windows",
+          "vi": "Mọi app giờ bắt buộc phải hỗ trợ nhiều cửa sổ"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "SceneDelegate introduced multi-scene support, so a single app process can manage several independent UI instances (scenes), each owning its own window(s), rather than assuming exactly one window.",
+        "vi": "SceneDelegate đưa vào hỗ trợ đa scene, nên một process app duy nhất có thể quản lý nhiều instance UI độc lập (scene), mỗi cái sở hữu cửa sổ riêng, thay vì giả định chỉ có đúng một cửa sổ."
+      }
+    },
+    {
+      "question": {
+        "en": "What is Swift Package Manager's main advantage over CocoaPods for a new project?",
+        "vi": "Ưu điểm chính của Swift Package Manager so với CocoaPods cho một dự án mới là gì?"
+      },
+      "options": [
+        {
+          "en": "Native, built-in integration with Xcode, with no separate tool or workspace file required",
+          "vi": "Tích hợp sẵn, bản địa với Xcode, không cần công cụ riêng hay file workspace riêng"
+        },
+        {
+          "en": "It is the only tool that supports Objective-C dependencies",
+          "vi": "Nó là công cụ duy nhất hỗ trợ dependency Objective-C"
+        },
+        {
+          "en": "It automatically writes unit tests",
+          "vi": "Nó tự động viết unit test"
+        },
+        {
+          "en": "It requires Ruby to be installed",
+          "vi": "Nó yêu cầu cài Ruby"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "SPM ships as part of Xcode/the Swift toolchain itself, avoiding the extra Ruby install and .xcworkspace step CocoaPods requires.",
+        "vi": "SPM đi kèm sẵn với Xcode/toolchain Swift, tránh việc phải cài thêm Ruby và bước .xcworkspace mà CocoaPods yêu cầu."
+      }
+    },
+    {
+      "question": {
+        "en": "What warning does @discardableResult suppress?",
+        "vi": "@discardableResult tắt cảnh báo nào?"
+      },
+      "options": [
+        {
+          "en": "The compiler warning about an unused function return value at the call site",
+          "vi": "Cảnh báo của trình biên dịch về giá trị trả về của hàm không được dùng tại nơi gọi"
+        },
+        {
+          "en": "A deprecation warning",
+          "vi": "Cảnh báo deprecated"
+        },
+        {
+          "en": "An unused-variable warning inside the function body",
+          "vi": "Cảnh báo biến không dùng bên trong thân hàm"
+        },
+        {
+          "en": "A memory leak warning from Instruments",
+          "vi": "Cảnh báo rò rỉ bộ nhớ từ Instruments"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "By default Swift warns when a non-Void return value is ignored; @discardableResult on the function's declaration silences that specific warning for callers who choose to ignore it.",
+        "vi": "Mặc định Swift cảnh báo khi giá trị trả về khác Void bị bỏ qua; @discardableResult trên khai báo hàm tắt đúng cảnh báo đó cho bên gọi chọn bỏ qua nó."
+      }
+    },
+    {
+      "question": {
+        "en": "What does SwiftUI use to decide whether a view at a given tree position is 'the same view' across an update?",
+        "vi": "SwiftUI dùng gì để quyết định một view ở một vị trí trong cây có phải 'cùng một view' qua một lần cập nhật hay không?"
+      },
+      "options": [
+        {
+          "en": "View identity — structural (type + position) by default, or explicit via `.id()`",
+          "vi": "Định danh view — cấu trúc (kiểu + vị trí) theo mặc định, hoặc tường minh qua `.id()`"
+        },
+        {
+          "en": "The view's memory address only",
+          "vi": "Chỉ địa chỉ bộ nhớ của view"
+        },
+        {
+          "en": "Whichever view was created first in the app's history",
+          "vi": "View nào được tạo đầu tiên trong lịch sử app"
+        },
+        {
+          "en": "The order of properties declared inside the view struct",
+          "vi": "Thứ tự các thuộc tính khai báo trong struct view"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "SwiftUI's default identity is structural — same type at the same position in the hierarchy — but `.id()` lets you override that, which is essential when you want a change (like switching data) to reset a view's @State via a 'new' identity.",
+        "vi": "Định danh mặc định của SwiftUI là cấu trúc — cùng kiểu ở cùng vị trí trong cây — nhưng `.id()` cho phép ghi đè điều đó, điều cần thiết khi muốn một thay đổi (như đổi dữ liệu) reset @State của view thông qua một định danh 'mới'."
+      }
+    },
+    {
+      "question": {
+        "en": "What does App Transport Security (ATS) require by default for network connections on iOS?",
+        "vi": "App Transport Security (ATS) mặc định yêu cầu gì cho kết nối mạng trên iOS?"
+      },
+      "options": [
+        {
+          "en": "HTTPS with modern TLS and reasonably strong ciphers",
+          "vi": "HTTPS với TLS hiện đại và cipher đủ mạnh"
+        },
+        {
+          "en": "All traffic must go through a VPN",
+          "vi": "Mọi lưu lượng phải đi qua VPN"
+        },
+        {
+          "en": "Only connections to Apple's own servers are allowed",
+          "vi": "Chỉ cho phép kết nối tới máy chủ của chính Apple"
+        },
+        {
+          "en": "No network access is allowed without explicit user approval per request",
+          "vi": "Không cho phép truy cập mạng nếu không có sự chấp thuận tường minh của người dùng cho từng request"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "ATS enforces HTTPS with a modern TLS version and strong ciphers by default; connecting to an endpoint that doesn't meet this requires a narrowly-scoped, explicitly justified Info.plist exception.",
+        "vi": "ATS ép buộc HTTPS với phiên bản TLS hiện đại và cipher mạnh theo mặc định; kết nối tới endpoint không đáp ứng điều này cần một ngoại lệ Info.plist phạm vi hẹp, được giải thích rõ ràng."
+      }
     }
   ],
   "notes": [
@@ -1015,6 +1805,206 @@
       "content": {
         "en": "`NavigationStack` (iOS 16+) makes the navigation path an explicit, bindable value instead of an implicit chain of `NavigationLink`s:\n\n```swift\nstruct ContentView: View {\n    @State private var path: [Topic] = []\n\n    var body: some View {\n        NavigationStack(path: $path) {\n            List(topics) { topic in\n                NavigationLink(topic.title, value: topic)\n            }\n            .navigationDestination(for: Topic.self) { topic in\n                TopicScreen(topic: topic)\n            }\n        }\n    }\n}\n\n// Programmatic navigation, e.g. from a deep link:\npath.append(someTopic)\n// Pop to root:\npath.removeAll()\n```\n\nBecause `path` is just a `@State` array, it can be persisted (e.g. to `UserDefaults` or `Codable` state restoration), pre-populated to deep-link straight into a nested screen, or manipulated from anywhere holding a binding to it — capabilities the older `NavigationView`'s implicit, link-based push model didn't expose. This mirrors why Flutter apps reach for GoRouter over plain `Navigator.push`: both trade a simple imperative API for an explicit, inspectable navigation state.",
         "vi": "`NavigationStack` (iOS 16+) biến đường dẫn điều hướng thành một giá trị tường minh, có thể binding, thay vì một chuỗi `NavigationLink` ngầm định:\n\n```swift\nstruct ContentView: View {\n    @State private var path: [Topic] = []\n\n    var body: some View {\n        NavigationStack(path: $path) {\n            List(topics) { topic in\n                NavigationLink(topic.title, value: topic)\n            }\n            .navigationDestination(for: Topic.self) { topic in\n                TopicScreen(topic: topic)\n            }\n        }\n    }\n}\n\n// Điều hướng bằng code, ví dụ từ deep link:\npath.append(someTopic)\n// Pop về root:\npath.removeAll()\n```\n\nVì `path` chỉ là một mảng `@State` bình thường, nó có thể được lưu lại (ví dụ vào `UserDefaults` hoặc khôi phục state bằng `Codable`), điền sẵn để deep-link thẳng vào một màn hình lồng sâu, hoặc thao tác từ bất kỳ đâu giữ binding tới nó — những khả năng mà mô hình push ngầm định, dựa trên link của `NavigationView` cũ không có. Điều này phản ánh đúng lý do app Flutter chuyển sang GoRouter thay vì `Navigator.push` thuần: cả hai đều đánh đổi một API mệnh lệnh đơn giản để lấy một navigation state tường minh, có thể kiểm tra được."
+      }
+    },
+    {
+      "title": {
+        "en": "SwiftUI Property Wrappers: Ownership & Sharing",
+        "vi": "Property Wrapper trong SwiftUI: Sở hữu & Chia sẻ"
+      },
+      "content": {
+        "en": "SwiftUI's data-flow wrappers differ mainly in who owns the data and how far it's shared:\n\n- `@State`: local value-type state owned by one view.\n- `@StateObject`: local ownership of a reference-type ObservableObject, created exactly once for that view's identity.\n- `@ObservedObject`: a reference to an ObservableObject owned elsewhere — the view observes but doesn't own its lifetime; re-passing a new instance on every parent rebuild would reset it, which is why the *owner* should use @StateObject.\n- `@EnvironmentObject`: an ObservableObject injected implicitly via `.environmentObject()` on an ancestor, read anywhere below without explicit passing.\n- `@Binding`: a two-way reference to state owned by another view, letting a child read and write a parent's @State.\n\nGetting ownership wrong (e.g. @ObservedObject where @StateObject was needed) is a common source of subtle bugs where state unexpectedly resets.",
+        "vi": "Các property wrapper luồng dữ liệu của SwiftUI khác nhau chủ yếu ở việc ai sở hữu dữ liệu và nó được chia sẻ tới đâu:\n\n- `@State`: state kiểu value cục bộ, sở hữu bởi một view.\n- `@StateObject`: sở hữu cục bộ một ObservableObject kiểu reference, được tạo đúng một lần cho định danh của view đó.\n- `@ObservedObject`: một tham chiếu tới ObservableObject được sở hữu ở nơi khác — view quan sát nhưng không sở hữu vòng đời của nó; truyền lại một instance mới mỗi lần parent rebuild sẽ reset nó, đây là lý do *chủ sở hữu* nên dùng @StateObject.\n- `@EnvironmentObject`: một ObservableObject được tiêm ngầm qua `.environmentObject()` ở ancestor, đọc được ở bất kỳ đâu bên dưới mà không cần truyền tường minh.\n- `@Binding`: một tham chiếu hai chiều tới state sở hữu bởi view khác, cho phép child đọc và ghi @State của parent.\n\nHiểu sai về sở hữu (ví dụ dùng @ObservedObject ở nơi cần @StateObject) là nguồn lỗi tinh vi thường gặp khi state bất ngờ bị reset."
+      }
+    },
+    {
+      "title": {
+        "en": "Early Exit with guard",
+        "vi": "Thoát sớm với guard"
+      },
+      "content": {
+        "en": "`guard` is Swift's early-exit control flow: it checks a condition (often unwrapping an Optional) and, if it fails, forces the `else` branch to leave the current scope.\n\n```swift\nfunc process(_ input: String?) {\n  guard let input, !input.isEmpty else {\n    return\n  }\n  // `input` is a non-optional String here, and stays in scope\n  // for the rest of the function.\n  print(input.uppercased())\n}\n```\nCompared to `if let`, which only makes the unwrapped value available inside its own braces, `guard let` keeps the bound value available for the rest of the enclosing scope — this is why guard is preferred for validating multiple preconditions at the top of a function, avoiding a 'pyramid of doom' of nested if-lets.",
+        "vi": "`guard` là luồng điều khiển thoát sớm của Swift: nó kiểm tra một điều kiện (thường là unwrap Optional) và, nếu thất bại, buộc nhánh `else` phải rời khỏi scope hiện tại.\n\n```swift\nfunc process(_ input: String?) {\n  guard let input, !input.isEmpty else {\n    return\n  }\n  // `input` là String không-optional ở đây, và vẫn nằm trong scope\n  // cho phần còn lại của hàm.\n  print(input.uppercased())\n}\n```\nSo với `if let`, chỉ cho giá trị đã unwrap khả dụng bên trong dấu ngoặc của chính nó, `guard let` giữ giá trị đã bind khả dụng cho phần còn lại của scope bao quanh — đây là lý do guard được ưu tiên để kiểm tra nhiều tiền điều kiện ở đầu một hàm, tránh 'kim tự tháp diệt vong' của các if-let lồng nhau."
+      }
+    },
+    {
+      "title": {
+        "en": "Value Types vs Reference Types: struct, enum, class",
+        "vi": "Kiểu Value và Kiểu Reference: struct, enum, class"
+      },
+      "content": {
+        "en": "Swift distinguishes **value types** (struct, enum, tuple) from **reference types** (class). Assigning or passing a value type copies it — each copy is independent, which avoids a whole category of shared-mutable-state bugs and makes value types naturally thread-safe when not further shared. Reference types share a single underlying instance; assignment creates another pointer to the same object, and mutating through one reference is visible through all of them.\n\nSwift's standard library leans heavily on value types (Array, Dictionary, String are all structs, using copy-on-write internally to stay efficient despite copy semantics). Prefer struct/enum by default; reach for class when you need reference/identity semantics (shared mutable state, or interop with UIKit/Objective-C APIs that expect classes), inheritance, or deinitializers.",
+        "vi": "Swift phân biệt **kiểu value** (struct, enum, tuple) với **kiểu reference** (class). Gán hoặc truyền một kiểu value sẽ copy nó — mỗi bản copy độc lập, tránh cả một nhóm lỗi liên quan tới state chia sẻ có thể thay đổi, và khiến kiểu value tự nhiên an toàn luồng khi không bị chia sẻ thêm. Kiểu reference chia sẻ một instance duy nhất bên dưới; gán tạo ra một con trỏ khác trỏ tới cùng object, và thay đổi qua một tham chiếu sẽ thấy được qua mọi tham chiếu khác.\n\nThư viện chuẩn của Swift dựa nhiều vào kiểu value (Array, Dictionary, String đều là struct, dùng copy-on-write bên trong để giữ hiệu quả dù có ngữ nghĩa copy). Mặc định nên ưu tiên struct/enum; chuyển sang class khi cần ngữ nghĩa reference/định danh (state chia sẻ có thể thay đổi, hoặc tương tác với API UIKit/Objective-C yêu cầu class), kế thừa, hoặc deinitializer."
+      }
+    },
+    {
+      "title": {
+        "en": "Protocols with Associated Types & Opaque/Existential Types",
+        "vi": "Protocol có Associated Type & Kiểu Opaque/Existential"
+      },
+      "content": {
+        "en": "A protocol can declare a placeholder type with `associatedtype`, letting conforming types fill it in — this is how `Sequence`/`Collection` stay generic over their element type without committing to one upfront. Such protocols (called PATs, protocols with associated types) can't be used as a plain type name directly, because the compiler wouldn't know the concrete associated type at that point.\n\nTwo modern tools handle this:\n\n- **`some Protocol`** (opaque type): 'a specific concrete type conforming to Protocol, decided by the implementation, unknown to the caller' — used as a return type, preserving full static type information for the compiler.\n- **`any Protocol`** (existential): 'any concrete type conforming to Protocol, decided at runtime' — a boxed container that can hold different concrete types over time, at some indirection/performance cost, and (for a PAT) works only when using primary associated types (e.g. `any Collection<Int>`) or type erasure.",
+        "vi": "Một protocol có thể khai báo một kiểu placeholder bằng `associatedtype`, để các kiểu tuân theo điền vào — đây là cách `Sequence`/`Collection` giữ tính generic theo kiểu element mà không cam kết trước một kiểu cụ thể. Các protocol như vậy (gọi là PAT, protocol có associated type) không thể dùng trực tiếp như tên kiểu thông thường, vì trình biên dịch sẽ không biết associated type cụ thể tại điểm đó.\n\nHai công cụ hiện đại xử lý việc này:\n\n- **`some Protocol`** (opaque type): 'một kiểu cụ thể, xác định tuân theo Protocol, do phần triển khai quyết định, bên gọi không biết' — dùng làm kiểu trả về, giữ nguyên đầy đủ thông tin kiểu tĩnh cho trình biên dịch.\n- **`any Protocol`** (existential): 'bất kỳ kiểu cụ thể nào tuân theo Protocol, quyết định lúc runtime' — một container đóng hộp có thể chứa các kiểu cụ thể khác nhau theo thời gian, đánh đổi bằng một ít chi phí gián tiếp/hiệu năng, và (với PAT) chỉ hoạt động khi dùng primary associated type (ví dụ `any Collection<Int>`) hoặc type erasure."
+      }
+    },
+    {
+      "title": {
+        "en": "Closures & Capture Semantics",
+        "vi": "Closure & Ngữ nghĩa Capture"
+      },
+      "content": {
+        "en": "A Swift closure captures references to any variable/constant it uses from its enclosing scope, by default strongly. This is exactly the mechanism behind retain cycles: if `self` owns a closure (e.g. stored as a completion handler property) and that closure captures `self` strongly, neither can ever be deallocated.\n\n```swift\nclass Loader {\n  var onComplete: (() -> Void)?\n\n  func start() {\n    // Strong capture -> retain cycle if `onComplete` outlives the call:\n    onComplete = { self.finish() }\n\n    // Fixed with a capture list:\n    onComplete = { [weak self] in self?.finish() }\n  }\n}\n```\n`[weak self]` breaks the cycle, making `self` Optional inside the closure. `[unowned self]` avoids the Optional but crashes if `self` has already been deallocated when the closure runs — use it only when you can guarantee `self` outlives the closure's execution.",
+        "vi": "Closure trong Swift mặc định capture các biến/hằng nó dùng từ scope bao quanh dưới dạng tham chiếu mạnh. Đây chính xác là cơ chế đứng sau retain cycle: nếu `self` sở hữu một closure (ví dụ lưu làm thuộc tính completion handler) và closure đó capture `self` mạnh, không cái nào có thể được giải phóng.\n\n```swift\nclass Loader {\n  var onComplete: (() -> Void)?\n\n  func start() {\n    // Capture mạnh -> retain cycle nếu `onComplete` tồn tại lâu hơn lệnh gọi:\n    onComplete = { self.finish() }\n\n    // Sửa bằng capture list:\n    onComplete = { [weak self] in self?.finish() }\n  }\n}\n```\n`[weak self]` phá vỡ vòng lặp, khiến `self` trở thành Optional bên trong closure. `[unowned self]` tránh Optional nhưng sẽ crash nếu `self` đã bị giải phóng khi closure chạy — chỉ dùng khi có thể đảm bảo `self` tồn tại lâu hơn thời gian thực thi của closure."
+      }
+    },
+    {
+      "title": {
+        "en": "Structured Concurrency: Task, async let, TaskGroup",
+        "vi": "Structured Concurrency: Task, async let, TaskGroup"
+      },
+      "content": {
+        "en": "Swift concurrency (async/await, introduced in Swift 5.5) organizes asynchronous work into a task tree:\n\n- **`Task { ... }`**: creates an unstructured top-level task — necessary as the bridge from synchronous code (like a SwiftUI `.onAppear`) into async context, but its lifetime isn't tied to any particular scope unless you manage it (store and cancel it yourself).\n- **`async let`**: runs multiple async operations concurrently as structured child tasks bound to the enclosing scope — the parent implicitly awaits them before the scope exits, and cancelling the parent cancels them.\n- **`TaskGroup`** (`withTaskGroup`/`withThrowingTaskGroup`): for a dynamic number of structured child tasks (e.g. fetching N URLs concurrently), collected as results become available.\n\nStructured concurrency's core promise: cancellation and error propagation flow automatically through the task tree, unlike manually-managed DispatchQueue/OperationQueue code where you're responsible for wiring that up yourself.",
+        "vi": "Swift concurrency (async/await, ra mắt ở Swift 5.5) tổ chức công việc bất đồng bộ thành một cây task:\n\n- **`Task { ... }`**: tạo một task cấp cao nhất không có cấu trúc — cần thiết để làm cầu nối từ code đồng bộ (như `.onAppear` của SwiftUI) vào context async, nhưng vòng đời của nó không gắn với scope cụ thể nào trừ khi tự quản lý (tự lưu và huỷ nó).\n- **`async let`**: chạy nhiều thao tác async đồng thời dưới dạng child task có cấu trúc gắn với scope bao quanh — parent ngầm định await chúng trước khi scope thoát, và huỷ parent sẽ huỷ chúng.\n- **`TaskGroup`** (`withTaskGroup`/`withThrowingTaskGroup`): cho một số lượng động các child task có cấu trúc (ví dụ tải N URL đồng thời), thu thập kết quả khi chúng sẵn sàng.\n\nCam kết cốt lõi của structured concurrency: việc huỷ và lan truyền lỗi tự động chảy qua cây task, khác với code DispatchQueue/OperationQueue quản lý thủ công nơi bạn phải tự nối những thứ đó."
+      }
+    },
+    {
+      "title": {
+        "en": "@MainActor & Actor Isolation",
+        "vi": "@MainActor & Cô lập Actor"
+      },
+      "content": {
+        "en": "An `actor` in Swift is a reference type that protects its mutable state from concurrent access — only one task can execute inside an actor's isolated code at a time, eliminating data races on that state by construction (the compiler enforces it, unlike a class where nothing stops concurrent access).\n\n`@MainActor` is a special, globally-shared actor representing the main thread. Marking a type, property, or function `@MainActor` means calls to it are isolated to the main thread; calling it from a non-main-actor context requires `await` (the compiler inserts the hop). This replaces the old pattern of manually wrapping UI updates in `DispatchQueue.main.async { }` — and, importantly, the compiler now catches a missing hop at compile time instead of it silently causing UI bugs or crashes at runtime.",
+        "vi": "Một `actor` trong Swift là kiểu reference bảo vệ state có thể thay đổi của nó khỏi truy cập đồng thời — chỉ một task được thực thi bên trong code bị cô lập của actor tại một thời điểm, loại bỏ race condition trên state đó ngay từ thiết kế (trình biên dịch ép buộc điều này, khác với class nơi không có gì ngăn truy cập đồng thời).\n\n`@MainActor` là một actor đặc biệt, dùng chung toàn cục đại diện cho main thread. Đánh dấu một type, property, hoặc function là `@MainActor` nghĩa là lệnh gọi tới nó bị cô lập vào main thread; gọi nó từ context không phải main actor cần `await` (trình biên dịch tự chèn bước chuyển). Điều này thay thế mẫu cũ là bọc thủ công cập nhật UI trong `DispatchQueue.main.async { }` — và quan trọng là, trình biên dịch giờ bắt được việc thiếu bước chuyển lúc biên dịch thay vì nó âm thầm gây lỗi UI hoặc crash lúc runtime."
+      }
+    },
+    {
+      "title": {
+        "en": "SwiftData: Modern Persistence",
+        "vi": "SwiftData: Lưu trữ Hiện đại"
+      },
+      "content": {
+        "en": "SwiftData (iOS 17+) is a Swift-native persistence layer built on the same underlying storage engine as Core Data, but replacing .xcdatamodeld files and NSManagedObject subclassing with plain Swift types and macros:\n\n```swift\n@Model\nclass Recipe {\n  var name: String\n  var rating: Int\n  init(name: String, rating: Int) {\n    self.name = name\n    self.rating = rating\n  }\n}\n\n// In a SwiftUI view:\n@Query(sort: \\Recipe.name) var recipes: [Recipe]\n@Environment(\\.modelContext) var context\n```\n`@Model` generates the persistence machinery for a plain class, and `@Query` in SwiftUI automatically fetches and keeps a view updated as data changes — a much shorter path to persistence than Core Data's NSFetchedResultsController-era boilerplate, though Core Data remains the choice for existing apps or advanced features (like CloudKit sync configurations) not yet fully covered by SwiftData.",
+        "vi": "SwiftData (iOS 17+) là lớp lưu trữ thuần Swift xây trên cùng engine lưu trữ bên dưới mà Core Data dùng, nhưng thay thế file .xcdatamodeld và kế thừa NSManagedObject bằng kiểu Swift thuần và macro:\n\n```swift\n@Model\nclass Recipe {\n  var name: String\n  var rating: Int\n  init(name: String, rating: Int) {\n    self.name = name\n    self.rating = rating\n  }\n}\n\n// Trong một view SwiftUI:\n@Query(sort: \\Recipe.name) var recipes: [Recipe]\n@Environment(\\.modelContext) var context\n```\n`@Model` sinh ra cơ chế lưu trữ cho một class thuần, và `@Query` trong SwiftUI tự động fetch và giữ view cập nhật khi dữ liệu đổi — một con đường tới lưu trữ ngắn hơn nhiều so với code lặp thời NSFetchedResultsController của Core Data, dù Core Data vẫn là lựa chọn cho app hiện có hoặc tính năng nâng cao (như cấu hình đồng bộ CloudKit) chưa được SwiftData bao phủ đầy đủ."
+      }
+    },
+    {
+      "title": {
+        "en": "Lazy Stacks & List Performance in SwiftUI",
+        "vi": "Lazy Stack & Hiệu năng List trong SwiftUI"
+      },
+      "content": {
+        "en": "Inside a `ScrollView`, a plain `VStack`/`HStack` builds every child eagerly — fine for a handful of items, but wasteful (and slow to lay out) for hundreds. `LazyVStack`/`LazyHStack` defer creating a child until it's about to scroll into the visible area, similar in spirit to how `List` (backed by UITableView/UICollectionView under the hood) reuses cells.\n\n`List` is usually the right default for a scrollable, selectable, row-based UI — it gets cell reuse, swipe actions, and platform-native scrolling behavior for free. Reach for `ScrollView` + `LazyVStack` when you need a fully custom, non-row layout (e.g. a masonry/grid-like arrangement) that `List`/`LazyVGrid` can't express directly.",
+        "vi": "Bên trong `ScrollView`, một `VStack`/`HStack` thường dựng mọi children ngay lập tức — ổn với vài item, nhưng lãng phí (và layout chậm) với hàng trăm item. `LazyVStack`/`LazyHStack` trì hoãn việc tạo một child tới khi nó sắp cuộn vào vùng hiển thị, tinh thần tương tự cách `List` (dựa trên UITableView/UICollectionView bên dưới) tái sử dụng cell.\n\n`List` thường là lựa chọn mặc định đúng đắn cho UI dạng cuộn, có thể chọn, theo hàng — nó có sẵn tái sử dụng cell, thao tác vuốt, và hành vi cuộn bản địa của nền tảng miễn phí. Chuyển sang `ScrollView` + `LazyVStack` khi cần một layout hoàn toàn tuỳ chỉnh, không theo hàng (ví dụ bố cục kiểu masonry/lưới) mà `List`/`LazyVGrid` không diễn tả trực tiếp được."
+      }
+    },
+    {
+      "title": {
+        "en": "ObservableObject & Combine's objectWillChange",
+        "vi": "ObservableObject & objectWillChange của Combine"
+      },
+      "content": {
+        "en": "`ObservableObject` (a protocol from Combine, used heavily by SwiftUI) requires an `objectWillChange` publisher — a `Publisher` that emits right before any observable change, letting subscribers (SwiftUI views via @ObservedObject/@StateObject, or manual Combine subscribers) know to re-read state.\n\n`@Published` is what makes this automatic for individual properties: it synthesizes the `objectWillChange.send()` call whenever the wrapped property is about to change, so you rarely call `objectWillChange.send()` manually — only needed for derived changes that don't go through a `@Published` property directly (e.g. mutating a nested reference type's internals).",
+        "vi": "`ObservableObject` (một protocol từ Combine, được SwiftUI dùng nhiều) yêu cầu một publisher `objectWillChange` — một `Publisher` phát ra ngay trước bất kỳ thay đổi có thể quan sát nào, báo cho subscriber (view SwiftUI qua @ObservedObject/@StateObject, hoặc subscriber Combine thủ công) biết cần đọc lại state.\n\n`@Published` là thứ làm điều này tự động cho từng thuộc tính riêng lẻ: nó tự sinh lệnh gọi `objectWillChange.send()` mỗi khi thuộc tính được bọc sắp thay đổi, nên hiếm khi cần gọi `objectWillChange.send()` thủ công — chỉ cần khi có thay đổi suy ra không đi qua trực tiếp một thuộc tính `@Published` (ví dụ thay đổi bên trong của một kiểu reference lồng nhau)."
+      }
+    },
+    {
+      "title": {
+        "en": "Error Handling: throws vs Result",
+        "vi": "Xử lý Lỗi: throws và Result"
+      },
+      "content": {
+        "en": "Swift's native error handling (`throws`/`try`/`catch`) propagates an `Error`-conforming value up the call stack implicitly — clean for both sync functions and (with async) async functions:\n\n```swift\nfunc fetchUser(id: String) async throws -> User { ... }\n\ndo {\n  let user = try await fetchUser(id: \"42\")\n} catch {\n  print(\"Failed: \\(error)\")\n}\n```\n`Result<Success, Failure: Error>` represents the same success/failure duality but as an ordinary value — useful when an outcome must be stored, passed to another function, or handled later rather than immediately, most commonly in completion-handler-based (pre-async/await) APIs:\n\n```swift\nfunc fetchUser(id: String, completion: @escaping (Result<User, Error>) -> Void)\n```\nIn new async/await code, `throws` is generally preferred since it's the language-native mechanism; `Result` still shows up at API boundaries that predate async/await or that deliberately want a storable outcome.",
+        "vi": "Xử lý lỗi bản địa của Swift (`throws`/`try`/`catch`) lan truyền một giá trị tuân theo `Error` lên call stack ngầm định — gọn gàng cho cả hàm đồng bộ và (với async) hàm bất đồng bộ:\n\n```swift\nfunc fetchUser(id: String) async throws -> User { ... }\n\ndo {\n  let user = try await fetchUser(id: \"42\")\n} catch {\n  print(\"Thất bại: \\(error)\")\n}\n```\n`Result<Success, Failure: Error>` biểu diễn cùng tính hai mặt thành công/thất bại nhưng như một giá trị thông thường — hữu ích khi kết quả cần được lưu, truyền cho hàm khác, hoặc xử lý sau thay vì ngay lập tức, phổ biến nhất trong API dựa trên completion handler (trước thời async/await):\n\n```swift\nfunc fetchUser(id: String, completion: @escaping (Result<User, Error>) -> Void)\n```\nTrong code async/await mới, `throws` thường được ưu tiên vì là cơ chế bản địa của ngôn ngữ; `Result` vẫn xuất hiện ở ranh giới API có trước async/await hoặc chủ đích muốn một kết quả có thể lưu trữ."
+      }
+    },
+    {
+      "title": {
+        "en": "Distributing Beta Builds with TestFlight",
+        "vi": "Phân phối Bản Beta với TestFlight"
+      },
+      "content": {
+        "en": "TestFlight sits between local development and a public App Store release. Internal testers (up to 100, must be part of your App Store Connect team) get a build immediately after upload, no review needed — good for the dev team and close stakeholders. External testers (up to 10,000, invited by email or a public link) require a lightweight Beta App Review first (faster and less strict than full App Store review, mainly checking the app doesn't crash outright or violate guidelines egregiously).\n\nEach build expires after 90 days, and TestFlight collects crash logs and written feedback from testers automatically — a standard step before wider release for catching device-specific bugs and gathering real-world feedback that internal QA might miss.",
+        "vi": "TestFlight nằm giữa phát triển cục bộ và phát hành công khai trên App Store. Tester nội bộ (tối đa 100, phải thuộc team App Store Connect) nhận bản build ngay sau khi upload, không cần review — phù hợp cho team dev và các bên liên quan gần gũi. Tester bên ngoài (tối đa 10.000, mời qua email hoặc link công khai) cần Beta App Review nhẹ trước (nhanh hơn và ít nghiêm ngặt hơn review App Store đầy đủ, chủ yếu kiểm tra app không crash rõ ràng hay vi phạm nghiêm trọng hướng dẫn).\n\nMỗi bản build hết hạn sau 90 ngày, và TestFlight tự động thu thập log crash và phản hồi viết từ tester — một bước chuẩn trước khi phát hành rộng rãi hơn để bắt lỗi đặc thù thiết bị và thu thập phản hồi thực tế mà QA nội bộ có thể bỏ sót."
+      }
+    },
+    {
+      "title": {
+        "en": "AsyncSequence & AsyncStream",
+        "vi": "AsyncSequence & AsyncStream"
+      },
+      "content": {
+        "en": "`AsyncSequence` is the async analog of `Sequence`: instead of a synchronous `next()`, its iterator's `next()` is `async`, letting you pull values one at a time with backpressure naturally handled by the consumer only asking for the next value when ready:\n\n```swift\nfor await line in url.lines {\n  process(line)\n}\n```\nMany system APIs (URLSession's byte streaming, NotificationCenter's `.notifications(named:)`) expose AsyncSequence directly. To bridge your own push-based, callback-driven code into this model, `AsyncStream` (or `AsyncThrowingStream`) lets you manually `yield` values from a closure while still presenting an AsyncSequence interface to consumers — a common pattern when wrapping a delegate-based or Combine-based API for use with `for await`.",
+        "vi": "`AsyncSequence` là phiên bản tương ứng bất đồng bộ của `Sequence`: thay vì `next()` đồng bộ, `next()` của iterator là `async`, cho phép lấy giá trị từng cái một với backpressure được xử lý tự nhiên vì bên tiêu thụ chỉ yêu cầu giá trị tiếp theo khi sẵn sàng:\n\n```swift\nfor await line in url.lines {\n  process(line)\n}\n```\nNhiều API hệ thống (stream byte của URLSession, `.notifications(named:)` của NotificationCenter) phơi bày AsyncSequence trực tiếp. Để nối code kiểu push, điều khiển bằng callback của riêng bạn vào mô hình này, `AsyncStream` (hoặc `AsyncThrowingStream`) cho phép thủ công `yield` giá trị từ một closure trong khi vẫn trình bày giao diện AsyncSequence cho bên tiêu thụ — một mẫu thường gặp khi bọc API dựa trên delegate hoặc Combine để dùng với `for await`."
+      }
+    },
+    {
+      "title": {
+        "en": "Multi-Window iOS: UIWindowScene & SceneDelegate",
+        "vi": "iOS Đa Cửa sổ: UIWindowScene & SceneDelegate"
+      },
+      "content": {
+        "en": "Before iOS 13, an app implicitly had exactly one `UIWindow`, managed by `AppDelegate`. Since iOS 13, the app's UI is organized into one or more `UIWindowScene` instances — each scene is one independent instance of the app's UI (e.g. one iPad Split View window, or one Mac Catalyst window), managed by its own `UISceneDelegate` (commonly `SceneDelegate`).\n\n`AppDelegate` still handles process-level events (launch, background/terminate, push registration), while `SceneDelegate` handles per-scene UI setup and lifecycle (`scene(_:willConnectTo:)` is where you set up the root `UIWindow` for that scene, replacing what `application(_:didFinishLaunchingWithOptions:)` used to do alone). A single-window app can mostly ignore the multi-scene machinery, but the split exists precisely so multi-window platforms have a well-defined per-window lifecycle.",
+        "vi": "Trước iOS 13, một app ngầm định có đúng một `UIWindow`, quản lý bởi `AppDelegate`. Từ iOS 13, UI của app được tổ chức thành một hoặc nhiều instance `UIWindowScene` — mỗi scene là một instance UI độc lập của app (ví dụ một cửa sổ Split View trên iPad, hay một cửa sổ Mac Catalyst), quản lý bởi `UISceneDelegate` riêng (thường là `SceneDelegate`).\n\n`AppDelegate` vẫn xử lý sự kiện cấp process (khởi chạy, vào nền/kết thúc, đăng ký push), trong khi `SceneDelegate` xử lý thiết lập UI và vòng đời theo từng scene (`scene(_:willConnectTo:)` là nơi thiết lập `UIWindow` gốc cho scene đó, thay thế những gì `application(_:didFinishLaunchingWithOptions:)` từng làm một mình). App một cửa sổ có thể phần lớn bỏ qua cơ chế đa scene, nhưng sự tách biệt này tồn tại chính xác để nền tảng đa cửa sổ có vòng đời rõ ràng theo từng cửa sổ."
+      }
+    },
+    {
+      "title": {
+        "en": "Swift Package Manager Basics",
+        "vi": "Cơ bản về Swift Package Manager"
+      },
+      "content": {
+        "en": "Swift Package Manager (SPM) is Apple's native dependency and build-system tool, described declaratively in a `Package.swift` manifest:\n\n```swift\nlet package = Package(\n  name: \"MyLib\",\n  products: [.library(name: \"MyLib\", targets: [\"MyLib\"])],\n  dependencies: [.package(url: \"https://github.com/apple/swift-algorithms\", from: \"1.0.0\")],\n  targets: [.target(name: \"MyLib\", dependencies: [.product(name: \"Algorithms\", package: \"swift-algorithms\")])]\n)\n```\nXcode resolves and builds SPM dependencies directly (File > Add Package Dependencies), pinning exact versions in a `Package.resolved` lockfile for reproducible builds. Unlike CocoaPods (a separate Ruby-based tool generating an .xcworkspace) or Carthage (builds frameworks externally, you integrate manually), SPM requires no extra tooling — the main reasons some larger/older projects still use CocoaPods are legacy inertia or specific pods that haven't adopted SPM.",
+        "vi": "Swift Package Manager (SPM) là công cụ quản lý dependency và build bản địa của Apple, mô tả khai báo trong manifest `Package.swift`:\n\n```swift\nlet package = Package(\n  name: \"MyLib\",\n  products: [.library(name: \"MyLib\", targets: [\"MyLib\"])],\n  dependencies: [.package(url: \"https://github.com/apple/swift-algorithms\", from: \"1.0.0\")],\n  targets: [.target(name: \"MyLib\", dependencies: [.product(name: \"Algorithms\", package: \"swift-algorithms\")])]\n)\n```\nXcode phân giải và build dependency SPM trực tiếp (File > Add Package Dependencies), ghim phiên bản chính xác trong file lockfile `Package.resolved` để build lặp lại được. Khác với CocoaPods (công cụ Ruby riêng, sinh ra .xcworkspace) hay Carthage (build framework bên ngoài, tự tích hợp thủ công), SPM không cần công cụ thêm — lý do chính một số dự án lớn/cũ hơn vẫn dùng CocoaPods là quán tính cũ hoặc pod cụ thể chưa hỗ trợ SPM."
+      }
+    },
+    {
+      "title": {
+        "en": "SwiftUI Environment Values",
+        "vi": "Environment Value trong SwiftUI"
+      },
+      "content": {
+        "en": "SwiftUI's environment is a lightweight, implicit dependency-injection mechanism: values set with a `.environment(\\.keyPath, value)` (or specific modifiers like `.tint()`) on a view propagate down to every descendant, readable via `@Environment(\\.keyPath)` without threading them through each intermediate initializer.\n\nBuilt-in keys cover things like `\\.colorScheme`, `\\.dismiss` (the current sheet/navigation dismiss action), and `\\.locale`. You can define custom ones by conforming to `EnvironmentKey`:\n\n```swift\nprivate struct ThemeKey: EnvironmentKey { static let defaultValue = Theme.light }\nextension EnvironmentValues {\n  var theme: Theme {\n    get { self[ThemeKey.self] }\n    set { self[ThemeKey.self] = newValue }\n  }\n}\n```\nThis is a good fit for cross-cutting, view-tree-scoped configuration; for shared mutable app state, `@EnvironmentObject` (an actual observed object) is usually the better tool.",
+        "vi": "Environment của SwiftUI là một cơ chế dependency-injection nhẹ, ngầm định: giá trị thiết lập bằng `.environment(\\.keyPath, value)` (hoặc modifier cụ thể như `.tint()`) trên một view lan xuống mọi descendant, đọc được qua `@Environment(\\.keyPath)` mà không cần truyền qua từng initializer trung gian.\n\nCác key có sẵn bao gồm `\\.colorScheme`, `\\.dismiss` (hành động dismiss sheet/navigation hiện tại), và `\\.locale`. Có thể tự định nghĩa key tuỳ chỉnh bằng cách tuân theo `EnvironmentKey`:\n\n```swift\nprivate struct ThemeKey: EnvironmentKey { static let defaultValue = Theme.light }\nextension EnvironmentValues {\n  var theme: Theme {\n    get { self[ThemeKey.self] }\n    set { self[ThemeKey.self] = newValue }\n  }\n}\n```\nĐây là lựa chọn phù hợp cho cấu hình xuyên suốt, giới hạn trong cây view; với state app dùng chung có thể thay đổi, `@EnvironmentObject` (một object được quan sát thực sự) thường là công cụ tốt hơn."
+      }
+    },
+    {
+      "title": {
+        "en": "View Identity & Animation in SwiftUI",
+        "vi": "Định danh View & Animation trong SwiftUI"
+      },
+      "content": {
+        "en": "SwiftUI decides whether to animate a smooth property change or perform an insert/remove transition based on **view identity**: by default, identity is structural — the same view type at the same position in the view tree, across an update, is considered 'the same view,' and its @State is preserved while its changed properties animate smoothly.\n\nExplicit `.id(someValue)` overrides this: when `someValue` changes, SwiftUI treats it as a completely different view identity — the old view is removed (its @State discarded) and a new one is inserted, which is how patterns like 'force a view to fully reset when a selection changes' or 'restart a transition' are implemented, often combined with `.transition()` and wrapped in `withAnimation { }`.",
+        "vi": "SwiftUI quyết định animate mượt một thay đổi thuộc tính hay thực hiện transition chèn/xoá dựa trên **định danh view**: mặc định, định danh mang tính cấu trúc — cùng kiểu view ở cùng vị trí trong cây view, qua một lần cập nhật, được coi là 'cùng một view,' và @State của nó được giữ nguyên trong khi các thuộc tính thay đổi animate mượt mà.\n\n`.id(someValue)` tường minh ghi đè điều này: khi `someValue` thay đổi, SwiftUI coi đó là một định danh view hoàn toàn khác — view cũ bị xoá (@State của nó bị bỏ) và một view mới được chèn vào, đây là cách các mẫu như 'buộc một view reset hoàn toàn khi lựa chọn thay đổi' hay 'khởi động lại một transition' được triển khai, thường kết hợp với `.transition()` và bọc trong `withAnimation { }`."
+      }
+    },
+    {
+      "title": {
+        "en": "App Transport Security (ATS)",
+        "vi": "App Transport Security (ATS)"
+      },
+      "content": {
+        "en": "App Transport Security is iOS's default network security policy, requiring all `NSURLSession`/`NSURLConnection` connections to use HTTPS with TLS 1.2+ and reasonably strong ciphers unless explicitly excepted. It's a system-level guardrail against accidentally shipping plaintext HTTP or weak-TLS connections.\n\nA legitimate need to connect to a non-compliant server (e.g. an internal legacy service) requires declaring a scoped exception in `Info.plist` under `NSAppTransportSecurity` — ideally targeting one specific domain (`NSExceptionDomains`) rather than the blanket `NSAllowsArbitraryLoads: true`, which App Review scrutinizes heavily and generally expects justification for. Since most third-party APIs and CDNs support modern TLS today, ATS exceptions are increasingly rare outside of internal/legacy integrations.",
+        "vi": "App Transport Security là chính sách bảo mật mạng mặc định của iOS, yêu cầu mọi kết nối `NSURLSession`/`NSURLConnection` dùng HTTPS với TLS 1.2+ và cipher đủ mạnh trừ khi có ngoại lệ tường minh. Đây là hàng rào cấp hệ thống chống việc vô tình phát hành kết nối HTTP thuần hay TLS yếu.\n\nNhu cầu chính đáng kết nối tới server không tuân thủ (ví dụ dịch vụ nội bộ cũ) đòi hỏi khai báo ngoại lệ phạm vi trong `Info.plist` dưới `NSAppTransportSecurity` — lý tưởng nhắm vào một domain cụ thể (`NSExceptionDomains`) thay vì dùng tràn lan `NSAllowsArbitraryLoads: true`, thứ App Review xem xét kỹ và thường yêu cầu giải trình. Vì hầu hết API và CDN bên thứ ba hiện nay hỗ trợ TLS hiện đại, ngoại lệ ATS ngày càng hiếm gặp ngoài các tích hợp nội bộ/cũ."
+      }
+    },
+    {
+      "title": {
+        "en": "Sendable & Data-Race Safety in Swift Concurrency",
+        "vi": "Sendable & An toàn Data-Race trong Swift Concurrency"
+      },
+      "content": {
+        "en": "`Sendable` is a marker protocol asserting a type is safe to pass across concurrency domains (e.g. from one actor/task to another) without introducing data races — value types are Sendable automatically if all their members are; reference types (classes) must be explicitly made Sendable, usually by being immutable or internally synchronized (like an actor).\n\nWith Swift's strict concurrency checking (opt-in per module, default in newer Swift language modes), passing a non-Sendable type across an `await` boundary is a compile-time error rather than a runtime data race waiting to happen — shifting a whole class of concurrency bugs from 'crashes in production, hard to reproduce' to 'caught before the code ever ships'.",
+        "vi": "`Sendable` là một marker protocol khẳng định một kiểu an toàn để truyền qua các miền concurrency (ví dụ từ actor/task này sang actor/task khác) mà không gây ra data race — kiểu value tự động là Sendable nếu mọi thành viên của nó cũng vậy; kiểu reference (class) phải được đánh dấu Sendable tường minh, thường bằng cách bất biến hoặc tự đồng bộ hoá bên trong (như một actor).\n\nVới kiểm tra concurrency nghiêm ngặt của Swift (bật theo từng module, mặc định ở chế độ ngôn ngữ Swift mới hơn), truyền một kiểu không-Sendable qua ranh giới `await` là lỗi biên dịch thay vì một data race runtime chờ xảy ra — chuyển cả một nhóm lỗi concurrency từ 'crash lúc production, khó tái hiện' sang 'bị bắt trước khi code từng được phát hành'."
+      }
+    },
+    {
+      "title": {
+        "en": "@discardableResult & Designing Ergonomic Swift APIs",
+        "vi": "@discardableResult & Thiết kế API Swift Tiện dụng"
+      },
+      "content": {
+        "en": "Swift warns by default when a non-`Void` function's return value is silently ignored at the call site — a useful guardrail against accidentally dropping an important result. `@discardableResult` on a function/method declaration opts out of that warning specifically for that function, for cases where the return value is often useful but sometimes legitimately ignorable.\n\n```swift\n@discardableResult\nfunc remove(at index: Int) -> Element {\n  let removed = storage[index]\n  storage.remove(at: index)\n  return removed\n}\n```\nCallers who want the removed element can capture it; callers who just want the side effect (removal) can call it as a statement without a compiler warning. Used well, it's a small but meaningful API-design signal: 'this return value is a convenience, not something you're expected to always handle.'",
+        "vi": "Swift mặc định cảnh báo khi giá trị trả về khác `Void` của một hàm bị âm thầm bỏ qua tại nơi gọi — một hàng rào hữu ích chống việc vô tình bỏ sót một kết quả quan trọng. `@discardableResult` trên khai báo hàm/method tắt cảnh báo đó riêng cho hàm đó, dành cho trường hợp giá trị trả về thường hữu ích nhưng đôi khi hợp lý để bỏ qua.\n\n```swift\n@discardableResult\nfunc remove(at index: Int) -> Element {\n  let removed = storage[index]\n  storage.remove(at: index)\n  return removed\n}\n```\nBên gọi muốn lấy phần tử đã xoá có thể bắt lấy nó; bên gọi chỉ muốn side-effect (xoá) có thể gọi như một statement mà không có cảnh báo trình biên dịch. Dùng đúng cách, đây là một tín hiệu thiết kế API nhỏ nhưng có ý nghĩa: 'giá trị trả về này là tiện ích, không phải thứ bạn luôn phải xử lý.'"
       }
     }
   ]

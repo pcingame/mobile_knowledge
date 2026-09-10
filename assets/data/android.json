@@ -264,6 +264,206 @@
         "en": "StateFlow always holds a current value (like an observable variable) and new collectors immediately get the latest value. SharedFlow is more general — it can be configured with no replay (pure event stream, e.g. one-off navigation events or snackbar messages) or a replay buffer, and doesn't require an initial value.",
         "vi": "StateFlow luôn giữ một giá trị hiện tại (giống một biến quan sát được) và collector mới sẽ nhận ngay giá trị mới nhất. SharedFlow tổng quát hơn — có thể cấu hình không replay (luồng sự kiện thuần, ví dụ sự kiện điều hướng một lần hay thông báo snackbar) hoặc có replay buffer, và không bắt buộc phải có giá trị khởi tạo."
       }
+    },
+    {
+      "question": {
+        "en": "What is recomposition in Jetpack Compose?",
+        "vi": "Recomposition trong Jetpack Compose là gì?"
+      },
+      "answer": {
+        "en": "Recomposition is Compose re-invoking composable functions whose read State has changed, to update the UI. Compose is smart-recomposition: it skips composables whose inputs didn't change, so keeping state reads scoped tightly matters for performance.",
+        "vi": "Recomposition là việc Compose gọi lại các composable function có State đã đọc bị thay đổi, để cập nhật UI. Compose có smart-recomposition: nó bỏ qua các composable có input không đổi, nên việc giới hạn phạm vi đọc state hẹp lại rất quan trọng cho hiệu năng."
+      }
+    },
+    {
+      "question": {
+        "en": "remember vs rememberSaveable in Compose?",
+        "vi": "remember khác rememberSaveable thế nào trong Compose?"
+      },
+      "answer": {
+        "en": "remember caches a value across recompositions but loses it on configuration change or process death. rememberSaveable additionally saves the value into the instance state Bundle (like onSaveInstanceState), so it survives rotation and process recreation for simple/Parcelable types.",
+        "vi": "remember cache một giá trị qua các lần recomposition nhưng mất khi configuration change hoặc process bị kill. rememberSaveable còn lưu giá trị vào Bundle instance state (giống onSaveInstanceState), nên sống sót qua xoay màn hình và process bị tạo lại, với các kiểu đơn giản/Parcelable."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the Application class for, and how does it differ from an Activity?",
+        "vi": "Application class dùng để làm gì, và khác Activity thế nào?"
+      },
+      "answer": {
+        "en": "Application is a singleton created once when the process starts and lives for the whole app lifetime — used for app-wide initialization (DI graph, crash reporting, logging). An Activity represents one screen, is created/destroyed many times, and shouldn't hold app-wide singletons or it risks leaking.",
+        "vi": "Application là singleton được tạo một lần khi process khởi động và tồn tại suốt vòng đời app — dùng để khởi tạo phạm vi toàn app (đồ thị DI, báo crash, logging). Activity đại diện cho một màn hình, được tạo/huỷ nhiều lần, không nên giữ singleton toàn app vì dễ rò rỉ bộ nhớ."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a ContentProvider used for?",
+        "vi": "ContentProvider dùng để làm gì?"
+      },
+      "answer": {
+        "en": "ContentProvider exposes structured data behind a standard content:// URI interface, enabling controlled data sharing between apps (e.g. the system Contacts provider) or between components without exposing implementation details. It's also required to implement a custom document provider or app search integration.",
+        "vi": "ContentProvider phơi bày dữ liệu có cấu trúc qua giao diện chuẩn content:// URI, cho phép chia sẻ dữ liệu có kiểm soát giữa các app (ví dụ Contacts provider của hệ thống) hoặc giữa các component mà không lộ chi tiết triển khai. Cũng cần thiết để tự viết document provider hay tích hợp tìm kiếm app."
+      }
+    },
+    {
+      "question": {
+        "en": "Foreground Service vs a regular (background) Service?",
+        "vi": "Foreground Service khác Service thông thường (background) thế nào?"
+      },
+      "answer": {
+        "en": "A foreground Service must show a persistent notification and is much less likely to be killed by the system, used for user-visible ongoing work (music playback, navigation, active download). A regular background Service has no notification requirement but is heavily restricted on modern Android (can be killed quickly, blocked from starting while backgrounded on Android 8+).",
+        "vi": "Foreground Service bắt buộc hiển thị notification liên tục và ít bị hệ thống kill hơn nhiều, dùng cho công việc đang chạy mà người dùng nhìn thấy (phát nhạc, chỉ đường, tải file đang diễn ra). Service thông thường (background) không cần notification nhưng bị hạn chế nặng trên Android hiện đại (dễ bị kill nhanh, bị chặn khởi động khi app ở nền từ Android 8 trở lên)."
+      }
+    },
+    {
+      "question": {
+        "en": "What are Notification Channels for (Android 8+)?",
+        "vi": "Notification Channel (từ Android 8+) dùng để làm gì?"
+      },
+      "answer": {
+        "en": "Notification channels group notifications by category/importance (e.g. 'Messages', 'Promotions') so users can control sound, vibration, and visibility per category in system settings instead of all-or-nothing per app. Apps targeting Android 8+ must create a channel before posting any notification.",
+        "vi": "Notification channel nhóm thông báo theo danh mục/độ ưu tiên (ví dụ 'Tin nhắn', 'Khuyến mãi') để người dùng kiểm soát âm thanh, rung, hiển thị theo từng danh mục trong cài đặt hệ thống thay vì bật/tắt toàn bộ theo app. App nhắm Android 8+ bắt buộc tạo channel trước khi gửi bất kỳ notification nào."
+      }
+    },
+    {
+      "question": {
+        "en": "What does Android Keystore / EncryptedSharedPreferences protect against?",
+        "vi": "Android Keystore / EncryptedSharedPreferences bảo vệ chống lại điều gì?"
+      },
+      "answer": {
+        "en": "Android Keystore stores cryptographic keys in hardware-backed secure storage that's never exposed to app code directly, protecting against key extraction even on a rooted device. EncryptedSharedPreferences (from Jetpack Security) uses Keystore-backed keys to encrypt preference values at rest, protecting against reading raw XML files off a rooted/compromised device.",
+        "vi": "Android Keystore lưu khoá mã hoá trong bộ nhớ an toàn có hỗ trợ phần cứng, không bao giờ lộ trực tiếp cho code app, bảo vệ chống trích xuất khoá kể cả trên thiết bị đã root. EncryptedSharedPreferences (từ Jetpack Security) dùng khoá dựa trên Keystore để mã hoá giá trị preference khi lưu trữ, bảo vệ chống việc đọc trực tiếp file XML trên thiết bị đã root/bị xâm nhập."
+      }
+    },
+    {
+      "question": {
+        "en": "Why is Retrofit typically paired with OkHttp?",
+        "vi": "Vì sao Retrofit thường đi kèm với OkHttp?"
+      },
+      "answer": {
+        "en": "Retrofit is a type-safe HTTP client generator (turns an interface with annotations into real network calls), but it delegates the actual HTTP transport to OkHttp underneath, which provides connection pooling, caching, and — importantly — interceptors for logging, auth headers, and retry logic.",
+        "vi": "Retrofit là bộ sinh HTTP client an toàn kiểu (biến một interface có annotation thành các lệnh gọi mạng thật), nhưng nó uỷ quyền phần vận chuyển HTTP thực sự cho OkHttp bên dưới, thứ cung cấp connection pooling, caching, và quan trọng là interceptor cho logging, header auth, và logic retry."
+      }
+    },
+    {
+      "question": {
+        "en": "What problem does the Paging 3 library solve?",
+        "vi": "Thư viện Paging 3 giải quyết vấn đề gì?"
+      },
+      "answer": {
+        "en": "Paging 3 loads and displays large datasets a page at a time from a data source (network, database, or both), integrating with RecyclerView (or Compose's LazyColumn via paging-compose) to load more as the user scrolls, handle loading/error states per page, and avoid loading the entire dataset into memory at once.",
+        "vi": "Paging 3 tải và hiển thị tập dữ liệu lớn theo từng trang từ nguồn dữ liệu (mạng, database, hoặc cả hai), tích hợp với RecyclerView (hoặc LazyColumn của Compose qua paging-compose) để tải thêm khi người dùng cuộn, xử lý trạng thái loading/lỗi theo từng trang, và tránh tải toàn bộ dữ liệu vào bộ nhớ cùng lúc."
+      }
+    },
+    {
+      "question": {
+        "en": "DataStore vs SharedPreferences?",
+        "vi": "DataStore khác SharedPreferences thế nào?"
+      },
+      "answer": {
+        "en": "DataStore (Jetpack's SharedPreferences replacement) is fully async via Kotlin Flow (no risk of blocking the main thread like SharedPreferences.apply/commit can), handles data consistently under concurrent access via transactional updates, and has a typed variant (Proto DataStore) for schema-safe structured data instead of raw key-value pairs.",
+        "vi": "DataStore (thay thế SharedPreferences trong Jetpack) hoàn toàn bất đồng bộ qua Kotlin Flow (không có nguy cơ chặn main thread như apply/commit của SharedPreferences), xử lý nhất quán dữ liệu khi truy cập đồng thời qua cập nhật kiểu transaction, và có biến thể có kiểu (Proto DataStore) cho dữ liệu có cấu trúc an toàn về schema thay vì cặp key-value thô."
+      }
+    },
+    {
+      "question": {
+        "en": "What does the debounce Flow operator do, and when is it useful?",
+        "vi": "Toán tử debounce của Flow làm gì, và khi nào hữu ích?"
+      },
+      "answer": {
+        "en": "debounce(timeout) only emits a value from the upstream Flow after that value hasn't been followed by a new one for the given duration, dropping intermediate rapid emissions. Classic use: a search box that only fires the network query after the user pauses typing.",
+        "vi": "debounce(timeout) chỉ phát ra giá trị từ Flow nguồn nếu sau giá trị đó không có giá trị mới nào trong khoảng thời gian cho trước, bỏ qua các lần phát ra dồn dập ở giữa. Ví dụ điển hình: một ô tìm kiếm chỉ gọi API sau khi người dùng dừng gõ."
+      }
+    },
+    {
+      "question": {
+        "en": "viewModelScope vs lifecycleScope for launching a coroutine?",
+        "vi": "viewModelScope khác lifecycleScope thế nào khi launch coroutine?"
+      },
+      "answer": {
+        "en": "viewModelScope is tied to a ViewModel and is automatically cancelled when the ViewModel is cleared (survives configuration changes) — best for work that should outlive a single screen instance. lifecycleScope is tied to a Lifecycle (Activity/Fragment) and cancels when that lifecycle is destroyed — better for UI-bound work tied to one specific screen instance.",
+        "vi": "viewModelScope gắn với một ViewModel và tự huỷ khi ViewModel bị clear (sống sót qua configuration change) — phù hợp công việc cần tồn tại lâu hơn một instance màn hình. lifecycleScope gắn với một Lifecycle (Activity/Fragment) và huỷ khi lifecycle đó bị destroy — phù hợp hơn cho công việc gắn với UI của đúng một instance màn hình cụ thể."
+      }
+    },
+    {
+      "question": {
+        "en": "Dispatchers.Main vs Dispatchers.IO vs Dispatchers.Default in Kotlin coroutines?",
+        "vi": "Dispatchers.Main khác Dispatchers.IO và Dispatchers.Default thế nào trong Kotlin coroutine?"
+      },
+      "answer": {
+        "en": "Main runs on the UI thread — for touching views. IO uses a large elastic thread pool tuned for blocking I/O work (network, disk, database). Default uses a thread pool sized to CPU cores, for CPU-intensive work (sorting, parsing, computation) that shouldn't block the UI or starve IO.",
+        "vi": "Main chạy trên UI thread — dùng để thao tác view. IO dùng một thread pool lớn, co giãn, tối ưu cho công việc I/O chặn luồng (mạng, đĩa, database). Default dùng thread pool có kích thước theo số nhân CPU, cho công việc nặng CPU (sắp xếp, parse, tính toán) không nên chặn UI hay chiếm hết luồng IO."
+      }
+    },
+    {
+      "question": {
+        "en": "What is Compose Navigation and how does it differ from the classic Navigation Component?",
+        "vi": "Compose Navigation khác Navigation Component cổ điển thế nào?"
+      },
+      "answer": {
+        "en": "Compose Navigation (androidx.navigation:navigation-compose) is the Jetpack Navigation Component adapted for Compose: destinations are composables registered in a NavHost with a route string, navigated via a NavController — no XML nav graph or Fragments required, fitting a fully-Compose UI.",
+        "vi": "Compose Navigation (androidx.navigation:navigation-compose) là Navigation Component của Jetpack được điều chỉnh cho Compose: các đích đến là composable đăng ký trong NavHost với route dạng string, điều hướng qua NavController — không cần XML nav graph hay Fragment, phù hợp UI hoàn toàn bằng Compose."
+      }
+    },
+    {
+      "question": {
+        "en": "What is Multidex and when do you need it?",
+        "vi": "Multidex là gì và khi nào cần dùng?"
+      },
+      "answer": {
+        "en": "A single classic .dex file has a hard 65,536 method reference limit. Multidex splits app + library code across multiple .dex files to exceed that limit, needed for apps with many dependencies. Modern Android (API 21+, using ART) supports multiple dex files natively; it's mostly automatic now via AGP but still relevant for minSdk < 21 or very old toolchains.",
+        "vi": "Một file .dex cổ điển duy nhất có giới hạn cứng 65.536 tham chiếu method. Multidex chia code app + thư viện thành nhiều file .dex để vượt giới hạn đó, cần thiết cho app có nhiều dependency. Android hiện đại (API 21+, dùng ART) hỗ trợ nhiều file dex sẵn; giờ đây phần lớn tự động qua AGP nhưng vẫn liên quan nếu minSdk < 21 hoặc toolchain rất cũ."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the AndroidManifest merger, and why can it cause build conflicts?",
+        "vi": "Manifest merger của Android là gì, và vì sao có thể gây xung đột lúc build?"
+      },
+      "answer": {
+        "en": "The manifest merger combines the app's AndroidManifest.xml with manifests from every library dependency into one final manifest. Conflicts happen when a library declares a component or attribute (e.g. a different minSdkVersion, or an activity with conflicting attributes) that clashes with the app's — resolved via merge rules or explicit `tools:` overrides in the app manifest.",
+        "vi": "Manifest merger gộp AndroidManifest.xml của app với manifest của mọi thư viện phụ thuộc thành một manifest cuối cùng. Xung đột xảy ra khi một thư viện khai báo component hay thuộc tính (ví dụ minSdkVersion khác, hay một activity có thuộc tính mâu thuẫn) đụng độ với app — được giải quyết qua quy tắc merge hoặc ghi đè tường minh bằng `tools:` trong manifest của app."
+      }
+    },
+    {
+      "question": {
+        "en": "Espresso vs Robolectric vs an instrumented test — what's the difference?",
+        "vi": "Espresso khác Robolectric và instrumented test thế nào?"
+      },
+      "answer": {
+        "en": "Espresso is a UI-testing framework that drives real UI interactions, typically run as an instrumented test on a device/emulator. Robolectric runs Android-framework-dependent tests on the JVM (no device/emulator needed) by simulating the Android SDK, making tests much faster to run — but with some fidelity tradeoffs versus a real device.",
+        "vi": "Espresso là framework kiểm thử UI thực hiện thao tác UI thật, thường chạy dưới dạng instrumented test trên thiết bị/emulator. Robolectric chạy các test phụ thuộc Android framework trên JVM (không cần thiết bị/emulator) bằng cách mô phỏng Android SDK, giúp test chạy nhanh hơn nhiều — nhưng đánh đổi một phần độ chính xác so với thiết bị thật."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a Baseline Profile and what does it optimize?",
+        "vi": "Baseline Profile là gì và tối ưu điều gì?"
+      },
+      "answer": {
+        "en": "A Baseline Profile lists classes/methods that are critical to startup and key user journeys; ART uses it to ahead-of-time (AOT) compile those specific paths at install time instead of relying purely on just-in-time compilation, reducing jank and startup latency on first runs after install/update. Generated/measured using the Macrobenchmark library.",
+        "vi": "Baseline Profile liệt kê các class/method quan trọng cho khởi động và các hành trình người dùng chính; ART dùng nó để biên dịch trước (AOT) đúng những đường dẫn đó lúc cài đặt thay vì chỉ dựa vào biên dịch tức thời (JIT), giảm giật lag và độ trễ khởi động ở những lần chạy đầu sau khi cài/cập nhật. Được tạo/đo bằng thư viện Macrobenchmark."
+      }
+    },
+    {
+      "question": {
+        "en": "View Binding vs Data Binding vs findViewById?",
+        "vi": "View Binding khác Data Binding và findViewById thế nào?"
+      },
+      "answer": {
+        "en": "findViewById is manual, untyped-by-id lookup with no compile-time safety. View Binding generates a typed binding class per XML layout at compile time (null-safe, no more findViewById), but has no expression/data-binding capability. Data Binding builds on the same idea but adds XML-embedded expressions (e.g. binding a TextView's text directly to a ViewModel property) at the cost of extra build overhead.",
+        "vi": "findViewById là tra cứu thủ công theo id, không có kiểu và không an toàn lúc biên dịch. View Binding sinh ra class binding có kiểu cho mỗi layout XML lúc biên dịch (an toàn null, không cần findViewById nữa), nhưng không hỗ trợ biểu thức/data-binding. Data Binding xây trên cùng ý tưởng nhưng thêm biểu thức nhúng trong XML (ví dụ gán trực tiếp text của TextView vào thuộc tính ViewModel), đánh đổi bằng chi phí build tăng thêm."
+      }
+    },
+    {
+      "question": {
+        "en": "LaunchedEffect vs DisposableEffect in Compose — what problem do side-effect handlers solve?",
+        "vi": "LaunchedEffect khác DisposableEffect trong Compose, và các side-effect handler giải quyết vấn đề gì?"
+      },
+      "answer": {
+        "en": "Composable functions should be side-effect-free since they can recompose anytime; side-effect APIs give a controlled place to run non-composable work. LaunchedEffect(key) launches a coroutine tied to the composition, restarted if `key` changes and cancelled when it leaves composition — good for one-off calls like an initial data load. DisposableEffect additionally provides an `onDispose` block for cleanup (unregistering a listener) when the effect leaves composition or its keys change.",
+        "vi": "Composable function nên không có side-effect vì có thể recompose bất cứ lúc nào; các API side-effect cung cấp nơi có kiểm soát để chạy công việc phi-composable. LaunchedEffect(key) khởi chạy một coroutine gắn với composition, chạy lại nếu `key` đổi và huỷ khi rời khỏi composition — phù hợp cho lệnh gọi một lần như tải dữ liệu ban đầu. DisposableEffect còn cung cấp block `onDispose` để dọn dẹp (gỡ đăng ký listener) khi effect rời composition hoặc key thay đổi."
+      }
     }
   ],
   "quiz": [
@@ -904,6 +1104,586 @@
         "en": "StateFlow behaves like an observable variable (always has a value); SharedFlow is configurable for pure event streams with no inherent 'current value'.",
         "vi": "StateFlow hoạt động như một biến quan sát được (luôn có giá trị); SharedFlow có thể cấu hình cho luồng sự kiện thuần, không có 'giá trị hiện tại' vốn có."
       }
+    },
+    {
+      "question": {
+        "en": "In Jetpack Compose, what triggers a composable function to recompose?",
+        "vi": "Trong Jetpack Compose, điều gì kích hoạt một composable function recompose?"
+      },
+      "options": [
+        {
+          "en": "A State object it reads has changed value",
+          "vi": "Một State object mà nó đọc đã thay đổi giá trị"
+        },
+        {
+          "en": "The app's process priority changes",
+          "vi": "Độ ưu tiên process của app thay đổi"
+        },
+        {
+          "en": "Every frame, unconditionally, like a game loop",
+          "vi": "Mỗi frame, vô điều kiện, giống vòng lặp game"
+        },
+        {
+          "en": "Only when the Activity is recreated",
+          "vi": "Chỉ khi Activity bị tạo lại"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Compose tracks which State reads happen inside which composables and only re-invokes (recomposes) the ones whose read State actually changed.",
+        "vi": "Compose theo dõi State nào được đọc trong composable nào và chỉ gọi lại (recompose) những composable có State đọc được thực sự thay đổi."
+      }
+    },
+    {
+      "question": {
+        "en": "What does rememberSaveable provide that plain remember does not?",
+        "vi": "rememberSaveable cung cấp điều gì mà remember thường không có?"
+      },
+      "options": [
+        {
+          "en": "Survival across configuration change and process recreation via the instance state Bundle",
+          "vi": "Sống sót qua configuration change và process bị tạo lại thông qua Bundle instance state"
+        },
+        {
+          "en": "Automatic network synchronization",
+          "vi": "Tự động đồng bộ mạng"
+        },
+        {
+          "en": "Encryption of the stored value",
+          "vi": "Mã hoá giá trị được lưu"
+        },
+        {
+          "en": "Faster recomposition than remember",
+          "vi": "Recomposition nhanh hơn remember"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "rememberSaveable persists the value into the saved instance state Bundle, so — unlike remember — it survives rotation and process death/recreation for savable types.",
+        "vi": "rememberSaveable lưu giá trị vào Bundle instance state đã lưu, nên khác với remember, nó sống sót qua xoay màn hình và process bị kill/tạo lại với các kiểu có thể lưu được."
+      }
+    },
+    {
+      "question": {
+        "en": "Why shouldn't the Application class hold a reference tied to a specific Activity instance?",
+        "vi": "Vì sao Application class không nên giữ tham chiếu gắn với một instance Activity cụ thể?"
+      },
+      "options": [
+        {
+          "en": "Application outlives any single Activity instance, so holding that reference leaks the Activity after it's destroyed",
+          "vi": "Application tồn tại lâu hơn bất kỳ instance Activity nào, nên giữ tham chiếu đó sẽ rò rỉ Activity sau khi nó bị huỷ"
+        },
+        {
+          "en": "Application class cannot hold any fields at all",
+          "vi": "Application class không thể có bất kỳ field nào"
+        },
+        {
+          "en": "It would prevent hot reload",
+          "vi": "Nó sẽ ngăn hot reload"
+        },
+        {
+          "en": "Activities are immutable and cannot be referenced",
+          "vi": "Activity là bất biến và không thể tham chiếu"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Application is a process-lifetime singleton; an Activity is created/destroyed per screen instance, so a long-lived reference to it from Application prevents garbage collection — a classic Context leak.",
+        "vi": "Application là singleton tồn tại suốt process; Activity được tạo/huỷ theo từng instance màn hình, nên tham chiếu tồn tại lâu tới nó từ Application ngăn thu gom rác — một dạng rò rỉ Context điển hình."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the main purpose of a ContentProvider?",
+        "vi": "Mục đích chính của ContentProvider là gì?"
+      },
+      "options": [
+        {
+          "en": "Expose structured data through a standard URI interface for controlled sharing across app/component boundaries",
+          "vi": "Phơi bày dữ liệu có cấu trúc qua giao diện URI chuẩn để chia sẻ có kiểm soát giữa các app/component"
+        },
+        {
+          "en": "Render UI components declaratively",
+          "vi": "Render component UI theo kiểu khai báo"
+        },
+        {
+          "en": "Manage background threads",
+          "vi": "Quản lý luồng nền"
+        },
+        {
+          "en": "Cache network responses automatically",
+          "vi": "Tự động cache phản hồi mạng"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "ContentProvider is the Android component built specifically to share structured data across app/process boundaries in a controlled, permission-checked way, addressed via content:// URIs.",
+        "vi": "ContentProvider là component Android được xây dựng riêng để chia sẻ dữ liệu có cấu trúc qua ranh giới app/process một cách có kiểm soát, kiểm tra quyền, truy cập qua content:// URI."
+      }
+    },
+    {
+      "question": {
+        "en": "What is required of a Foreground Service that is not required of a regular Service?",
+        "vi": "Foreground Service bắt buộc điều gì mà Service thông thường không cần?"
+      },
+      "options": [
+        {
+          "en": "It must display a persistent, ongoing notification while running",
+          "vi": "Nó phải hiển thị một notification liên tục, đang diễn ra khi chạy"
+        },
+        {
+          "en": "It must run on the main thread",
+          "vi": "Nó phải chạy trên main thread"
+        },
+        {
+          "en": "It cannot be stopped by the app",
+          "vi": "Nó không thể bị app dừng"
+        },
+        {
+          "en": "It must be bound to an Activity at all times",
+          "vi": "Nó phải luôn được bind với một Activity"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "A foreground service must post a notification informing the user it's running, in exchange for much lower likelihood of being killed by the system.",
+        "vi": "Foreground service phải gửi một notification cho người dùng biết nó đang chạy, đổi lại khả năng bị hệ thống kill thấp hơn nhiều."
+      }
+    },
+    {
+      "question": {
+        "en": "Why did Android 8 (Oreo) introduce Notification Channels?",
+        "vi": "Vì sao Android 8 (Oreo) đưa vào Notification Channel?"
+      },
+      "options": [
+        {
+          "en": "To let users control notification behavior (sound, importance, visibility) per category instead of all-or-nothing per app",
+          "vi": "Để người dùng kiểm soát hành vi thông báo (âm thanh, độ quan trọng, hiển thị) theo từng danh mục thay vì bật/tắt toàn bộ theo app"
+        },
+        {
+          "en": "To encrypt all notifications by default",
+          "vi": "Để mã hoá mọi notification theo mặc định"
+        },
+        {
+          "en": "To remove notifications entirely from the lock screen",
+          "vi": "Để loại bỏ hoàn toàn notification khỏi màn hình khoá"
+        },
+        {
+          "en": "To replace Activities with notifications",
+          "vi": "Để thay thế Activity bằng notification"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Channels group notifications by category so users get fine-grained per-category control in system settings, rather than an app-wide on/off toggle.",
+        "vi": "Channel nhóm notification theo danh mục để người dùng có quyền kiểm soát chi tiết theo từng danh mục trong cài đặt hệ thống, thay vì chỉ bật/tắt toàn bộ theo app."
+      }
+    },
+    {
+      "question": {
+        "en": "What does Android Keystore primarily protect?",
+        "vi": "Android Keystore chủ yếu bảo vệ điều gì?"
+      },
+      "options": [
+        {
+          "en": "Cryptographic keys, by keeping them in hardware-backed secure storage never directly exposed to app code",
+          "vi": "Khoá mã hoá, bằng cách giữ chúng trong bộ nhớ an toàn hỗ trợ phần cứng, không bao giờ lộ trực tiếp cho code app"
+        },
+        {
+          "en": "The app's UI layout files",
+          "vi": "File layout UI của app"
+        },
+        {
+          "en": "Network bandwidth usage",
+          "vi": "Lượng băng thông mạng sử dụng"
+        },
+        {
+          "en": "The device's GPS location",
+          "vi": "Vị trí GPS của thiết bị"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Keystore is specifically for securely generating/storing cryptographic keys such that even a compromised or rooted device can't easily extract the raw key material.",
+        "vi": "Keystore chuyên dùng để sinh/lưu khoá mã hoá an toàn sao cho kể cả thiết bị bị xâm nhập hoặc đã root cũng khó trích xuất trực tiếp dữ liệu khoá."
+      }
+    },
+    {
+      "question": {
+        "en": "What role does OkHttp typically play underneath Retrofit?",
+        "vi": "OkHttp thường đóng vai trò gì bên dưới Retrofit?"
+      },
+      "options": [
+        {
+          "en": "It performs the actual HTTP transport, providing connection pooling, caching, and interceptors",
+          "vi": "Nó thực hiện việc vận chuyển HTTP thực sự, cung cấp connection pooling, caching, và interceptor"
+        },
+        {
+          "en": "It generates the Kotlin interface for API calls",
+          "vi": "Nó sinh ra interface Kotlin cho các lệnh gọi API"
+        },
+        {
+          "en": "It replaces the need for JSON parsing entirely",
+          "vi": "Nó thay thế hoàn toàn nhu cầu parse JSON"
+        },
+        {
+          "en": "It only handles UI rendering of network state",
+          "vi": "Nó chỉ xử lý render UI cho trạng thái mạng"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Retrofit generates the type-safe API surface but delegates actual network requests to OkHttp, which is where interceptors (auth, logging, retries) and connection handling live.",
+        "vi": "Retrofit sinh ra bề mặt API an toàn kiểu nhưng uỷ quyền các request mạng thực sự cho OkHttp, nơi có interceptor (auth, logging, retry) và xử lý connection."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the main benefit of the Paging 3 library over loading a full dataset at once?",
+        "vi": "Lợi ích chính của Paging 3 so với tải toàn bộ dữ liệu một lần là gì?"
+      },
+      "options": [
+        {
+          "en": "It loads data incrementally as the user scrolls, avoiding holding the entire dataset in memory",
+          "vi": "Nó tải dữ liệu tăng dần khi người dùng cuộn, tránh giữ toàn bộ dữ liệu trong bộ nhớ"
+        },
+        {
+          "en": "It eliminates the need for a RecyclerView",
+          "vi": "Nó loại bỏ nhu cầu dùng RecyclerView"
+        },
+        {
+          "en": "It automatically translates content into other languages",
+          "vi": "Nó tự động dịch nội dung sang ngôn ngữ khác"
+        },
+        {
+          "en": "It only works with local Room databases, never network",
+          "vi": "Nó chỉ hoạt động với database Room cục bộ, không bao giờ dùng mạng"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Paging 3 loads and displays data page-by-page from network and/or database sources, so memory use and initial load time stay bounded even for very large datasets.",
+        "vi": "Paging 3 tải và hiển thị dữ liệu theo từng trang từ nguồn mạng và/hoặc database, nên bộ nhớ dùng và thời gian tải ban đầu vẫn bị giới hạn kể cả với tập dữ liệu rất lớn."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a key advantage of DataStore over SharedPreferences?",
+        "vi": "Ưu điểm chính của DataStore so với SharedPreferences là gì?"
+      },
+      "options": [
+        {
+          "en": "It's fully asynchronous via Kotlin Flow, avoiding the main-thread blocking risk of SharedPreferences.commit()",
+          "vi": "Nó hoàn toàn bất đồng bộ qua Kotlin Flow, tránh nguy cơ chặn main thread của SharedPreferences.commit()"
+        },
+        {
+          "en": "It requires no dependency to use",
+          "vi": "Không cần dependency nào để dùng"
+        },
+        {
+          "en": "It only stores encrypted data by default",
+          "vi": "Nó chỉ lưu dữ liệu đã mã hoá theo mặc định"
+        },
+        {
+          "en": "It has no size limitations of any kind",
+          "vi": "Nó không có bất kỳ giới hạn kích thước nào"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "DataStore's async, Flow-based API and transactional updates address SharedPreferences' main-thread and consistency pitfalls.",
+        "vi": "API bất đồng bộ dựa trên Flow của DataStore và các cập nhật kiểu transaction giải quyết các vấn đề về main-thread và tính nhất quán của SharedPreferences."
+      }
+    },
+    {
+      "question": {
+        "en": "What does the debounce Flow operator accomplish in a search-as-you-type feature?",
+        "vi": "Toán tử debounce của Flow đạt được điều gì trong tính năng tìm kiếm khi gõ?"
+      },
+      "options": [
+        {
+          "en": "It waits for a pause in typing before emitting the latest value, avoiding a network call on every keystroke",
+          "vi": "Nó đợi một khoảng dừng khi gõ trước khi phát ra giá trị mới nhất, tránh gọi mạng ở mỗi lần gõ phím"
+        },
+        {
+          "en": "It sorts search results alphabetically",
+          "vi": "Nó sắp xếp kết quả tìm kiếm theo bảng chữ cái"
+        },
+        {
+          "en": "It caches all previous search results forever",
+          "vi": "Nó cache mọi kết quả tìm kiếm trước đó vĩnh viễn"
+        },
+        {
+          "en": "It retries failed network requests automatically",
+          "vi": "Nó tự động thử lại các request mạng bị lỗi"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "debounce suppresses rapid intermediate emissions and only lets a value through once the stream has been quiet for the given duration, which is exactly what's needed to avoid firing a query per keystroke.",
+        "vi": "debounce chặn các lần phát ra dồn dập ở giữa và chỉ cho giá trị đi qua khi luồng đã yên trong khoảng thời gian cho trước, đúng là điều cần để tránh gọi query ở mỗi lần gõ phím."
+      }
+    },
+    {
+      "question": {
+        "en": "Why prefer viewModelScope over lifecycleScope for a coroutine that must survive a screen rotation?",
+        "vi": "Vì sao nên ưu tiên viewModelScope thay vì lifecycleScope cho coroutine cần sống sót qua việc xoay màn hình?"
+      },
+      "options": [
+        {
+          "en": "viewModelScope is cancelled only when the ViewModel is cleared, which survives configuration changes; lifecycleScope cancels when the Activity/Fragment is destroyed on rotation",
+          "vi": "viewModelScope chỉ bị huỷ khi ViewModel bị clear, sống sót qua configuration change; lifecycleScope huỷ khi Activity/Fragment bị destroy lúc xoay màn hình"
+        },
+        {
+          "en": "lifecycleScope cannot launch coroutines at all",
+          "vi": "lifecycleScope không thể launch coroutine"
+        },
+        {
+          "en": "viewModelScope runs coroutines faster",
+          "vi": "viewModelScope chạy coroutine nhanh hơn"
+        },
+        {
+          "en": "There is no difference between the two",
+          "vi": "Không có khác biệt nào giữa hai loại"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "ViewModel instances are retained across a configuration change (by default), so viewModelScope keeps running through rotation, unlike lifecycleScope which is tied to the recreated Activity/Fragment.",
+        "vi": "Instance ViewModel được giữ lại qua configuration change (mặc định), nên viewModelScope vẫn tiếp tục chạy qua việc xoay màn hình, khác với lifecycleScope gắn với Activity/Fragment bị tạo lại."
+      }
+    },
+    {
+      "question": {
+        "en": "Which coroutine Dispatcher should CPU-intensive parsing/sorting work use?",
+        "vi": "Công việc parse/sắp xếp nặng CPU nên dùng Dispatcher coroutine nào?"
+      },
+      "options": [
+        {
+          "en": "Dispatchers.Default",
+          "vi": "Dispatchers.Default"
+        },
+        {
+          "en": "Dispatchers.Main",
+          "vi": "Dispatchers.Main"
+        },
+        {
+          "en": "Dispatchers.IO",
+          "vi": "Dispatchers.IO"
+        },
+        {
+          "en": "Dispatchers.Unconfined",
+          "vi": "Dispatchers.Unconfined"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Dispatchers.Default is sized to the number of CPU cores and intended for CPU-bound work, keeping it off the Main thread and separate from IO's elastic pool meant for blocking I/O.",
+        "vi": "Dispatchers.Default có kích thước theo số nhân CPU và dành cho công việc nặng CPU, giữ nó tránh xa Main thread và tách biệt khỏi pool co giãn của IO vốn dành cho I/O chặn luồng."
+      }
+    },
+    {
+      "question": {
+        "en": "In Compose Navigation, what defines a destination in the NavHost?",
+        "vi": "Trong Compose Navigation, điều gì định nghĩa một đích đến trong NavHost?"
+      },
+      "options": [
+        {
+          "en": "A composable function registered against a route string",
+          "vi": "Một composable function được đăng ký với một route dạng string"
+        },
+        {
+          "en": "An XML fragment declaration",
+          "vi": "Một khai báo fragment XML"
+        },
+        {
+          "en": "A separate Activity per screen",
+          "vi": "Một Activity riêng cho mỗi màn hình"
+        },
+        {
+          "en": "A ViewModel subclass",
+          "vi": "Một class con của ViewModel"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "In navigation-compose, `composable(route) { ... }` registers a composable as a destination inside a NavHost, navigated to via NavController.navigate(route) — no XML or Fragments involved.",
+        "vi": "Trong navigation-compose, `composable(route) { ... }` đăng ký một composable làm đích đến trong NavHost, điều hướng tới qua NavController.navigate(route) — không cần XML hay Fragment."
+      }
+    },
+    {
+      "question": {
+        "en": "What limit does Multidex address?",
+        "vi": "Multidex giải quyết giới hạn nào?"
+      },
+      "options": [
+        {
+          "en": "The 65,536 method reference limit of a single .dex file",
+          "vi": "Giới hạn 65.536 tham chiếu method của một file .dex duy nhất"
+        },
+        {
+          "en": "The maximum APK download size on Play Store",
+          "vi": "Kích thước tải APK tối đa trên Play Store"
+        },
+        {
+          "en": "The number of Activities allowed in a manifest",
+          "vi": "Số lượng Activity được phép trong manifest"
+        },
+        {
+          "en": "The number of permissions an app can request",
+          "vi": "Số lượng quyền một app có thể yêu cầu"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "A classic single .dex file can reference at most 65,536 methods; Multidex splits code across multiple .dex files so apps with many dependencies can exceed that limit.",
+        "vi": "Một file .dex cổ điển duy nhất chỉ tham chiếu được tối đa 65.536 method; Multidex chia code thành nhiều file .dex để app có nhiều dependency vượt qua giới hạn đó."
+      }
+    },
+    {
+      "question": {
+        "en": "What does the Android manifest merger do when building an app with multiple library dependencies?",
+        "vi": "Manifest merger của Android làm gì khi build một app có nhiều thư viện phụ thuộc?"
+      },
+      "options": [
+        {
+          "en": "Combines the app's manifest with every library's manifest into one final merged manifest",
+          "vi": "Gộp manifest của app với manifest của mọi thư viện thành một manifest cuối cùng đã hợp nhất"
+        },
+        {
+          "en": "Deletes all manifests except the app's own",
+          "vi": "Xoá mọi manifest ngoại trừ manifest của chính app"
+        },
+        {
+          "en": "Only runs when explicitly invoked from the command line",
+          "vi": "Chỉ chạy khi được gọi tường minh từ dòng lệnh"
+        },
+        {
+          "en": "Converts the manifest into a Kotlin file",
+          "vi": "Chuyển manifest thành một file Kotlin"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "The Gradle build process merges the app manifest with each dependency's manifest, resolving conflicting attributes via merge rules or explicit `tools:` overrides.",
+        "vi": "Quy trình build Gradle gộp manifest của app với manifest của từng dependency, giải quyết thuộc tính xung đột bằng quy tắc merge hoặc ghi đè tường minh `tools:`."
+      }
+    },
+    {
+      "question": {
+        "en": "What is Robolectric's main advantage over a fully instrumented test on a device/emulator?",
+        "vi": "Ưu điểm chính của Robolectric so với instrumented test đầy đủ trên thiết bị/emulator là gì?"
+      },
+      "options": [
+        {
+          "en": "It runs Android-framework-dependent tests on the JVM without a device or emulator, making them run much faster",
+          "vi": "Nó chạy các test phụ thuộc Android framework trên JVM mà không cần thiết bị hay emulator, giúp test chạy nhanh hơn nhiều"
+        },
+        {
+          "en": "It tests real UI touch gestures more accurately than Espresso",
+          "vi": "Nó kiểm thử thao tác chạm UI thật chính xác hơn Espresso"
+        },
+        {
+          "en": "It replaces the need for unit tests entirely",
+          "vi": "Nó thay thế hoàn toàn nhu cầu unit test"
+        },
+        {
+          "en": "It only works for Compose UI, not Views",
+          "vi": "Nó chỉ hoạt động với Compose UI, không dùng cho View"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Robolectric simulates the Android SDK on the JVM, so tests that touch Android framework classes run quickly in a regular unit-test process instead of on a device/emulator.",
+        "vi": "Robolectric mô phỏng Android SDK trên JVM, nên các test đụng tới class của Android framework chạy nhanh trong một process unit-test thông thường thay vì trên thiết bị/emulator."
+      }
+    },
+    {
+      "question": {
+        "en": "What does a Baseline Profile improve?",
+        "vi": "Baseline Profile cải thiện điều gì?"
+      },
+      "options": [
+        {
+          "en": "App startup speed and jank by AOT-compiling critical code paths at install time",
+          "vi": "Tốc độ khởi động app và độ giật bằng cách biên dịch trước (AOT) các đường dẫn code quan trọng lúc cài đặt"
+        },
+        {
+          "en": "The app's icon resolution automatically",
+          "vi": "Tự động độ phân giải icon của app"
+        },
+        {
+          "en": "Network request retry logic",
+          "vi": "Logic retry của request mạng"
+        },
+        {
+          "en": "The app's minSdkVersion",
+          "vi": "minSdkVersion của app"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "By listing startup- and key-journey-critical classes/methods, a Baseline Profile lets ART AOT-compile those paths at install rather than relying purely on JIT, reducing early jank/latency.",
+        "vi": "Bằng cách liệt kê class/method quan trọng cho khởi động và các hành trình chính, Baseline Profile giúp ART biên dịch trước (AOT) các đường dẫn đó lúc cài đặt thay vì chỉ dựa vào JIT, giảm độ giật/trễ ở giai đoạn đầu."
+      }
+    },
+    {
+      "question": {
+        "en": "What does View Binding provide over plain findViewById?",
+        "vi": "View Binding cung cấp gì hơn so với findViewById thông thường?"
+      },
+      "options": [
+        {
+          "en": "A compile-time-generated, null-safe typed binding class per layout, catching id mismatches at build time",
+          "vi": "Một class binding có kiểu, an toàn null, được sinh lúc biên dịch cho mỗi layout, bắt lỗi sai id lúc build"
+        },
+        {
+          "en": "The ability to embed data-binding expressions directly in XML",
+          "vi": "Khả năng nhúng biểu thức data-binding trực tiếp trong XML"
+        },
+        {
+          "en": "Automatic UI theming",
+          "vi": "Tự động theming UI"
+        },
+        {
+          "en": "Network request binding",
+          "vi": "Ràng buộc request mạng"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "View Binding generates a typed class per XML layout so view references are checked at compile time (no more ClassCastException or null from a wrong/missing id) — but unlike Data Binding, it has no XML expression support.",
+        "vi": "View Binding sinh ra một class có kiểu cho mỗi layout XML nên tham chiếu view được kiểm tra lúc biên dịch (không còn ClassCastException hay null do id sai/thiếu) — nhưng khác Data Binding, nó không hỗ trợ biểu thức trong XML."
+      }
+    },
+    {
+      "question": {
+        "en": "Why should composable functions generally avoid side effects directly in their body?",
+        "vi": "Vì sao composable function nói chung nên tránh side-effect trực tiếp trong thân hàm?"
+      },
+      "options": [
+        {
+          "en": "Compose can recompose a function multiple times, or skip/reorder it, so side effects there could run unexpectedly often or out of order",
+          "vi": "Compose có thể recompose một hàm nhiều lần, hoặc bỏ qua/đổi thứ tự, nên side-effect ở đó có thể chạy nhiều lần bất ngờ hoặc sai thứ tự"
+        },
+        {
+          "en": "Kotlin does not allow side effects inside any function",
+          "vi": "Kotlin không cho phép side-effect trong bất kỳ hàm nào"
+        },
+        {
+          "en": "Side effects always crash the app in debug builds",
+          "vi": "Side-effect luôn làm crash app trong bản debug"
+        },
+        {
+          "en": "Composable functions cannot call regular Kotlin functions",
+          "vi": "Composable function không thể gọi hàm Kotlin thông thường"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Because recomposition can happen any number of times and in unpredictable order relative to other composables, effect APIs like LaunchedEffect/DisposableEffect give a controlled, lifecycle-aware place to run such work instead.",
+        "vi": "Vì recomposition có thể xảy ra bất kỳ số lần nào và theo thứ tự khó đoán so với các composable khác, các API effect như LaunchedEffect/DisposableEffect cung cấp một nơi có kiểm soát, nhận biết vòng đời để chạy công việc đó thay vào."
+      }
     }
   ],
   "notes": [
@@ -1015,6 +1795,206 @@
       "content": {
         "en": "**Build variants** = build type × product flavor. A build type (`debug`/`release`) controls compilation (minification, debuggable flag); a product flavor lets the same codebase produce different app versions:\n\n```kotlin\nandroid {\n    buildTypes {\n        release { isMinifyEnabled = true }\n        debug { applicationIdSuffix = \".debug\" }\n    }\n    flavorDimensions += \"environment\"\n    productFlavors {\n        create(\"staging\") { buildConfigField(\"String\", \"BASE_URL\", \"\\\"https://staging.api\\\"\") }\n        create(\"production\") { buildConfigField(\"String\", \"BASE_URL\", \"\\\"https://api\\\"\") }\n    }\n}\n```\n\nThis gives `stagingDebug`, `stagingRelease`, `productionDebug`, `productionRelease` — four buildable variants from one codebase.\n\n**Multi-module architecture** splits the app into Gradle modules (`:app`, `:feature:login`, `:core:network`, `:core:database`, ...). Gradle only recompiles a module and its dependents when that module's code changes, which is the main reason large apps adopt it — a change deep in a leaf feature module doesn't force rebuilding unrelated features. Module boundaries also enforce architecture: `:feature:login` can depend on `:core:network`, but two feature modules typically shouldn't depend on each other directly, keeping features decoupled.",
         "vi": "**Build variant** = build type × product flavor. Build type (`debug`/`release`) kiểm soát việc biên dịch (minify, cờ debuggable); product flavor cho phép cùng một codebase tạo ra nhiều phiên bản app khác nhau:\n\n```kotlin\nandroid {\n    buildTypes {\n        release { isMinifyEnabled = true }\n        debug { applicationIdSuffix = \".debug\" }\n    }\n    flavorDimensions += \"environment\"\n    productFlavors {\n        create(\"staging\") { buildConfigField(\"String\", \"BASE_URL\", \"\\\"https://staging.api\\\"\") }\n        create(\"production\") { buildConfigField(\"String\", \"BASE_URL\", \"\\\"https://api\\\"\") }\n    }\n}\n```\n\nĐiều này tạo ra `stagingDebug`, `stagingRelease`, `productionDebug`, `productionRelease` — bốn build variant có thể build được từ một codebase.\n\n**Kiến trúc multi-module** chia app thành các module Gradle (`:app`, `:feature:login`, `:core:network`, `:core:database`, ...). Gradle chỉ biên dịch lại một module và các module phụ thuộc vào nó khi code của module đó thay đổi, đây là lý do chính các app lớn áp dụng nó — một thay đổi sâu trong một feature module lá không buộc phải rebuild các feature không liên quan. Ranh giới module cũng ép buộc kiến trúc: `:feature:login` có thể phụ thuộc `:core:network`, nhưng hai feature module thường không nên phụ thuộc trực tiếp lẫn nhau, giữ cho các feature tách biệt."
+      }
+    },
+    {
+      "title": {
+        "en": "Jetpack Compose: Recomposition & State Hoisting",
+        "vi": "Jetpack Compose: Recomposition & State Hoisting"
+      },
+      "content": {
+        "en": "Compose UI is a function of state: `@Composable` functions describe UI for a given state, and Compose calls them again (**recomposes**) only for the parts whose read `State` actually changed — this is smart recomposition, not a full-screen re-render.\n\n**State hoisting** is the pattern of moving state up to a caller and passing it down as a parameter plus an `onValueChange` callback, so a composable stays stateless and reusable:\n\n```kotlin\n@Composable\nfun Counter(count: Int, onIncrement: () -> Unit) {\n  Button(onClick = onIncrement) { Text(\"Count: $count\") }\n}\n```\nHoisted state can live in a `remember { mutableStateOf(0) }` in a parent, or in a ViewModel — either way, the leaf composable has no internal state of its own, making it trivial to preview, test, and reuse.",
+        "vi": "Compose UI là một hàm của state: các hàm `@Composable` mô tả UI cho một state cho trước, và Compose gọi lại chúng (**recompose**) chỉ cho những phần có `State` đọc được thực sự thay đổi — đây là smart recomposition, không phải render lại toàn màn hình.\n\n**State hoisting** là mẫu đưa state lên trên nơi gọi và truyền xuống dưới dạng tham số cộng với callback `onValueChange`, để composable giữ trạng thái không state và có thể tái sử dụng:\n\n```kotlin\n@Composable\nfun Counter(count: Int, onIncrement: () -> Unit) {\n  Button(onClick = onIncrement) { Text(\"Count: $count\") }\n}\n```\nState được hoist có thể sống trong `remember { mutableStateOf(0) }` ở parent, hoặc trong ViewModel — dù cách nào, composable lá không có state nội bộ riêng, giúp dễ preview, test, và tái sử dụng."
+      }
+    },
+    {
+      "title": {
+        "en": "Compose State Persistence: remember vs rememberSaveable",
+        "vi": "Lưu trữ State trong Compose: remember và rememberSaveable"
+      },
+      "content": {
+        "en": "`remember { ... }` caches a computed value across recompositions of the same composable instance, but the value is lost when the composable leaves composition — including on configuration change (rotation) or process death, since those recreate the composition.\n\n`rememberSaveable { ... }` additionally saves the value into the Activity's saved instance state `Bundle` (the same mechanism as `onSaveInstanceState`), so it survives rotation and process recreation, for any type that's `Parcelable`, implements the `Saver` interface, or is a primitive.\n\nRule of thumb: use `rememberSaveable` for UI state the user would be annoyed to lose on rotation (scroll position, a text field's draft, a selected tab); plain `remember` is fine for derived/transient values.",
+        "vi": "`remember { ... }` cache một giá trị đã tính qua các lần recomposition của cùng một instance composable, nhưng giá trị mất khi composable rời khỏi composition — kể cả khi configuration change (xoay màn hình) hay process bị kill, vì những trường hợp đó tạo lại composition.\n\n`rememberSaveable { ... }` còn lưu giá trị vào `Bundle` instance state đã lưu của Activity (cùng cơ chế với `onSaveInstanceState`), nên sống sót qua xoay màn hình và process bị tạo lại, với mọi kiểu là `Parcelable`, triển khai interface `Saver`, hoặc kiểu nguyên thuỷ.\n\nQuy tắc chung: dùng `rememberSaveable` cho state UI mà người dùng sẽ khó chịu nếu mất khi xoay màn hình (vị trí cuộn, nháp của text field, tab đang chọn); `remember` thường là đủ cho giá trị tạm/suy ra."
+      }
+    },
+    {
+      "title": {
+        "en": "Application Class vs Activity Lifecycle Scope",
+        "vi": "Application Class và Phạm vi Vòng đời Activity"
+      },
+      "content": {
+        "en": "`Application` is instantiated once per process, before any Activity, and lives until the process is killed — the right place for process-wide initialization (dependency injection graph, crash reporting SDK init, global logging config). Override `onCreate()` there, and register it in `AndroidManifest.xml` via `android:name`.\n\nAn `Activity` represents one screen and is created/destroyed far more often — on navigation, rotation, or low-memory reclaim. A common bug is storing an Activity/View/Context reference in a singleton or the Application class: since Application outlives the Activity, that reference prevents the Activity (and everything it holds) from being garbage collected — a memory leak. Use `applicationContext` in long-lived singletons instead of an Activity `Context`.",
+        "vi": "`Application` được khởi tạo một lần cho mỗi process, trước bất kỳ Activity nào, và tồn tại tới khi process bị kill — nơi phù hợp để khởi tạo phạm vi process (đồ thị dependency injection, khởi tạo SDK báo crash, cấu hình logging toàn cục). Override `onCreate()` ở đó, và đăng ký trong `AndroidManifest.xml` qua `android:name`.\n\n`Activity` đại diện cho một màn hình và được tạo/huỷ thường xuyên hơn nhiều — khi điều hướng, xoay màn hình, hay hệ thống thu hồi bộ nhớ thấp. Một lỗi thường gặp là lưu tham chiếu Activity/View/Context trong singleton hoặc Application class: vì Application tồn tại lâu hơn Activity, tham chiếu đó ngăn Activity (và mọi thứ nó giữ) bị thu gom rác — rò rỉ bộ nhớ. Nên dùng `applicationContext` trong singleton sống lâu thay vì Context của Activity."
+      }
+    },
+    {
+      "title": {
+        "en": "ContentProvider Basics",
+        "vi": "Cơ bản về ContentProvider"
+      },
+      "content": {
+        "en": "A `ContentProvider` exposes a structured data store behind a `content://` URI, implementing `query`, `insert`, `update`, `delete`, and `getType`. Other apps (or your own components) access it via a `ContentResolver`, which routes the call to the right provider based on the URI's authority — the caller never touches the underlying storage (SQLite, files, network) directly.\n\nIt's the mechanism behind the Contacts/MediaStore/Calendar system providers, and is required if you want to expose custom data to Android's Share sheet, App Search, or another app's `DocumentsProvider` integration. Access is controlled by manifest-declared read/write permissions, so it's also a deliberate way to expose *only* the data you intend to share, not your app's whole database.",
+        "vi": "`ContentProvider` phơi bày một kho dữ liệu có cấu trúc phía sau URI `content://`, triển khai `query`, `insert`, `update`, `delete`, và `getType`. App khác (hoặc component của chính app) truy cập nó qua `ContentResolver`, thứ định tuyến lệnh gọi tới provider đúng dựa trên authority của URI — bên gọi không bao giờ chạm trực tiếp vào lưu trữ bên dưới (SQLite, file, mạng).\n\nĐây là cơ chế đứng sau các provider hệ thống Contacts/MediaStore/Calendar, và bắt buộc nếu muốn phơi bày dữ liệu tuỳ chỉnh cho Share sheet của Android, App Search, hoặc tích hợp `DocumentsProvider` của app khác. Việc truy cập được kiểm soát bởi quyền đọc/ghi khai báo trong manifest, nên đây cũng là cách chủ động chỉ phơi bày *đúng* dữ liệu muốn chia sẻ, không phải toàn bộ database của app."
+      }
+    },
+    {
+      "title": {
+        "en": "Background Execution: Foreground Service, Channels & Restrictions",
+        "vi": "Thực thi Nền: Foreground Service, Channel & Hạn chế"
+      },
+      "content": {
+        "en": "Modern Android aggressively limits what apps can do in the background to save battery. A **foreground Service** is the escape hatch for ongoing, user-visible work (music, navigation, an active upload) — it must post a persistent notification via a declared **Notification Channel**, and (Android 14+) must declare a `foregroundServiceType` describing what kind of work it does.\n\nA plain background Service has almost no guarantees on modern Android: it can be killed quickly, and starting a new one from the background is blocked on Android 8+ (use `WorkManager` or a foreground service instead). Notification channels themselves group notifications by purpose so users can mute/adjust importance per category in system settings rather than per app.",
+        "vi": "Android hiện đại hạn chế mạnh những gì app được làm khi ở nền để tiết kiệm pin. **Foreground Service** là lối thoát cho công việc đang diễn ra, người dùng nhìn thấy (nhạc, chỉ đường, tải lên đang chạy) — nó phải gửi một notification liên tục qua một **Notification Channel** đã khai báo, và (từ Android 14+) phải khai báo `foregroundServiceType` mô tả loại công việc nó làm.\n\nService nền thông thường gần như không có đảm bảo nào trên Android hiện đại: dễ bị kill nhanh, và việc khởi động một service mới từ nền bị chặn từ Android 8+ (nên dùng `WorkManager` hoặc foreground service thay thế). Bản thân notification channel nhóm thông báo theo mục đích để người dùng tắt tiếng/điều chỉnh độ quan trọng theo từng danh mục trong cài đặt hệ thống thay vì theo từng app."
+      }
+    },
+    {
+      "title": {
+        "en": "Securing Local Data: Keystore & EncryptedSharedPreferences",
+        "vi": "Bảo mật Dữ liệu Cục bộ: Keystore & EncryptedSharedPreferences"
+      },
+      "content": {
+        "en": "Raw `SharedPreferences` stores plain XML on disk — readable if a device is rooted or the app is compromised. The **Android Keystore** system generates and stores cryptographic keys in hardware-backed secure storage that the app never sees raw (operations happen inside the secure element/TEE), protecting keys even from a rooted device.\n\nJetpack Security's `EncryptedSharedPreferences` uses a Keystore-backed master key to transparently encrypt/decrypt both keys and values, giving you the same `SharedPreferences` API with data-at-rest encryption. For network-fetched secrets like auth tokens, `EncryptedSharedPreferences` (or platform Keychain-equivalent on iOS: the Keychain itself) is the standard place to store them — never plain SharedPreferences/UserDefaults.",
+        "vi": "`SharedPreferences` thông thường lưu XML thô trên đĩa — đọc được nếu thiết bị đã root hoặc app bị xâm nhập. Hệ thống **Android Keystore** sinh và lưu khoá mã hoá trong bộ nhớ an toàn hỗ trợ phần cứng mà app không bao giờ thấy dạng thô (các phép toán diễn ra bên trong secure element/TEE), bảo vệ khoá kể cả khỏi thiết bị đã root.\n\n`EncryptedSharedPreferences` của Jetpack Security dùng master key dựa trên Keystore để mã hoá/giải mã trong suốt cả key lẫn value, cho cùng API `SharedPreferences` nhưng có mã hoá dữ liệu khi lưu trữ. Với bí mật lấy từ mạng như auth token, `EncryptedSharedPreferences` (hoặc tương đương Keychain trên iOS: chính Keychain) là nơi chuẩn để lưu — không bao giờ dùng SharedPreferences/UserDefaults thô."
+      }
+    },
+    {
+      "title": {
+        "en": "Networking with Retrofit & OkHttp",
+        "vi": "Networking với Retrofit & OkHttp"
+      },
+      "content": {
+        "en": "Retrofit turns an annotated Kotlin interface into a working HTTP client at runtime:\n\n```kotlin\ninterface ApiService {\n  @GET(\"users/{id}\")\n  suspend fun getUser(@Path(\"id\") id: String): User\n}\n\nval retrofit = Retrofit.Builder()\n  .baseUrl(\"https://api.example.com/\")\n  .client(okHttpClient)\n  .addConverterFactory(MoshiConverterFactory.create())\n  .build()\n```\nUnderneath, **OkHttp** does the actual request/response work and is where cross-cutting concerns live via `Interceptor`s: an `AuthInterceptor` can attach a bearer token to every request and trigger a token refresh on 401; a `LoggingInterceptor` logs requests for debugging. OkHttp also handles connection pooling and response caching, so most apps configure one shared `OkHttpClient` instance for the whole app.",
+        "vi": "Retrofit biến một interface Kotlin có annotation thành một HTTP client hoạt động lúc runtime:\n\n```kotlin\ninterface ApiService {\n  @GET(\"users/{id}\")\n  suspend fun getUser(@Path(\"id\") id: String): User\n}\n\nval retrofit = Retrofit.Builder()\n  .baseUrl(\"https://api.example.com/\")\n  .client(okHttpClient)\n  .addConverterFactory(MoshiConverterFactory.create())\n  .build()\n```\nBên dưới, **OkHttp** thực hiện công việc request/response thực sự và là nơi các mối quan tâm xuyên suốt được xử lý qua `Interceptor`: một `AuthInterceptor` có thể gắn bearer token vào mọi request và kích hoạt refresh token khi gặp 401; một `LoggingInterceptor` log request để debug. OkHttp cũng xử lý connection pooling và cache response, nên hầu hết app cấu hình một instance `OkHttpClient` dùng chung cho toàn app."
+      }
+    },
+    {
+      "title": {
+        "en": "Loading Large Lists: Paging 3",
+        "vi": "Tải Danh sách Lớn: Paging 3"
+      },
+      "content": {
+        "en": "Paging 3 (`androidx.paging`) loads data incrementally instead of all at once. You implement a `PagingSource` (or `RemoteMediator` for combined network+database paging), expose a `Flow<PagingData<T>>` from a `Pager`, and collect it into a `PagingDataAdapter` for RecyclerView (or `collectAsLazyPagingItems()` for Compose's `LazyColumn` via the `paging-compose` artifact).\n\nIt automatically handles: requesting the next page as the user scrolls near the end, exposing per-load-state (loading/error/not-loading) so you can show a spinner or retry button at the list's edge, and — with `RemoteMediator` — falling back to network only when the local database cache runs out.",
+        "vi": "Paging 3 (`androidx.paging`) tải dữ liệu tăng dần thay vì tải hết cùng lúc. Bạn triển khai một `PagingSource` (hoặc `RemoteMediator` để paging kết hợp mạng+database), phơi bày một `Flow<PagingData<T>>` từ `Pager`, và collect nó vào `PagingDataAdapter` cho RecyclerView (hoặc `collectAsLazyPagingItems()` cho `LazyColumn` của Compose qua artifact `paging-compose`).\n\nNó tự động xử lý: yêu cầu trang tiếp theo khi người dùng cuộn gần tới cuối, phơi bày trạng thái tải theo từng phần (loading/error/not-loading) để hiện spinner hay nút thử lại ở cuối danh sách, và — với `RemoteMediator` — chỉ dùng mạng khi cache database cục bộ hết dữ liệu."
+      }
+    },
+    {
+      "title": {
+        "en": "DataStore: Async, Type-Safe App Preferences",
+        "vi": "DataStore: Preference App Bất đồng bộ, An toàn Kiểu"
+      },
+      "content": {
+        "en": "DataStore is Jetpack's replacement for SharedPreferences, available in two flavors: **Preferences DataStore** (key-value, similar shape to SharedPreferences but async) and **Proto DataStore** (a fully typed schema defined with Protocol Buffers, catching shape mistakes at compile time).\n\n```kotlin\nval Context.dataStore by preferencesDataStore(\"settings\")\nval THEME_KEY = stringPreferencesKey(\"theme\")\n\nsuspend fun setTheme(context: Context, theme: String) {\n  context.dataStore.edit { it[THEME_KEY] = theme }\n}\n\nval themeFlow: Flow<String?> = context.dataStore.data.map { it[THEME_KEY] }\n```\nAll reads return a `Flow` (no synchronous, main-thread-blocking API like `SharedPreferences.getString`), and writes are transactional, so concurrent updates don't corrupt state the way unsynchronized `SharedPreferences.Editor` calls can.",
+        "vi": "DataStore là bộ thay thế SharedPreferences của Jetpack, có hai dạng: **Preferences DataStore** (key-value, hình dạng giống SharedPreferences nhưng bất đồng bộ) và **Proto DataStore** (schema có kiểu đầy đủ định nghĩa bằng Protocol Buffers, bắt lỗi sai cấu trúc lúc biên dịch).\n\n```kotlin\nval Context.dataStore by preferencesDataStore(\"settings\")\nval THEME_KEY = stringPreferencesKey(\"theme\")\n\nsuspend fun setTheme(context: Context, theme: String) {\n  context.dataStore.edit { it[THEME_KEY] = theme }\n}\n\nval themeFlow: Flow<String?> = context.dataStore.data.map { it[THEME_KEY] }\n```\nMọi lần đọc trả về `Flow` (không có API đồng bộ, chặn main thread như `SharedPreferences.getString`), và ghi có tính transaction, nên cập nhật đồng thời không làm hỏng state theo kiểu mà lệnh gọi `SharedPreferences.Editor` không đồng bộ có thể gây ra."
+      }
+    },
+    {
+      "title": {
+        "en": "Kotlin Flow Operators for Reactive Streams",
+        "vi": "Toán tử Kotlin Flow cho Luồng Reactive"
+      },
+      "content": {
+        "en": "Kotlin `Flow` supports a rich set of operators similar to RxJava's:\n\n- `map`/`filter` — transform/filter each emission.\n- `debounce(timeoutMillis)` — only emit after a quiet period, ideal for search-as-you-type.\n- `flatMapLatest` — switch to a new inner Flow on each new upstream value, cancelling the previous inner Flow (great for 'query changed, cancel the old request').\n- `combine` — merge the latest values from multiple Flows whenever any of them emits.\n- `catch` — handle upstream exceptions without a try/catch around collection.\n- `flowOn(Dispatcher)` — move upstream work (e.g. a blocking DB query) to a different dispatcher without affecting the collector's context.\n\n```kotlin\nsearchQuery\n  .debounce(300)\n  .distinctUntilChanged()\n  .flatMapLatest { query -> repository.search(query) }\n  .flowOn(Dispatchers.IO)\n  .collect { results -> ... }\n```",
+        "vi": "Kotlin `Flow` hỗ trợ một tập toán tử phong phú tương tự RxJava:\n\n- `map`/`filter` — biến đổi/lọc từng lần phát ra.\n- `debounce(timeoutMillis)` — chỉ phát ra sau một khoảng yên tĩnh, lý tưởng cho tìm kiếm khi gõ.\n- `flatMapLatest` — chuyển sang một Flow con mới ở mỗi giá trị nguồn mới, huỷ Flow con trước đó (tuyệt vời cho 'query đổi, huỷ request cũ').\n- `combine` — gộp giá trị mới nhất từ nhiều Flow mỗi khi bất kỳ Flow nào phát ra.\n- `catch` — xử lý exception từ nguồn mà không cần try/catch quanh việc collect.\n- `flowOn(Dispatcher)` — chuyển công việc ở nguồn (ví dụ query DB chặn luồng) sang dispatcher khác mà không ảnh hưởng context của bên collect.\n\n```kotlin\nsearchQuery\n  .debounce(300)\n  .distinctUntilChanged()\n  .flatMapLatest { query -> repository.search(query) }\n  .flowOn(Dispatchers.IO)\n  .collect { results -> ... }\n```"
+      }
+    },
+    {
+      "title": {
+        "en": "Coroutine Scopes: viewModelScope & lifecycleScope",
+        "vi": "Coroutine Scope: viewModelScope & lifecycleScope"
+      },
+      "content": {
+        "en": "A `CoroutineScope` bounds the lifetime of the coroutines launched in it — cancelling the scope cancels all its children, which is how Android avoids leaking coroutines tied to a destroyed screen.\n\n- **viewModelScope**: built into `ViewModel`, automatically cancelled in `onCleared()` — survives configuration changes since the ViewModel itself does, ideal for work that should keep running across rotation (an in-flight save, a long poll).\n- **lifecycleScope**: tied to a `Lifecycle` owner (Activity/Fragment), cancelled when that lifecycle reaches `DESTROYED` — use `lifecycleScope.launch` for UI-bound work, or better, `repeatOnLifecycle(Lifecycle.State.STARTED)` inside it to also pause/resume collection around STOP/START rather than just cancel at DESTROYED.\n\nNever use `GlobalScope` for feature work — it has no lifecycle tie at all, leaking coroutines for the whole process lifetime.",
+        "vi": "Một `CoroutineScope` giới hạn vòng đời của các coroutine được launch trong nó — huỷ scope sẽ huỷ mọi coroutine con, đây là cách Android tránh rò rỉ coroutine gắn với một màn hình đã bị huỷ.\n\n- **viewModelScope**: có sẵn trong `ViewModel`, tự huỷ trong `onCleared()` — sống sót qua configuration change vì chính ViewModel cũng vậy, lý tưởng cho công việc cần tiếp tục chạy qua việc xoay màn hình (một lần lưu đang chạy, một long poll).\n- **lifecycleScope**: gắn với chủ sở hữu `Lifecycle` (Activity/Fragment), huỷ khi lifecycle đó đạt `DESTROYED` — dùng `lifecycleScope.launch` cho công việc gắn với UI, hoặc tốt hơn, dùng `repeatOnLifecycle(Lifecycle.State.STARTED)` bên trong để còn tạm dừng/tiếp tục collect quanh STOP/START thay vì chỉ huỷ ở DESTROYED.\n\nKhông bao giờ dùng `GlobalScope` cho công việc tính năng — nó không gắn vòng đời nào cả, rò rỉ coroutine suốt vòng đời process."
+      }
+    },
+    {
+      "title": {
+        "en": "Choosing a Coroutine Dispatcher",
+        "vi": "Chọn Dispatcher cho Coroutine"
+      },
+      "content": {
+        "en": "Kotlin coroutines run on a `Dispatcher`, which decides which thread(s) they use:\n\n- **Dispatchers.Main**: the single UI thread — the only safe place to touch Views.\n- **Dispatchers.IO**: a large, elastic thread pool tuned for blocking I/O (network calls, file/database access) so many concurrent blocking calls don't starve the app.\n- **Dispatchers.Default**: a thread pool sized to CPU core count, for CPU-bound work (JSON parsing, sorting, image processing) that shouldn't run on Main or crowd out IO's pool.\n\n`withContext(Dispatchers.IO) { ... }` switches just for a block and switches back automatically — the standard pattern for a repository doing a blocking call from a suspend function otherwise called on Main.",
+        "vi": "Coroutine Kotlin chạy trên một `Dispatcher`, quyết định luồng nào được dùng:\n\n- **Dispatchers.Main**: luồng UI duy nhất — nơi an toàn duy nhất để thao tác View.\n- **Dispatchers.IO**: thread pool lớn, co giãn, tối ưu cho I/O chặn luồng (gọi mạng, truy cập file/database) để nhiều lệnh gọi chặn đồng thời không làm app bị đói tài nguyên.\n- **Dispatchers.Default**: thread pool có kích thước theo số nhân CPU, cho công việc nặng CPU (parse JSON, sắp xếp, xử lý ảnh) không nên chạy trên Main hay chiếm chỗ pool của IO.\n\n`withContext(Dispatchers.IO) { ... }` chuyển dispatcher chỉ cho một block và tự chuyển lại — mẫu chuẩn cho một repository thực hiện lệnh gọi chặn luồng từ một suspend function vốn được gọi trên Main."
+      }
+    },
+    {
+      "title": {
+        "en": "Navigating a Compose UI",
+        "vi": "Điều hướng trong UI Compose"
+      },
+      "content": {
+        "en": "`androidx.navigation:navigation-compose` adapts the Jetpack Navigation Component's single-Activity philosophy to Compose: a `NavHost` hosts `composable(route) { ... }` destinations, and a `NavController` drives navigation:\n\n```kotlin\nval navController = rememberNavController()\nNavHost(navController, startDestination = \"list\") {\n  composable(\"list\") { ListScreen(onItemClick = { id -> navController.navigate(\"detail/$id\") }) }\n  composable(\"detail/{id}\") { backStackEntry ->\n    DetailScreen(id = backStackEntry.arguments?.getString(\"id\"))\n  }\n}\n```\nArguments are passed via the route string (with typed `navArgument` declarations for validation), and the back stack, deep links, and nested graphs all work the same way they did with Fragments — just without any XML or Fragment classes.",
+        "vi": "`androidx.navigation:navigation-compose` áp dụng triết lý single-Activity của Navigation Component vào Compose: một `NavHost` chứa các đích đến `composable(route) { ... }`, và `NavController` điều khiển việc điều hướng:\n\n```kotlin\nval navController = rememberNavController()\nNavHost(navController, startDestination = \"list\") {\n  composable(\"list\") { ListScreen(onItemClick = { id -> navController.navigate(\"detail/$id\") }) }\n  composable(\"detail/{id}\") { backStackEntry ->\n    DetailScreen(id = backStackEntry.arguments?.getString(\"id\"))\n  }\n}\n```\nTham số được truyền qua route string (với khai báo `navArgument` có kiểu để kiểm tra), và back stack, deep link, nested graph đều hoạt động giống như khi dùng Fragment — chỉ là không cần XML hay class Fragment nào."
+      }
+    },
+    {
+      "title": {
+        "en": "Multidex & the Method Count Limit",
+        "vi": "Multidex & Giới hạn Số lượng Method"
+      },
+      "content": {
+        "en": "Older Dalvik-era Android had a hard limit of 65,536 method references addressable from a single `.dex` file (a signed 16-bit field). Apps with many dependencies (Firebase, AndroidX, large SDKs) can easily exceed this. **Multidex** splits app code across multiple `.dex` files, with `MultiDexApplication` (or manual `MultiDex.install()`) loading the extra ones at startup.\n\nOn modern devices (API 21+, running ART instead of Dalvik), multiple dex files are natively supported and AGP configures multidex automatically when needed — it's mostly invisible today, but the concept still explains why very large dependency graphs can slow down build/dex-merging time even when the method limit itself isn't hit.",
+        "vi": "Android thời Dalvik cũ có giới hạn cứng 65.536 tham chiếu method có thể đánh địa chỉ từ một file `.dex` duy nhất (một trường 16-bit có dấu). App có nhiều dependency (Firebase, AndroidX, SDK lớn) dễ dàng vượt qua giới hạn này. **Multidex** chia code app thành nhiều file `.dex`, với `MultiDexApplication` (hoặc gọi thủ công `MultiDex.install()`) tải các file thêm lúc khởi động.\n\nTrên thiết bị hiện đại (API 21+, chạy ART thay vì Dalvik), nhiều file dex được hỗ trợ sẵn và AGP tự cấu hình multidex khi cần — ngày nay phần lớn vô hình, nhưng khái niệm này vẫn giải thích vì sao đồ thị dependency rất lớn có thể làm chậm thời gian build/gộp dex kể cả khi chưa chạm giới hạn method."
+      }
+    },
+    {
+      "title": {
+        "en": "The Manifest Merger",
+        "vi": "Manifest Merger"
+      },
+      "content": {
+        "en": "Every Android library brings its own `AndroidManifest.xml` (declaring its own permissions, components, or SDK version requirements). At build time, Gradle's **manifest merger** combines the app's manifest with every dependency's manifest into one final manifest, following priority rules (app manifest generally wins) and merge rules for lists like permissions.\n\nConflicts arise when two manifests declare incompatible attributes for the same element (e.g. two libraries requiring different `minSdkVersion`, or two declaring the same `<activity>` with different `android:exported` values). You resolve them with explicit `tools:` namespace directives in the app's manifest, e.g. `tools:replace=\"android:theme\"` to force the app's value to win over a library's.",
+        "vi": "Mỗi thư viện Android mang theo `AndroidManifest.xml` riêng (khai báo quyền, component, hoặc yêu cầu phiên bản SDK riêng). Lúc build, **manifest merger** của Gradle gộp manifest của app với manifest của từng dependency thành một manifest cuối cùng, theo quy tắc ưu tiên (manifest của app thường thắng) và quy tắc gộp cho các danh sách như quyền.\n\nXung đột phát sinh khi hai manifest khai báo thuộc tính không tương thích cho cùng một element (ví dụ hai thư viện yêu cầu `minSdkVersion` khác nhau, hoặc hai bên cùng khai báo `<activity>` với giá trị `android:exported` khác nhau). Giải quyết bằng chỉ thị namespace `tools:` tường minh trong manifest của app, ví dụ `tools:replace=\"android:theme\"` để buộc giá trị của app thắng thư viện."
+      }
+    },
+    {
+      "title": {
+        "en": "Testing Strategy: Espresso, Robolectric & Instrumented Tests",
+        "vi": "Chiến lược Test: Espresso, Robolectric & Instrumented Test"
+      },
+      "content": {
+        "en": "Three complementary pieces make up Android UI/integration testing:\n\n- **Espresso**: a UI-testing framework that finds views and simulates user interactions (`onView(withId(...)).perform(click())`), synchronizing automatically with the main thread's idle state to avoid flaky sleeps.\n- **Instrumented tests**: run on a real device/emulator with the Android framework fully present — Espresso tests are usually instrumented tests.\n- **Robolectric**: runs tests that need Android framework classes directly on the JVM by simulating the SDK, so they run as fast as plain unit tests without a device/emulator — a good middle ground when you need `Context`/`Resources`/etc. but don't need real rendering or touch input.\n\nA healthy pyramid: many plain JUnit unit tests (business logic, ViewModels with fakes), some Robolectric tests (Android-dependent logic), fewer instrumented/Espresso tests (critical user flows end-to-end).",
+        "vi": "Ba mảnh ghép bổ trợ nhau tạo nên kiểm thử UI/tích hợp trên Android:\n\n- **Espresso**: framework kiểm thử UI tìm view và mô phỏng thao tác người dùng (`onView(withId(...)).perform(click())`), tự động đồng bộ với trạng thái rảnh của main thread để tránh sleep gây flaky.\n- **Instrumented test**: chạy trên thiết bị/emulator thật với Android framework đầy đủ — test Espresso thường là instrumented test.\n- **Robolectric**: chạy các test cần class Android framework trực tiếp trên JVM bằng cách mô phỏng SDK, nên nhanh như unit test thuần mà không cần thiết bị/emulator — điểm cân bằng tốt khi cần `Context`/`Resources`/... nhưng không cần render thật hay input chạm.\n\nMột kim tự tháp lành mạnh: nhiều unit test JUnit thuần (business logic, ViewModel với fake), một số test Robolectric (logic phụ thuộc Android), ít hơn là test instrumented/Espresso (luồng người dùng quan trọng end-to-end)."
+      }
+    },
+    {
+      "title": {
+        "en": "Baseline Profiles & Macrobenchmark",
+        "vi": "Baseline Profile & Macrobenchmark"
+      },
+      "content": {
+        "en": "A **Baseline Profile** is a text file listing the classes and methods most critical to app startup and key user journeys. Google Play uses it to AOT (ahead-of-time)-compile those specific paths when the app is installed, so the very first cold start and key interactions don't rely purely on ART's slower interpretation/JIT warm-up — measurably reducing startup time and jank on first use.\n\nThe **Macrobenchmark** library (a separate Gradle module, run on a real device/emulator via instrumented tests) measures real startup time, frame timing, and jank, and can also generate the Baseline Profile itself by running a representative user journey and recording which code paths executed. Treat it as a regression-catching tool in CI, not a one-time setup step.",
+        "vi": "**Baseline Profile** là một file text liệt kê các class và method quan trọng nhất cho khởi động app và các hành trình người dùng chính. Google Play dùng nó để biên dịch trước (AOT) đúng những đường dẫn đó khi app được cài đặt, để lần khởi động nguội đầu tiên và các tương tác chính không chỉ dựa vào việc thông dịch/JIT khởi động chậm của ART — giảm rõ rệt thời gian khởi động và độ giật ở lần dùng đầu.\n\nThư viện **Macrobenchmark** (một module Gradle riêng, chạy trên thiết bị/emulator thật qua instrumented test) đo thời gian khởi động thực, thời gian frame, và độ giật, và cũng có thể tự sinh Baseline Profile bằng cách chạy một hành trình người dùng tiêu biểu và ghi lại đường dẫn code nào đã thực thi. Nên coi nó là công cụ bắt regression trong CI, không phải bước thiết lập một lần."
+      }
+    },
+    {
+      "title": {
+        "en": "View Binding vs Data Binding vs findViewById",
+        "vi": "View Binding và Data Binding so với findViewById"
+      },
+      "content": {
+        "en": "Three ways to connect XML views to code, from least to most capable:\n\n- **findViewById**: manual, string/id-based lookup, no compile-time type checking — a typo or wrong cast fails only at runtime.\n- **View Binding** (`viewBinding true` in Gradle): generates a typed `XxxBinding` class per layout at compile time with a field per view, so a rename or missing id is a build error, not a runtime crash. No expression support.\n- **Data Binding** (`dataBinding true`): builds on the same generated-binding idea but lets XML reference data directly via `<data>`/`@{...}` expressions (e.g. `android:text=\"@{viewModel.title}\"`), enabling two-way binding — at the cost of extra annotation-processing build time and XML that's harder to statically analyze.\n\nMost new code defaults to View Binding (simpler, faster builds) or skips both entirely in favor of Compose.",
+        "vi": "Ba cách kết nối view XML với code, từ ít tới nhiều khả năng nhất:\n\n- **findViewById**: tra cứu thủ công theo string/id, không kiểm tra kiểu lúc biên dịch — gõ sai hay ép kiểu sai chỉ lộ ra lúc runtime.\n- **View Binding** (`viewBinding true` trong Gradle): sinh ra class `XxxBinding` có kiểu cho mỗi layout lúc biên dịch với một field cho mỗi view, nên đổi tên hay thiếu id là lỗi build, không phải crash runtime. Không hỗ trợ biểu thức.\n- **Data Binding** (`dataBinding true`): xây trên cùng ý tưởng binding sinh sẵn nhưng cho phép XML tham chiếu dữ liệu trực tiếp qua biểu thức `<data>`/`@{...}` (ví dụ `android:text=\"@{viewModel.title}\"`), hỗ trợ binding hai chiều — đánh đổi bằng thời gian build annotation-processing tăng thêm và XML khó phân tích tĩnh hơn.\n\nHầu hết code mới mặc định dùng View Binding (đơn giản hơn, build nhanh hơn) hoặc bỏ qua cả hai để dùng Compose."
+      }
+    },
+    {
+      "title": {
+        "en": "Compose Side Effects: LaunchedEffect & DisposableEffect",
+        "vi": "Side Effect trong Compose: LaunchedEffect & DisposableEffect"
+      },
+      "content": {
+        "en": "Composable functions are meant to be pure descriptions of UI and may recompose any number of times in any order relative to siblings, so non-composable side effects (network calls, registering a listener) need a dedicated, lifecycle-aware API rather than running directly in the function body.\n\n- **LaunchedEffect(key1, key2, ...)**: launches a coroutine scoped to the composition; it (re)starts whenever a key changes, and is cancelled when the composable leaves composition. Use for one-shot suspend calls, like loading initial data when a screen appears.\n- **DisposableEffect(key)**: for non-suspend side effects that need explicit cleanup — register something, then return an `onDispose { ... }` block to unregister it, run whenever the key changes or the composable leaves composition.\n- **SideEffect**: runs after every successful recomposition, for publishing Compose state to non-Compose code that doesn't need to react before the next recomposition.\n\n```kotlin\nLaunchedEffect(userId) {\n  viewModel.loadUser(userId)\n}\n```",
+        "vi": "Composable function được thiết kế là mô tả UI thuần khiết và có thể recompose bất kỳ số lần nào theo thứ tự bất kỳ so với các composable anh em, nên side-effect phi-composable (gọi mạng, đăng ký listener) cần một API riêng, nhận biết vòng đời thay vì chạy trực tiếp trong thân hàm.\n\n- **LaunchedEffect(key1, key2, ...)**: khởi chạy một coroutine gắn với composition; nó (khởi động lại) mỗi khi key thay đổi, và bị huỷ khi composable rời khỏi composition. Dùng cho lệnh gọi suspend một lần, như tải dữ liệu ban đầu khi màn hình xuất hiện.\n- **DisposableEffect(key)**: cho side-effect phi-suspend cần dọn dẹp tường minh — đăng ký thứ gì đó, rồi trả về block `onDispose { ... }` để huỷ đăng ký, chạy mỗi khi key đổi hoặc composable rời composition.\n- **SideEffect**: chạy sau mỗi lần recomposition thành công, dùng để công bố state của Compose cho code phi-Compose không cần phản ứng trước lần recomposition kế tiếp.\n\n```kotlin\nLaunchedEffect(userId) {\n  viewModel.loadUser(userId)\n}\n```"
+      }
+    },
+    {
+      "title": {
+        "en": "Structured Concurrency & Coroutine Cancellation",
+        "vi": "Structured Concurrency & Huỷ Coroutine"
+      },
+      "content": {
+        "en": "Structured concurrency means every coroutine is launched inside a scope, and that scope's lifetime bounds the lifetime of everything launched in it — a parent coroutine doesn't complete until all its children do, and cancelling the parent cancels all children automatically. This is why `viewModelScope`/`lifecycleScope` are safe by default: destroy the owner, and every coroutine it started is cleaned up with no manual bookkeeping.\n\nCancellation is cooperative — a coroutine only actually stops at a suspension point (or when it checks `isActive`/calls `ensureActive()`), so a tight CPU-bound loop with no suspend calls inside it won't respond to cancellation until it checks. Always propagate `CancellationException` rather than swallowing it in a catch-all `catch (e: Exception)`, or you'll break cancellation for the whole coroutine tree above it.",
+        "vi": "Structured concurrency nghĩa là mọi coroutine được launch bên trong một scope, và vòng đời của scope đó giới hạn vòng đời của mọi thứ được launch trong nó — coroutine cha không hoàn thành cho tới khi mọi coroutine con hoàn thành, và huỷ coroutine cha sẽ tự động huỷ mọi coroutine con. Đây là lý do `viewModelScope`/`lifecycleScope` an toàn theo mặc định: huỷ chủ sở hữu, mọi coroutine nó khởi động đều được dọn dẹp mà không cần quản lý thủ công.\n\nViệc huỷ mang tính hợp tác — một coroutine chỉ thực sự dừng tại điểm suspend (hoặc khi nó kiểm tra `isActive`/gọi `ensureActive()`), nên một vòng lặp nặng CPU không có lệnh suspend bên trong sẽ không phản hồi việc huỷ cho tới khi nó kiểm tra. Luôn lan truyền `CancellationException` thay vì nuốt nó trong `catch (e: Exception)` bắt tất cả, nếu không sẽ phá vỡ việc huỷ cho toàn bộ cây coroutine phía trên."
       }
     }
   ]

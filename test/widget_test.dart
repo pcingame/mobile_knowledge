@@ -13,8 +13,10 @@
 // that asset read inside the widget tree.
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:knowledge_mobile/domain/entities/topic.dart';
+import 'package:knowledge_mobile/domain/repositories/progress_repository.dart';
 import 'package:knowledge_mobile/domain/repositories/topic_repository.dart';
 import 'package:knowledge_mobile/domain/usecases/get_topics.dart';
 import 'package:knowledge_mobile/injection_container.dart';
@@ -29,14 +31,21 @@ class _PreloadedRepository implements TopicRepository {
 
 void main() {
   late List<Topic> topics;
+  late ProgressRepository progressRepository;
 
   setUpAll(() async {
-    topics = await InjectionContainer.build()();
+    TestWidgetsFlutterBinding.ensureInitialized();
+    SharedPreferences.setMockInitialValues({});
+    final deps = await InjectionContainer.build();
+    topics = await deps.getTopics();
+    progressRepository = deps.progressRepository;
   });
 
   testWidgets('Home screen lists all topics after loading', (WidgetTester tester) async {
     final getTopics = GetTopics(_PreloadedRepository(topics));
-    await tester.pumpWidget(KnowledgeMobileApp(getTopics: getTopics));
+    await tester.pumpWidget(
+      KnowledgeMobileApp(getTopics: getTopics, progressRepository: progressRepository),
+    );
 
     // The future resolves asynchronously; let the FutureBuilder settle.
     await tester.pumpAndSettle();

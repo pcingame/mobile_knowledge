@@ -264,6 +264,206 @@
         "en": "compute() is a convenience wrapper that spawns an isolate, runs one function, returns the result, and shuts the isolate down — ideal for a single one-off task. Isolate.spawn() gives full control (keeping the isolate alive, bidirectional messaging via ports) for long-lived background workers that handle multiple messages over time.",
         "vi": "compute() là một wrapper tiện lợi: tạo isolate, chạy một hàm, trả kết quả, rồi tắt isolate — phù hợp cho một tác vụ đơn lẻ. Isolate.spawn() cho toàn quyền kiểm soát (giữ isolate sống, gửi nhận message hai chiều qua port) cho các worker nền sống lâu, xử lý nhiều message theo thời gian."
       }
+    },
+    {
+      "question": {
+        "en": "FutureBuilder vs StreamBuilder — what do they solve?",
+        "vi": "FutureBuilder khác StreamBuilder ở điểm nào?"
+      },
+      "answer": {
+        "en": "FutureBuilder rebuilds once when a single async Future completes (loading -> data/error). StreamBuilder rebuilds every time a Stream emits a new event, so it fits continuous/live data (e.g. a Firestore query or a WebSocket).",
+        "vi": "FutureBuilder rebuild một lần khi Future hoàn thành (loading -> data/error). StreamBuilder rebuild mỗi khi Stream phát ra sự kiện mới, phù hợp dữ liệu liên tục/real-time (ví dụ Firestore query hoặc WebSocket)."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a GlobalKey and when do you actually need one?",
+        "vi": "GlobalKey là gì và khi nào thực sự cần dùng?"
+      },
+      "answer": {
+        "en": "A GlobalKey uniquely identifies a widget/State/Element across the whole app, letting you access its State from outside (e.g. GlobalKey<FormState> to call validate(), or to move a widget across the tree while preserving state). Use sparingly — it's expensive and breaks widget encapsulation.",
+        "vi": "GlobalKey định danh duy nhất một widget/State/Element trong toàn app, cho phép truy cập State từ bên ngoài (ví dụ GlobalKey<FormState> để gọi validate(), hoặc di chuyển widget trong cây mà vẫn giữ state). Nên dùng hạn chế vì tốn chi phí và phá vỡ tính đóng gói của widget."
+      }
+    },
+    {
+      "question": {
+        "en": "Expanded vs Flexible inside a Row/Column?",
+        "vi": "Expanded khác Flexible thế nào trong Row/Column?"
+      },
+      "answer": {
+        "en": "Both share leftover space along the main axis using flex. Expanded forces the child to fill its allotted space (FlexFit.tight). Flexible lets the child be smaller than the allotted space if it wants (FlexFit.loose) — Expanded is actually Flexible with fit: tight.",
+        "vi": "Cả hai đều chia không gian còn lại theo trục chính bằng flex. Expanded buộc child lấp đầy khoảng được cấp (FlexFit.tight). Flexible cho phép child nhỏ hơn khoảng được cấp nếu muốn (FlexFit.loose) — thực chất Expanded chính là Flexible với fit: tight."
+      }
+    },
+    {
+      "question": {
+        "en": "What problem does the Builder widget solve?",
+        "vi": "Widget Builder giải quyết vấn đề gì?"
+      },
+      "answer": {
+        "en": "Builder creates a new BuildContext scoped under a specific point in the tree, so you can access an ancestor's data (like Theme.of or Scaffold.of) that isn't available in the outer context because that ancestor hasn't been built into the tree yet at that point.",
+        "vi": "Builder tạo ra một BuildContext mới nằm dưới một điểm cụ thể trong cây, giúp truy cập dữ liệu của ancestor (như Theme.of hay Scaffold.of) mà context bên ngoài chưa có được vì ancestor đó chưa nằm trong cây tại thời điểm đó."
+      }
+    },
+    {
+      "question": {
+        "en": "mainAxisAlignment vs crossAxisAlignment in Flex widgets (Row/Column)?",
+        "vi": "mainAxisAlignment khác crossAxisAlignment thế nào trong Row/Column?"
+      },
+      "answer": {
+        "en": "mainAxisAlignment controls spacing/positioning of children along the Flex widget's main axis (horizontal for Row, vertical for Column). crossAxisAlignment controls alignment along the perpendicular (cross) axis.",
+        "vi": "mainAxisAlignment điều khiển cách bố trí các children theo trục chính (ngang với Row, dọc với Column). crossAxisAlignment điều khiển căn chỉnh theo trục phụ (vuông góc với trục chính)."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a factory constructor in Dart used for?",
+        "vi": "Factory constructor trong Dart dùng để làm gì?"
+      },
+      "answer": {
+        "en": "A factory constructor can return an existing instance (caching/singleton), an instance of a subclass, or run logic before construction — unlike a normal constructor it doesn't have to create a new instance every call. Common in fromJson factories and singletons.",
+        "vi": "Factory constructor có thể trả về một instance đã tồn tại (cache/singleton), một instance của subclass, hoặc chạy logic trước khi khởi tạo — khác với constructor thường, nó không bắt buộc phải tạo instance mới mỗi lần gọi. Thường gặp trong fromJson factory và singleton."
+      }
+    },
+    {
+      "question": {
+        "en": "Named vs positional parameters in Dart functions?",
+        "vi": "Tham số named khác positional thế nào trong hàm Dart?"
+      },
+      "answer": {
+        "en": "Positional parameters are passed in order and optional ones use [ ]. Named parameters (in { }) are passed as name: value in any order, are optional by default, and can be marked `required`. Named params make call sites self-documenting, which is why widget constructors use them heavily.",
+        "vi": "Tham số positional truyền theo thứ tự, phần optional dùng [ ]. Tham số named (trong { }) truyền dạng name: value theo thứ tự bất kỳ, mặc định optional, và có thể đánh dấu `required`. Named params giúp lời gọi tự mô tả rõ ràng, vì vậy constructor của widget dùng rất nhiều."
+      }
+    },
+    {
+      "question": {
+        "en": "What is tree shaking and how does it help a Flutter release build?",
+        "vi": "Tree shaking là gì và giúp ích gì cho bản release của Flutter?"
+      },
+      "answer": {
+        "en": "Tree shaking is a compile-time step where the compiler removes code that's never reachable/used (unused classes, unused icon font glyphs, etc.), reducing the final app size. `flutter build` does this automatically in release mode for Dart code and for IconData that's statically analyzable.",
+        "vi": "Tree shaking là bước biên dịch loại bỏ code không bao giờ được dùng tới (class không dùng, glyph icon font không dùng, ...), giúp giảm kích thước app. `flutter build` tự làm điều này ở chế độ release cho code Dart và cho IconData có thể phân tích tĩnh."
+      }
+    },
+    {
+      "question": {
+        "en": "AnimatedContainer vs a raw AnimationController — implicit vs explicit animation?",
+        "vi": "AnimatedContainer khác AnimationController (implicit vs explicit animation) thế nào?"
+      },
+      "answer": {
+        "en": "Implicit animations (AnimatedContainer, AnimatedOpacity, ...) animate automatically between old and new property values whenever they change — no controller needed, good for simple one-shot transitions. Explicit animations (AnimationController + Tween + AnimatedBuilder) give full control over timing, curves, repeating, and chaining multiple animations.",
+        "vi": "Animation ngầm định (implicit — AnimatedContainer, AnimatedOpacity, ...) tự động animate giữa giá trị cũ và mới của thuộc tính mỗi khi nó thay đổi, không cần controller, phù hợp chuyển động đơn giản một lần. Animation tường minh (explicit — AnimationController + Tween + AnimatedBuilder) cho toàn quyền kiểm soát thời gian, curve, lặp lại, và nối nhiều animation."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a Ticker / SingleTickerProviderStateMixin for?",
+        "vi": "Ticker / SingleTickerProviderStateMixin dùng để làm gì?"
+      },
+      "answer": {
+        "en": "A Ticker fires a callback on every animation frame (via the Scheduler), which is what drives an AnimationController forward. A State class needs `with SingleTickerProviderStateMixin` (or TickerProviderStateMixin for multiple controllers) to act as the vsync that creates that Ticker, so animations pause automatically when the widget isn't visible.",
+        "vi": "Ticker gọi một callback ở mỗi frame animation (qua Scheduler), đây là thứ điều khiển AnimationController chạy. Một State class cần `with SingleTickerProviderStateMixin` (hoặc TickerProviderStateMixin nếu có nhiều controller) để đóng vai trò vsync tạo ra Ticker đó, nhờ vậy animation tự dừng khi widget không hiển thị."
+      }
+    },
+    {
+      "question": {
+        "en": "Navigator.push vs Navigator.pushNamed?",
+        "vi": "Navigator.push khác Navigator.pushNamed thế nào?"
+      },
+      "answer": {
+        "en": "push takes a Route object directly (e.g. MaterialPageRoute(builder: ...)) — flexible but couples the caller to the destination widget. pushNamed looks up a route by a String name in the app's `routes` table (or onGenerateRoute), decoupling navigation from the destination's constructor and enabling deep-linking by URL/name.",
+        "vi": "push nhận trực tiếp một Route object (ví dụ MaterialPageRoute(builder: ...)) — linh hoạt nhưng gắn chặt nơi gọi với widget đích. pushNamed tra route theo tên String trong bảng `routes` của app (hoặc onGenerateRoute), tách rời việc điều hướng khỏi constructor của đích và hỗ trợ deep-link theo tên/URL."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a FocusNode used for?",
+        "vi": "FocusNode dùng để làm gì?"
+      },
+      "answer": {
+        "en": "A FocusNode represents a focusable node in the focus tree, typically attached to a TextField. It lets you programmatically request/give up focus, listen for focus changes, and control keyboard/tab traversal order — e.g. auto-focusing the next field on submit.",
+        "vi": "FocusNode đại diện cho một node có thể nhận focus trong cây focus, thường gắn với TextField. Nó cho phép chủ động yêu cầu/nhả focus bằng code, lắng nghe thay đổi focus, và kiểm soát thứ tự di chuyển bàn phím/tab — ví dụ tự động focus sang field kế tiếp khi submit."
+      }
+    },
+    {
+      "question": {
+        "en": "What's the difference between debugPrint and print in Flutter?",
+        "vi": "debugPrint khác print thế nào trong Flutter?"
+      },
+      "answer": {
+        "en": "print() can drop or truncate output on Android when a lot of text is logged quickly (the OS throttles it). debugPrint() batches/throttles output so long strings and rapid logging don't get cut off, and it's a no-op you can disable entirely for release-like testing.",
+        "vi": "print() có thể bị Android làm rớt hoặc cắt bớt output khi log quá nhiều/quá nhanh (do hệ điều hành giới hạn). debugPrint() có cơ chế gộp/giới hạn tốc độ nên chuỗi dài hay log dồn dập không bị cắt, và có thể tắt hoàn toàn khi test giống môi trường release."
+      }
+    },
+    {
+      "question": {
+        "en": "What does RepaintBoundary actually do under the hood?",
+        "vi": "RepaintBoundary thực chất làm gì bên trong?"
+      },
+      "answer": {
+        "en": "RepaintBoundary creates a separate compositing layer for its subtree. When that subtree repaints, Flutter only repaints that layer instead of the whole render tree above it — useful for isolating a frequently-changing widget (like an animation) from expensive, mostly-static siblings.",
+        "vi": "RepaintBoundary tạo ra một compositing layer riêng cho subtree của nó. Khi subtree đó cần vẽ lại, Flutter chỉ vẽ lại layer đó thay vì toàn bộ render tree phía trên — hữu ích để cô lập một widget thay đổi liên tục (như animation) khỏi các widget anh em tĩnh nhưng tốn chi phí vẽ."
+      }
+    },
+    {
+      "question": {
+        "en": "How does Theme.of(context) work, and why prefer it over hardcoded colors?",
+        "vi": "Theme.of(context) hoạt động thế nào, và vì sao nên dùng thay vì hardcode màu?"
+      },
+      "answer": {
+        "en": "Theme.of(context) walks up the widget tree to find the nearest ancestor InheritedWidget of type Theme and returns its ThemeData, also registering the caller as a dependent so it rebuilds if the theme changes. Using it (instead of hardcoded colors) gives consistent, centrally-controlled styling and automatic light/dark mode support.",
+        "vi": "Theme.of(context) đi ngược lên cây widget để tìm InheritedWidget kiểu Theme gần nhất và trả về ThemeData của nó, đồng thời đăng ký nơi gọi là dependent để rebuild khi theme đổi. Dùng nó (thay vì hardcode màu) giúp style nhất quán, quản lý tập trung, và tự hỗ trợ light/dark mode."
+      }
+    },
+    {
+      "question": {
+        "en": "What's the difference between `late final` and a plain `final` field?",
+        "vi": "`late final` khác `final` thường thế nào?"
+      },
+      "answer": {
+        "en": "A plain `final` must be initialized at declaration or in the constructor initializer list — before the constructor body runs. `late final` defers initialization (e.g. to initState() or first use) while still only allowing it to be set once; reading it before it's set throws at runtime.",
+        "vi": "`final` thường phải được khởi tạo ngay khi khai báo hoặc trong initializer list của constructor — trước khi thân constructor chạy. `late final` cho phép trì hoãn khởi tạo (ví dụ tới initState() hoặc lần dùng đầu tiên) nhưng vẫn chỉ được gán một lần; đọc trước khi gán sẽ ném lỗi runtime."
+      }
+    },
+    {
+      "question": {
+        "en": "What does the cascade operator (..) do in Dart?",
+        "vi": "Toán tử cascade (..) trong Dart làm gì?"
+      },
+      "answer": {
+        "en": "The cascade operator lets you chain multiple calls/property sets on the same object without repeating its name and without each call needing to return `this`. E.g. `StringBuffer()..write('a')..write('b')` writes to the same buffer and the whole expression evaluates to that buffer.",
+        "vi": "Toán tử cascade cho phép gọi nhiều method/gán nhiều thuộc tính liên tiếp trên cùng một object mà không cần lặp lại tên object và các method không cần trả về `this`. Ví dụ `StringBuffer()..write('a')..write('b')` ghi vào cùng một buffer và cả biểu thức trả về chính buffer đó."
+      }
+    },
+    {
+      "question": {
+        "en": "Object? vs dynamic in Dart — what's the difference?",
+        "vi": "Object? khác dynamic thế nào trong Dart?"
+      },
+      "answer": {
+        "en": "Both can hold any value, but `Object?` is statically type-checked — you must cast/check before calling type-specific members, so mistakes are caught at compile time. `dynamic` disables static type checking entirely for that variable; member access is only checked at runtime, which can hide bugs until they crash.",
+        "vi": "Cả hai đều chứa được mọi giá trị, nhưng `Object?` được kiểm tra kiểu tĩnh — phải ép kiểu/kiểm tra trước khi gọi member đặc thù, nên lỗi bị bắt lúc biên dịch. `dynamic` tắt hoàn toàn kiểm tra kiểu tĩnh cho biến đó; việc gọi member chỉ được kiểm tra lúc chạy, có thể giấu lỗi cho tới khi crash."
+      }
+    },
+    {
+      "question": {
+        "en": "What is WidgetsBinding.instance.addPostFrameCallback used for?",
+        "vi": "WidgetsBinding.instance.addPostFrameCallback dùng để làm gì?"
+      },
+      "answer": {
+        "en": "It schedules a callback to run right after the current frame finishes building/laying out/painting. It's the standard way to do something that needs the widget tree already built — like showing a dialog, scrolling to an item, or reading a RenderBox's size — from inside build() or initState() without hitting 'called during build' errors.",
+        "vi": "Nó lên lịch một callback chạy ngay sau khi frame hiện tại build/layout/paint xong. Đây là cách chuẩn để làm việc gì đó cần cây widget đã dựng xong — như hiện dialog, scroll tới một item, hay đọc kích thước RenderBox — từ trong build() hoặc initState() mà không gặp lỗi 'called during build'."
+      }
+    },
+    {
+      "question": {
+        "en": "Why does using `const` on list items matter for widget rebuild performance?",
+        "vi": "Vì sao dùng `const` cho các item trong list lại quan trọng với hiệu năng rebuild?"
+      },
+      "answer": {
+        "en": "A `const` widget is a compile-time constant, so Flutter can skip rebuilding/re-diffing it entirely when its parent rebuilds — it reuses the exact same instance. Without `const`, every rebuild creates new widget instances that still need to be diffed against the old Element tree, which is wasted work for static content.",
+        "vi": "Widget `const` là hằng số biên dịch, nên Flutter có thể bỏ qua hoàn toàn việc rebuild/diff nó khi parent rebuild — nó tái sử dụng đúng instance cũ. Không có `const`, mỗi lần rebuild sẽ tạo instance widget mới vẫn cần diff với Element tree cũ, gây lãng phí công sức cho nội dung tĩnh."
+      }
     }
   ],
   "quiz": [
@@ -904,6 +1104,586 @@
         "en": "compute() spawns, runs one function, and tears the isolate down — fine for one-off work. Isolate.spawn() keeps the isolate alive with bidirectional ports for ongoing communication.",
         "vi": "compute() tạo isolate, chạy một hàm, rồi huỷ isolate — phù hợp việc làm một lần. Isolate.spawn() giữ isolate sống với port hai chiều để giao tiếp liên tục."
       }
+    },
+    {
+      "question": {
+        "en": "Which widget should you use to rebuild UI each time a Stream emits a new value?",
+        "vi": "Nên dùng widget nào để rebuild UI mỗi khi một Stream phát ra giá trị mới?"
+      },
+      "options": [
+        {
+          "en": "StreamBuilder",
+          "vi": "StreamBuilder"
+        },
+        {
+          "en": "FutureBuilder",
+          "vi": "FutureBuilder"
+        },
+        {
+          "en": "ValueListenableBuilder",
+          "vi": "ValueListenableBuilder"
+        },
+        {
+          "en": "Builder",
+          "vi": "Builder"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "StreamBuilder subscribes to a Stream and rebuilds on every emitted event, unlike FutureBuilder which only rebuilds once when a single Future completes.",
+        "vi": "StreamBuilder đăng ký một Stream và rebuild ở mỗi sự kiện phát ra, khác với FutureBuilder chỉ rebuild một lần khi Future hoàn thành."
+      }
+    },
+    {
+      "question": {
+        "en": "What does Expanded's `fit` behave as compared to Flexible?",
+        "vi": "`fit` của Expanded tương đương gì so với Flexible?"
+      },
+      "options": [
+        {
+          "en": "FlexFit.tight",
+          "vi": "FlexFit.tight"
+        },
+        {
+          "en": "FlexFit.loose",
+          "vi": "FlexFit.loose"
+        },
+        {
+          "en": "FlexFit.auto (does not exist)",
+          "vi": "FlexFit.auto (không tồn tại)"
+        },
+        {
+          "en": "It has no fit property",
+          "vi": "Nó không có thuộc tính fit"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Expanded is implemented as Flexible with fit: FlexFit.tight, forcing the child to fill the allotted space instead of allowing it to be smaller.",
+        "vi": "Expanded thực chất là Flexible với fit: FlexFit.tight, buộc child lấp đầy khoảng không gian được cấp thay vì cho phép nhỏ hơn."
+      }
+    },
+    {
+      "question": {
+        "en": "Why would you wrap a widget in a Builder just to call Scaffold.of(context)?",
+        "vi": "Vì sao phải bọc một widget trong Builder chỉ để gọi Scaffold.of(context)?"
+      },
+      "options": [
+        {
+          "en": "To get a BuildContext that is below the Scaffold in the tree, since the outer context (above Scaffold) can't find it",
+          "vi": "Để có một BuildContext nằm dưới Scaffold trong cây, vì context bên ngoài (phía trên Scaffold) không tìm thấy nó"
+        },
+        {
+          "en": "To make the widget rebuild faster",
+          "vi": "Để widget rebuild nhanh hơn"
+        },
+        {
+          "en": "Builder is required syntax for all StatelessWidgets",
+          "vi": "Builder là cú pháp bắt buộc cho mọi StatelessWidget"
+        },
+        {
+          "en": "To avoid using const constructors",
+          "vi": "Để tránh dùng const constructor"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Scaffold.of(context) looks upward from the given context for the nearest Scaffold. If called with the context of the widget that directly builds the Scaffold, that Scaffold isn't an ancestor yet, so a Builder is used to get a context scoped just below it.",
+        "vi": "Scaffold.of(context) tìm ngược lên từ context được truyền vào để tới Scaffold gần nhất. Nếu gọi bằng context của chính widget dựng ra Scaffold đó, Scaffold chưa phải ancestor, nên cần Builder để lấy context nằm ngay bên dưới nó."
+      }
+    },
+    {
+      "question": {
+        "en": "In a Row, which property controls how children align vertically (perpendicular to the row)?",
+        "vi": "Trong Row, thuộc tính nào điều khiển cách children căn chỉnh theo chiều dọc (vuông góc với row)?"
+      },
+      "options": [
+        {
+          "en": "crossAxisAlignment",
+          "vi": "crossAxisAlignment"
+        },
+        {
+          "en": "mainAxisAlignment",
+          "vi": "mainAxisAlignment"
+        },
+        {
+          "en": "mainAxisSize",
+          "vi": "mainAxisSize"
+        },
+        {
+          "en": "textDirection",
+          "vi": "textDirection"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "For a Row, the main axis is horizontal, so the cross axis is vertical — crossAxisAlignment controls vertical alignment of children.",
+        "vi": "Với Row, trục chính là ngang nên trục phụ là dọc — crossAxisAlignment điều khiển căn chỉnh dọc của children."
+      }
+    },
+    {
+      "question": {
+        "en": "What can a Dart factory constructor do that a generative (normal) constructor cannot?",
+        "vi": "Factory constructor trong Dart làm được điều gì mà constructor thông thường (generative) không làm được?"
+      },
+      "options": [
+        {
+          "en": "Return an already-existing instance instead of always creating a new one",
+          "vi": "Trả về một instance đã tồn tại thay vì luôn tạo instance mới"
+        },
+        {
+          "en": "Access `this` before any field is initialized",
+          "vi": "Truy cập `this` trước khi field nào được khởi tạo"
+        },
+        {
+          "en": "Be called without parentheses",
+          "vi": "Được gọi mà không cần dấu ngoặc"
+        },
+        {
+          "en": "Skip null-safety checks",
+          "vi": "Bỏ qua kiểm tra null-safety"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "A factory constructor isn't required to create a brand-new instance of its class — it can return a cached instance, a subtype instance, or run pre-construction logic like parsing JSON.",
+        "vi": "Factory constructor không bắt buộc phải tạo instance hoàn toàn mới — nó có thể trả về instance đã cache, instance của subtype, hoặc chạy logic trước khi khởi tạo như parse JSON."
+      }
+    },
+    {
+      "question": {
+        "en": "Why do most Flutter widget constructors favor named parameters?",
+        "vi": "Vì sao hầu hết constructor của widget Flutter ưu tiên dùng tham số named?"
+      },
+      "options": [
+        {
+          "en": "They make call sites self-documenting and let optional properties be omitted in any order",
+          "vi": "Chúng giúp lời gọi tự mô tả rõ ràng và cho phép bỏ qua thuộc tính tuỳ chọn theo thứ tự bất kỳ"
+        },
+        {
+          "en": "They are faster at runtime than positional parameters",
+          "vi": "Chúng chạy nhanh hơn tham số positional lúc runtime"
+        },
+        {
+          "en": "Positional parameters are not allowed in Dart classes",
+          "vi": "Tham số positional không được phép dùng trong class Dart"
+        },
+        {
+          "en": "Named parameters are required to use const constructors",
+          "vi": "Tham số named là bắt buộc để dùng const constructor"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Named parameters (e.g. `Text('hi', style: ...)`) make it clear what each argument means at the call site and let widgets with many optional properties be constructed cleanly.",
+        "vi": "Tham số named (ví dụ `Text('hi', style: ...)`) làm rõ ý nghĩa từng argument ngay tại nơi gọi và giúp widget có nhiều thuộc tính tuỳ chọn được khởi tạo gọn gàng."
+      }
+    },
+    {
+      "question": {
+        "en": "What does Dart/Flutter tree shaking remove from a release build?",
+        "vi": "Tree shaking trong Dart/Flutter loại bỏ gì khỏi bản release?"
+      },
+      "options": [
+        {
+          "en": "Code and resources (like unused icon glyphs) that are statically unreachable",
+          "vi": "Code và tài nguyên (như glyph icon không dùng) không thể tiếp cận được về mặt tĩnh"
+        },
+        {
+          "en": "All comments in the source code",
+          "vi": "Toàn bộ comment trong mã nguồn"
+        },
+        {
+          "en": "Debug-only widgets like Builder",
+          "vi": "Các widget chỉ dùng cho debug như Builder"
+        },
+        {
+          "en": "Unused pubspec.yaml dependencies automatically from pub.dev",
+          "vi": "Các dependency không dùng trong pubspec.yaml tự động từ pub.dev"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Tree shaking analyzes what's actually reachable from main() and strips everything else, including statically-unused IconData glyphs from bundled fonts, shrinking the final binary.",
+        "vi": "Tree shaking phân tích những gì thực sự có thể tiếp cận từ main() và loại bỏ phần còn lại, kể cả các glyph IconData không dùng tới trong font đã bundle, giúp giảm kích thước file build."
+      }
+    },
+    {
+      "question": {
+        "en": "What's the key difference between implicit and explicit animations in Flutter?",
+        "vi": "Điểm khác biệt chính giữa animation ngầm định (implicit) và tường minh (explicit) trong Flutter là gì?"
+      },
+      "options": [
+        {
+          "en": "Implicit animations (like AnimatedContainer) need no AnimationController; explicit ones require managing one yourself",
+          "vi": "Animation ngầm định (như AnimatedContainer) không cần AnimationController; animation tường minh yêu cầu tự quản lý một cái"
+        },
+        {
+          "en": "Explicit animations cannot use Curves",
+          "vi": "Animation tường minh không thể dùng Curves"
+        },
+        {
+          "en": "Implicit animations only work with StatelessWidget",
+          "vi": "Animation ngầm định chỉ hoạt động với StatelessWidget"
+        },
+        {
+          "en": "There is no functional difference",
+          "vi": "Không có khác biệt chức năng nào"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Implicit animation widgets animate automatically between old/new values with no controller; explicit animation requires you to own an AnimationController for full control over timing, repeating and chaining.",
+        "vi": "Widget animation ngầm định tự động chuyển động giữa giá trị cũ/mới mà không cần controller; animation tường minh yêu cầu bạn tự sở hữu AnimationController để kiểm soát đầy đủ thời gian, lặp lại và nối tiếp."
+      }
+    },
+    {
+      "question": {
+        "en": "What does a Ticker (via SingleTickerProviderStateMixin) provide to an AnimationController?",
+        "vi": "Ticker (thông qua SingleTickerProviderStateMixin) cung cấp gì cho AnimationController?"
+      },
+      "options": [
+        {
+          "en": "A per-frame callback that drives the animation forward, tied to the widget's visibility",
+          "vi": "Một callback theo từng frame giúp animation tiến lên, gắn với việc widget có hiển thị hay không"
+        },
+        {
+          "en": "A network connection for remote animation data",
+          "vi": "Một kết nối mạng cho dữ liệu animation từ xa"
+        },
+        {
+          "en": "A cache of previously computed animation values",
+          "vi": "Một cache của các giá trị animation đã tính trước"
+        },
+        {
+          "en": "Access to the device's accelerometer",
+          "vi": "Quyền truy cập cảm biến gia tốc của thiết bị"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "The Ticker fires on every animation frame via the scheduler, and because it's tied to a vsync (the mixin), animations automatically pause when the widget is off-screen, avoiding wasted work.",
+        "vi": "Ticker được gọi ở mỗi frame animation thông qua scheduler, và vì nó gắn với vsync (mixin), animation tự động tạm dừng khi widget không hiển thị, tránh lãng phí công sức."
+      }
+    },
+    {
+      "question": {
+        "en": "What's the practical advantage of Navigator.pushNamed over Navigator.push?",
+        "vi": "Ưu điểm thực tế của Navigator.pushNamed so với Navigator.push là gì?"
+      },
+      "options": [
+        {
+          "en": "It decouples the caller from the destination widget's constructor and supports deep-linking by route name",
+          "vi": "Nó tách rời nơi gọi khỏi constructor của widget đích và hỗ trợ deep-link theo tên route"
+        },
+        {
+          "en": "It is always faster to render than push",
+          "vi": "Nó luôn render nhanh hơn push"
+        },
+        {
+          "en": "It automatically handles authentication",
+          "vi": "Nó tự động xử lý xác thực"
+        },
+        {
+          "en": "It's the only option that supports animations",
+          "vi": "Nó là lựa chọn duy nhất hỗ trợ animation"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "pushNamed looks up a Route by String name in the routes table/onGenerateRoute, so the caller doesn't need to import or construct the destination widget directly, and the same name can be reached via a deep link.",
+        "vi": "pushNamed tra route theo tên String trong bảng routes/onGenerateRoute, nên nơi gọi không cần import hay khởi tạo trực tiếp widget đích, và cùng tên đó có thể được truy cập qua deep link."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the main use of a FocusNode attached to a TextField?",
+        "vi": "Công dụng chính của FocusNode gắn với TextField là gì?"
+      },
+      "options": [
+        {
+          "en": "Programmatically request/release focus and listen for focus changes",
+          "vi": "Chủ động yêu cầu/nhả focus bằng code và lắng nghe thay đổi focus"
+        },
+        {
+          "en": "Validate the text entered",
+          "vi": "Kiểm tra hợp lệ văn bản đã nhập"
+        },
+        {
+          "en": "Format the text as currency",
+          "vi": "Định dạng văn bản thành tiền tệ"
+        },
+        {
+          "en": "Encrypt the field's contents",
+          "vi": "Mã hoá nội dung của field"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "FocusNode lets code request or give up focus and observe focus state changes, commonly used to auto-advance to the next field on submit.",
+        "vi": "FocusNode cho phép code yêu cầu hoặc nhả focus và theo dõi thay đổi trạng thái focus, thường dùng để tự chuyển sang field kế tiếp khi submit."
+      }
+    },
+    {
+      "question": {
+        "en": "Why might debugPrint() be preferred over print() for verbose logging on Android?",
+        "vi": "Vì sao nên ưu tiên debugPrint() thay vì print() khi log nhiều trên Android?"
+      },
+      "options": [
+        {
+          "en": "debugPrint throttles/batches output so Android doesn't drop or truncate rapid, long log lines",
+          "vi": "debugPrint giới hạn/gộp output để Android không làm rớt hoặc cắt bớt các dòng log dài, dồn dập"
+        },
+        {
+          "en": "print() does not work at all on Android",
+          "vi": "print() hoàn toàn không hoạt động trên Android"
+        },
+        {
+          "en": "debugPrint sends logs to a remote server automatically",
+          "vi": "debugPrint tự động gửi log lên server từ xa"
+        },
+        {
+          "en": "print() is removed in release builds automatically",
+          "vi": "print() tự động bị loại bỏ trong bản release"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Android throttles logcat output; print() can silently drop or truncate messages under heavy logging, while debugPrint() paces output to avoid that.",
+        "vi": "Android giới hạn tốc độ ghi logcat; print() có thể âm thầm làm rớt hoặc cắt bớt message khi log quá nhiều, còn debugPrint() điều tiết tốc độ output để tránh điều đó."
+      }
+    },
+    {
+      "question": {
+        "en": "What does RepaintBoundary create for its subtree?",
+        "vi": "RepaintBoundary tạo ra gì cho subtree của nó?"
+      },
+      "options": [
+        {
+          "en": "A separate compositing layer, so repaints in that subtree don't force repainting the layers above it",
+          "vi": "Một compositing layer riêng, để việc vẽ lại trong subtree đó không buộc phải vẽ lại các layer phía trên"
+        },
+        {
+          "en": "A network isolation boundary",
+          "vi": "Một ranh giới cách ly mạng"
+        },
+        {
+          "en": "A new BuildContext with different theme data",
+          "vi": "Một BuildContext mới với dữ liệu theme khác"
+        },
+        {
+          "en": "A separate isolate for the subtree's build logic",
+          "vi": "Một isolate riêng cho logic build của subtree"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "RepaintBoundary isolates its child into its own compositing layer, so frequent repaints there don't cascade into repainting unrelated, expensive ancestor content.",
+        "vi": "RepaintBoundary cô lập child của nó vào một compositing layer riêng, nên việc vẽ lại liên tục ở đó không lan sang việc phải vẽ lại nội dung ancestor không liên quan và tốn chi phí."
+      }
+    },
+    {
+      "question": {
+        "en": "What happens when you call Theme.of(context) inside build()?",
+        "vi": "Điều gì xảy ra khi gọi Theme.of(context) bên trong build()?"
+      },
+      "options": [
+        {
+          "en": "The widget is registered as a dependent of the InheritedWidget Theme and will rebuild if the theme changes",
+          "vi": "Widget được đăng ký là dependent của InheritedWidget Theme và sẽ rebuild nếu theme thay đổi"
+        },
+        {
+          "en": "It permanently disables hot reload for that widget",
+          "vi": "Nó vô hiệu hoá vĩnh viễn hot reload cho widget đó"
+        },
+        {
+          "en": "It creates a brand-new ThemeData object every frame regardless of change",
+          "vi": "Nó luôn tạo một ThemeData object hoàn toàn mới mỗi frame bất kể có thay đổi hay không"
+        },
+        {
+          "en": "It throws unless called inside initState()",
+          "vi": "Nó ném lỗi nếu không gọi trong initState()"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "InheritedWidget lookups like Theme.of register the calling context as a dependent, so Flutter knows to rebuild it automatically when the ancestor Theme's data changes.",
+        "vi": "Việc tra cứu InheritedWidget như Theme.of đăng ký context gọi nó là dependent, nhờ vậy Flutter biết cần rebuild tự động khi dữ liệu của Theme ancestor thay đổi."
+      }
+    },
+    {
+      "question": {
+        "en": "When can a `late final` field be assigned a value?",
+        "vi": "`late final` field được phép gán giá trị khi nào?"
+      },
+      "options": [
+        {
+          "en": "Exactly once, at any point before it is first read",
+          "vi": "Đúng một lần, tại bất kỳ thời điểm nào trước lần đọc đầu tiên"
+        },
+        {
+          "en": "Only inside the constructor initializer list",
+          "vi": "Chỉ trong initializer list của constructor"
+        },
+        {
+          "en": "As many times as needed, like a normal `var`",
+          "vi": "Bao nhiêu lần tuỳ ý, giống như `var` thông thường"
+        },
+        {
+          "en": "Never — `late final` fields cannot be assigned",
+          "vi": "Không bao giờ — field `late final` không thể được gán"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "`late final` defers initialization until needed, but still enforces single-assignment semantics like a regular `final` — reassigning throws, and reading before assignment throws too.",
+        "vi": "`late final` trì hoãn khởi tạo tới khi cần, nhưng vẫn giữ ngữ nghĩa chỉ gán một lần như `final` thông thường — gán lại sẽ ném lỗi, và đọc trước khi gán cũng ném lỗi."
+      }
+    },
+    {
+      "question": {
+        "en": "What does `buffer..write('a')..write('b')` do with the cascade operator?",
+        "vi": "`buffer..write('a')..write('b')` với toán tử cascade làm gì?"
+      },
+      "options": [
+        {
+          "en": "Calls write('a') then write('b') on the same `buffer` object, without repeating its name",
+          "vi": "Gọi write('a') rồi write('b') trên cùng object `buffer`, không cần lặp lại tên nó"
+        },
+        {
+          "en": "Creates two separate buffer objects",
+          "vi": "Tạo ra hai object buffer riêng biệt"
+        },
+        {
+          "en": "Concatenates 'a' and 'b' into a new String and discards buffer",
+          "vi": "Nối 'a' và 'b' thành một String mới và bỏ qua buffer"
+        },
+        {
+          "en": "Only the last call (write('b')) actually executes",
+          "vi": "Chỉ lệnh gọi cuối (write('b')) thực sự được thực thi"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "The cascade operator chains multiple member accesses/calls on the same target object without needing each call to return `this`, and the whole expression evaluates to that target.",
+        "vi": "Toán tử cascade nối chuỗi nhiều lần truy cập/gọi member trên cùng một object đích mà không cần mỗi lệnh gọi phải trả về `this`, và cả biểu thức trả về chính object đích đó."
+      }
+    },
+    {
+      "question": {
+        "en": "Why is `Object?` generally safer than `dynamic` for a variable's declared type in Dart?",
+        "vi": "Vì sao `Object?` nhìn chung an toàn hơn `dynamic` khi khai báo kiểu biến trong Dart?"
+      },
+      "options": [
+        {
+          "en": "Object? still enforces static type checks, forcing you to cast before accessing type-specific members",
+          "vi": "Object? vẫn thực thi kiểm tra kiểu tĩnh, buộc phải ép kiểu trước khi truy cập member đặc thù"
+        },
+        {
+          "en": "Object? uses less memory at runtime",
+          "vi": "Object? dùng ít bộ nhớ hơn lúc runtime"
+        },
+        {
+          "en": "dynamic cannot hold null values",
+          "vi": "dynamic không thể chứa giá trị null"
+        },
+        {
+          "en": "There is no real difference between them",
+          "vi": "Không có khác biệt thực sự giữa chúng"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "`dynamic` opts a variable entirely out of static analysis, so member-access mistakes only surface at runtime; `Object?` keeps static checking, catching those mistakes at compile time via required casts.",
+        "vi": "`dynamic` khiến biến hoàn toàn thoát khỏi phân tích tĩnh, nên lỗi truy cập member chỉ lộ ra lúc runtime; `Object?` vẫn giữ kiểm tra tĩnh, bắt lỗi đó lúc biên dịch thông qua việc bắt buộc ép kiểu."
+      }
+    },
+    {
+      "question": {
+        "en": "What problem does WidgetsBinding.instance.addPostFrameCallback solve?",
+        "vi": "WidgetsBinding.instance.addPostFrameCallback giải quyết vấn đề gì?"
+      },
+      "options": [
+        {
+          "en": "Running code that needs the widget tree already built, right after the current frame, without hitting 'called during build' errors",
+          "vi": "Chạy code cần cây widget đã dựng xong, ngay sau frame hiện tại, mà không gặp lỗi 'called during build'"
+        },
+        {
+          "en": "Scheduling a callback to run every 16 milliseconds indefinitely",
+          "vi": "Lên lịch một callback chạy mỗi 16 mili-giây vô thời hạn"
+        },
+        {
+          "en": "Registering a background service that survives app termination",
+          "vi": "Đăng ký một background service tồn tại kể cả khi app bị tắt"
+        },
+        {
+          "en": "Preloading network images before the first frame",
+          "vi": "Tải trước ảnh mạng trước frame đầu tiên"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "It defers a callback to run once, right after the current frame finishes, so you can safely show a dialog, scroll, or measure a RenderBox from initState()/build() without triggering framework re-entrancy errors.",
+        "vi": "Nó trì hoãn một callback chạy đúng một lần, ngay sau khi frame hiện tại kết thúc, để có thể an toàn hiện dialog, scroll, hoặc đo RenderBox từ initState()/build() mà không gây lỗi tái nhập (re-entrancy) của framework."
+      }
+    },
+    {
+      "question": {
+        "en": "What does marking a widget `const` let Flutter skip during a parent rebuild?",
+        "vi": "Đánh dấu một widget `const` giúp Flutter bỏ qua điều gì khi parent rebuild?"
+      },
+      "options": [
+        {
+          "en": "Recreating and re-diffing that widget instance — the exact same instance is reused",
+          "vi": "Tạo lại và diff lại instance widget đó — đúng instance cũ được tái sử dụng"
+        },
+        {
+          "en": "Running its build() method once at app startup only",
+          "vi": "Chạy build() của nó chỉ một lần lúc app khởi động"
+        },
+        {
+          "en": "All null-safety checks for its fields",
+          "vi": "Toàn bộ kiểm tra null-safety cho các field của nó"
+        },
+        {
+          "en": "Layout and painting entirely, even on first frame",
+          "vi": "Toàn bộ layout và painting, kể cả ở frame đầu tiên"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "A const widget is a compile-time constant; Flutter can identify it's identical to the previous instance and skip recreating/diffing it, which is why const matters for static parts of frequently-rebuilt lists.",
+        "vi": "Widget const là hằng số biên dịch; Flutter có thể nhận ra nó giống hệt instance trước đó và bỏ qua việc tạo lại/diff, đó là lý do const quan trọng với phần tĩnh trong các list rebuild liên tục."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a common legitimate use of a GlobalKey?",
+        "vi": "Một cách dùng hợp lý phổ biến của GlobalKey là gì?"
+      },
+      "options": [
+        {
+          "en": "A GlobalKey<FormState> to call validate() on a Form from outside its build method",
+          "vi": "Dùng GlobalKey<FormState> để gọi validate() trên một Form từ bên ngoài phương thức build của nó"
+        },
+        {
+          "en": "Replacing every Key in a ListView for better performance",
+          "vi": "Thay thế mọi Key trong ListView để tăng hiệu năng"
+        },
+        {
+          "en": "Making a StatelessWidget stateful",
+          "vi": "Biến một StatelessWidget thành có state"
+        },
+        {
+          "en": "Encrypting widget data",
+          "vi": "Mã hoá dữ liệu của widget"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "GlobalKey exposes a State object outside the widget tree, e.g. GlobalKey<FormState> lets you call formKey.currentState!.validate() from a button's onPressed handler.",
+        "vi": "GlobalKey cho phép truy cập một State object từ bên ngoài cây widget, ví dụ GlobalKey<FormState> cho phép gọi formKey.currentState!.validate() từ onPressed của một nút bấm."
+      }
     }
   ],
   "notes": [
@@ -1015,6 +1795,206 @@
       "content": {
         "en": "Two Dart 3 features that often show up together in interviews:\n\n**Records** group values without a class:\n\n```dart\n(double, double) minMax(List<double> xs) {\n  return (xs.reduce(min), xs.reduce(max));\n}\n\nfinal (lo, hi) = minMax(values); // destructuring\n```\n\n**Pattern matching** (switch expressions, destructuring) works naturally with records and sealed classes:\n\n```dart\nString describe(Object result) => switch (result) {\n  (int code, String msg) when code >= 400 => 'Error $code: $msg',\n  (int code, String msg) => 'OK $code: $msg',\n  Exception e => 'Threw: $e',\n  _ => 'Unknown',\n};\n```\n\nCombined with **sealed classes**, this gives Dart exhaustiveness checking similar to Kotlin's `sealed class` + `when` or Swift's `enum` + `switch`: the compiler warns if a `switch` over a sealed type's subtypes misses a case — catching a whole class of bugs (forgetting to handle a new state) at compile time instead of runtime.",
         "vi": "Hai tính năng Dart 3 thường xuất hiện cùng nhau khi phỏng vấn:\n\n**Record** nhóm các giá trị mà không cần class:\n\n```dart\n(double, double) minMax(List<double> xs) {\n  return (xs.reduce(min), xs.reduce(max));\n}\n\nfinal (lo, hi) = minMax(values); // destructuring\n```\n\n**Pattern matching** (switch expression, destructuring) hoạt động tự nhiên với record và sealed class:\n\n```dart\nString describe(Object result) => switch (result) {\n  (int code, String msg) when code >= 400 => 'Error $code: $msg',\n  (int code, String msg) => 'OK $code: $msg',\n  Exception e => 'Threw: $e',\n  _ => 'Unknown',\n};\n```\n\nKết hợp với **sealed class**, tính năng này cho Dart khả năng kiểm tra tính đầy đủ (exhaustiveness) giống `sealed class` + `when` của Kotlin hay `enum` + `switch` của Swift: compiler sẽ cảnh báo nếu một `switch` trên các subtype của sealed type bị thiếu case — bắt được cả một lớp lỗi (quên xử lý một state mới) ngay ở compile-time thay vì runtime."
+      }
+    },
+    {
+      "title": {
+        "en": "Animations: Implicit vs Explicit",
+        "vi": "Animation: Ngầm định (Implicit) và Tường minh (Explicit)"
+      },
+      "content": {
+        "en": "Flutter offers two animation styles.\n\n- **Implicit** widgets (`AnimatedContainer`, `AnimatedOpacity`, `AnimatedPositioned`, ...) automatically tween between the old and new value of a property whenever it changes. No controller required — great for simple state-driven transitions.\n- **Explicit** animation gives full control: an `AnimationController` (which needs a `vsync`, usually `SingleTickerProviderStateMixin`) drives a `Tween` through a `Curve`, and an `AnimatedBuilder` (or `AnimatedWidget`) rebuilds only the animated subtree on each tick.\n\n```dart\nclass _MyBoxState extends State<MyBox> with SingleTickerProviderStateMixin {\n  late final _controller = AnimationController(\n    vsync: this,\n    duration: const Duration(milliseconds: 300),\n  )..forward();\n\n  @override\n  Widget build(BuildContext context) {\n    return AnimatedBuilder(\n      animation: _controller,\n      builder: (context, child) => Opacity(opacity: _controller.value, child: child),\n      child: const FlutterLogo(),\n    );\n  }\n}\n```\nUse implicit animations by default; reach for explicit ones when you need to sequence, repeat, reverse, or drive multiple properties from one timeline.",
+        "vi": "Flutter cung cấp hai phong cách animation.\n\n- Widget **ngầm định (implicit)** (`AnimatedContainer`, `AnimatedOpacity`, `AnimatedPositioned`, ...) tự động chuyển động giữa giá trị cũ và mới của một thuộc tính mỗi khi nó thay đổi. Không cần controller — phù hợp chuyển động đơn giản theo state.\n- **Tường minh (explicit)** cho toàn quyền kiểm soát: một `AnimationController` (cần `vsync`, thường là `SingleTickerProviderStateMixin`) điều khiển một `Tween` qua một `Curve`, và `AnimatedBuilder` (hoặc `AnimatedWidget`) chỉ rebuild phần subtree animate ở mỗi tick.\n\n```dart\nclass _MyBoxState extends State<MyBox> with SingleTickerProviderStateMixin {\n  late final _controller = AnimationController(\n    vsync: this,\n    duration: const Duration(milliseconds: 300),\n  )..forward();\n\n  @override\n  Widget build(BuildContext context) {\n    return AnimatedBuilder(\n      animation: _controller,\n      builder: (context, child) => Opacity(opacity: _controller.value, child: child),\n      child: const FlutterLogo(),\n    );\n  }\n}\n```\nMặc định dùng animation ngầm định; chỉ chuyển sang tường minh khi cần nối chuỗi, lặp lại, đảo chiều, hoặc điều khiển nhiều thuộc tính từ một timeline."
+      }
+    },
+    {
+      "title": {
+        "en": "Flex Layout Widgets: Expanded, Flexible, Wrap, Stack",
+        "vi": "Widget Layout Flex: Expanded, Flexible, Wrap, Stack"
+      },
+      "content": {
+        "en": "Beyond basic Row/Column, a few layout widgets solve recurring problems:\n\n- **Expanded / Flexible**: share leftover main-axis space in a Row/Column using `flex`. Expanded forces the child to fill its share (`FlexFit.tight`); Flexible lets it be smaller (`FlexFit.loose`).\n- **Wrap**: like Row/Column but moves overflowing children to a new line/column instead of clipping or overflowing — good for tag/chip lists.\n- **Stack + Positioned**: layers children on top of each other, positioned absolutely relative to the Stack's edges — used for badges, overlays, and custom layered UIs.\n\nA common mistake is putting an unconstrained widget (like a `ListView`) inside a `Column` without `Expanded`/`Flexible` — it throws because Column gives infinite height along its main axis by default.",
+        "vi": "Ngoài Row/Column cơ bản, một vài widget layout giải quyết các vấn đề thường gặp:\n\n- **Expanded / Flexible**: chia không gian còn lại theo trục chính trong Row/Column bằng `flex`. Expanded buộc child lấp đầy phần được chia (`FlexFit.tight`); Flexible cho phép nhỏ hơn (`FlexFit.loose`).\n- **Wrap**: giống Row/Column nhưng đưa các children bị tràn xuống dòng/cột mới thay vì cắt hay tràn ra ngoài — phù hợp cho danh sách tag/chip.\n- **Stack + Positioned**: xếp chồng các children lên nhau, định vị tuyệt đối theo cạnh của Stack — dùng cho badge, overlay, và UI xếp lớp tuỳ chỉnh.\n\nMột lỗi thường gặp là đặt widget không bị ràng buộc kích thước (như `ListView`) trong `Column` mà không có `Expanded`/`Flexible` — sẽ ném lỗi vì Column mặc định cho chiều cao vô hạn theo trục chính."
+      }
+    },
+    {
+      "title": {
+        "en": "Dart Generics & Collections",
+        "vi": "Generics & Collection trong Dart"
+      },
+      "content": {
+        "en": "Dart generics (`List<T>`, `Map<K, V>`, or your own `class Box<T>`) give compile-time type safety without duplicating code per type. Key collection operations worth knowing cold: `map`, `where`, `fold`/`reduce`, `expand` (flatMap), and the collection-if/collection-for syntax for building lists declaratively:\n\n```dart\nfinal evens = [for (final n in numbers) if (n.isEven) n];\nfinal doubled = numbers.map((n) => n * 2).toList();\nfinal sum = numbers.fold<int>(0, (acc, n) => acc + n);\n```\nGenerics also apply to functions and methods (`T firstWhere<T>(...)`), and bounded generics (`class Repo<T extends Entity>`) constrain what `T` can be, giving you type-safe reuse across models that share a base type.",
+        "vi": "Generics trong Dart (`List<T>`, `Map<K, V>`, hoặc `class Box<T>` tự định nghĩa) cho kiểm tra kiểu lúc biên dịch mà không cần lặp code theo từng kiểu. Các thao tác collection nên nắm chắc: `map`, `where`, `fold`/`reduce`, `expand` (flatMap), và cú pháp collection-if/collection-for để dựng list khai báo:\n\n```dart\nfinal evens = [for (final n in numbers) if (n.isEven) n];\nfinal doubled = numbers.map((n) => n * 2).toList();\nfinal sum = numbers.fold<int>(0, (acc, n) => acc + n);\n```\nGenerics cũng áp dụng cho hàm/method (`T firstWhere<T>(...)`), và generics có giới hạn (`class Repo<T extends Entity>`) ràng buộc `T` được là gì, cho phép tái sử dụng an toàn về kiểu giữa các model có chung base type."
+      }
+    },
+    {
+      "title": {
+        "en": "Error Handling in Dart & Flutter",
+        "vi": "Xử lý lỗi trong Dart & Flutter"
+      },
+      "content": {
+        "en": "Dart distinguishes **Errors** (programmer mistakes, usually not caught — e.g. `TypeError`) from **Exceptions** (expected failure conditions you should catch — e.g. `FormatException`, a custom `ApiException`). Use `try`/`catch`/`finally`, and prefer catching specific types over bare `catch (e)`.\n\n```dart\ntry {\n  final data = await api.fetchUser(id);\n} on ApiException catch (e) {\n  showError(e.message);\n} finally {\n  setLoading(false);\n}\n```\nAt the app level, `FlutterError.onError` catches framework-reported errors (like widget build errors), and `PlatformDispatcher.instance.onError` catches uncaught async/platform errors — both are typically wired to a crash reporter (e.g. Crashlytics/Sentry) in `main()`.",
+        "vi": "Dart phân biệt **Error** (lỗi lập trình, thường không nên bắt — ví dụ `TypeError`) với **Exception** (tình huống thất bại có thể lường trước, nên bắt — ví dụ `FormatException`, một `ApiException` tự định nghĩa). Dùng `try`/`catch`/`finally`, và nên bắt kiểu cụ thể thay vì `catch (e)` chung chung.\n\n```dart\ntry {\n  final data = await api.fetchUser(id);\n} on ApiException catch (e) {\n  showError(e.message);\n} finally {\n  setLoading(false);\n}\n```\nỞ cấp độ app, `FlutterError.onError` bắt lỗi framework báo về (như lỗi build widget), còn `PlatformDispatcher.instance.onError` bắt lỗi async/platform không được catch — cả hai thường được nối tới công cụ báo crash (như Crashlytics/Sentry) trong `main()`."
+      }
+    },
+    {
+      "title": {
+        "en": "Local Storage Options: shared_preferences, Hive, sqflite",
+        "vi": "Các lựa chọn lưu trữ cục bộ: shared_preferences, Hive, sqflite"
+      },
+      "content": {
+        "en": "Choosing local storage depends on shape and scale of data:\n\n- **shared_preferences**: simple key-value pairs (strings, bools, numbers) backed by SharedPreferences/UserDefaults. Good for small settings/flags, not for sensitive data (unencrypted).\n- **Hive**: a fast, pure-Dart NoSQL key-value/object box store. No native SQL needed, works well with simple-to-moderate structured data and is popular in Flutter for its speed and small footprint.\n- **sqflite** (or drift/Isar): a real embedded SQL database, needed when data is relational, you need complex queries/joins, or you need transactions across multiple tables.\n\nFor sensitive data (tokens, credentials), none of these are safe as-is — use `flutter_secure_storage`, which wraps Keychain (iOS) / Keystore-backed EncryptedSharedPreferences (Android).",
+        "vi": "Lựa chọn lưu trữ cục bộ phụ thuộc vào hình dạng và quy mô dữ liệu:\n\n- **shared_preferences**: cặp key-value đơn giản (string, bool, số), dựa trên SharedPreferences/UserDefaults. Phù hợp cài đặt/flag nhỏ, không dùng cho dữ liệu nhạy cảm (không mã hoá).\n- **Hive**: kho lưu trữ NoSQL key-value/object thuần Dart, nhanh. Không cần SQL native, phù hợp dữ liệu có cấu trúc đơn giản tới trung bình, phổ biến trong Flutter vì nhanh và nhẹ.\n- **sqflite** (hoặc drift/Isar): database SQL nhúng thực thụ, cần khi dữ liệu quan hệ, cần query/join phức tạp, hoặc cần transaction trên nhiều bảng.\n\nVới dữ liệu nhạy cảm (token, thông tin đăng nhập), không cái nào ở trên an toàn nếu dùng nguyên bản — hãy dùng `flutter_secure_storage`, bọc quanh Keychain (iOS) / Keystore-backed EncryptedSharedPreferences (Android)."
+      }
+    },
+    {
+      "title": {
+        "en": "Networking & JSON: Dio/http with json_serializable/freezed",
+        "vi": "Networking & JSON: Dio/http với json_serializable/freezed"
+      },
+      "content": {
+        "en": "For HTTP calls, `http` is minimal/official; `dio` adds interceptors, request/response transforms, timeouts, and easier multipart/form-data — most production apps reach for Dio for its interceptor-based auth-refresh and logging.\n\nFor JSON, hand-writing `fromJson`/`toJson` is error-prone at scale. `json_serializable` (code-gen from plain classes with `@JsonSerializable()`) or `freezed` (adds immutability, `copyWith`, union types, and equality on top) generate that boilerplate and catch shape mismatches at build time via `build_runner`:\n\n```dart\n@freezed\nclass User with _$User {\n  const factory User({required String id, required String name}) = _User;\n  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);\n}\n```",
+        "vi": "Với các lệnh gọi HTTP, `http` là gói tối giản/chính thức; `dio` bổ sung interceptor, biến đổi request/response, timeout, và multipart/form-data dễ hơn — hầu hết app production dùng Dio vì cơ chế interceptor cho auth-refresh và logging.\n\nVới JSON, tự viết `fromJson`/`toJson` bằng tay dễ sai khi quy mô lớn. `json_serializable` (sinh code từ class thuần với `@JsonSerializable()`) hoặc `freezed` (thêm tính bất biến, `copyWith`, union type, và equality) tự sinh phần lặp lại đó và bắt lỗi lệch cấu trúc lúc build qua `build_runner`:\n\n```dart\n@freezed\nclass User with _$User {\n  const factory User({required String id, required String name}) = _User;\n  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);\n}\n```"
+      }
+    },
+    {
+      "title": {
+        "en": "App Lifecycle: WidgetsBindingObserver & AppLifecycleState",
+        "vi": "Vòng đời App: WidgetsBindingObserver & AppLifecycleState"
+      },
+      "content": {
+        "en": "To react to the app moving to background/foreground (pause a video, refresh stale data, lock the screen), mix `WidgetsBindingObserver` into a State, register it in `initState`, and override `didChangeAppLifecycleState`:\n\n```dart\nclass _MyState extends State<MyWidget> with WidgetsBindingObserver {\n  @override\n  void initState() {\n    super.initState();\n    WidgetsBinding.instance.addObserver(this);\n  }\n\n  @override\n  void didChangeAppLifecycleState(AppLifecycleState state) {\n    if (state == AppLifecycleState.resumed) refreshData();\n  }\n\n  @override\n  void dispose() {\n    WidgetsBinding.instance.removeObserver(this);\n    super.dispose();\n  }\n}\n```\nStates are `resumed`, `inactive`, `paused`, `detached` (and `hidden` on newer Flutter) — always remove the observer in `dispose()` to avoid leaking.",
+        "vi": "Để phản ứng khi app chuyển vào nền/lên nền trước (dừng video, làm mới dữ liệu cũ, khoá màn hình), mix `WidgetsBindingObserver` vào một State, đăng ký trong `initState`, và override `didChangeAppLifecycleState`:\n\n```dart\nclass _MyState extends State<MyWidget> with WidgetsBindingObserver {\n  @override\n  void initState() {\n    super.initState();\n    WidgetsBinding.instance.addObserver(this);\n  }\n\n  @override\n  void didChangeAppLifecycleState(AppLifecycleState state) {\n    if (state == AppLifecycleState.resumed) refreshData();\n  }\n\n  @override\n  void dispose() {\n    WidgetsBinding.instance.removeObserver(this);\n    super.dispose();\n  }\n}\n```\nCác trạng thái gồm `resumed`, `inactive`, `paused`, `detached` (và `hidden` ở Flutter mới hơn) — luôn gỡ observer trong `dispose()` để tránh rò rỉ."
+      }
+    },
+    {
+      "title": {
+        "en": "Internationalization in Flutter (intl & ARB files)",
+        "vi": "Đa ngôn ngữ trong Flutter (intl & file ARB)"
+      },
+      "content": {
+        "en": "Flutter's official i18n approach uses the `intl` package plus `.arb` (Application Resource Bundle) files — one JSON-like file per locale (`app_en.arb`, `app_vi.arb`) with keys mapped to translated strings, optionally with ICU plural/gender syntax. Enabling `generate: true` under `flutter:` in `pubspec.yaml` code-generates a typed `AppLocalizations` class via `flutter gen-l10n`, so you call `AppLocalizations.of(context)!.welcomeMessage` instead of hardcoding strings — catching missing translations at build/analysis time rather than at runtime.",
+        "vi": "Cách i18n chính thức của Flutter dùng gói `intl` cùng file `.arb` (Application Resource Bundle) — mỗi locale một file dạng JSON (`app_en.arb`, `app_vi.arb`) ánh xạ key sang chuỗi đã dịch, có thể dùng cú pháp số nhiều/giống ICU. Bật `generate: true` dưới `flutter:` trong `pubspec.yaml` sẽ sinh ra class `AppLocalizations` có kiểu qua `flutter gen-l10n`, nhờ đó gọi `AppLocalizations.of(context)!.welcomeMessage` thay vì hardcode chuỗi — bắt lỗi thiếu bản dịch lúc build/phân tích thay vì lúc chạy."
+      }
+    },
+    {
+      "title": {
+        "en": "Theming: ThemeData, Material 3, Dark Mode",
+        "vi": "Theming: ThemeData, Material 3, Dark Mode"
+      },
+      "content": {
+        "en": "`MaterialApp` takes `theme` and `darkTheme` (both `ThemeData`), plus `themeMode` (`system`/`light`/`dark`) to switch automatically or manually. Material 3 (`useMaterial3: true`, the current default) centers theming around a `ColorScheme`, usually generated from a single seed color via `ColorScheme.fromSeed(seedColor: ...)`, which derives consistent tonal palettes for primary/secondary/surface/error roles across both light and dark.\n\nPrefer reading colors/text styles from `Theme.of(context).colorScheme` / `.textTheme` over hardcoding, so a single theme change (or dark mode) propagates everywhere automatically.",
+        "vi": "`MaterialApp` nhận `theme` và `darkTheme` (đều là `ThemeData`), cùng `themeMode` (`system`/`light`/`dark`) để chuyển tự động hoặc thủ công. Material 3 (`useMaterial3: true`, mặc định hiện nay) xoay quanh `ColorScheme`, thường sinh từ một seed color duy nhất qua `ColorScheme.fromSeed(seedColor: ...)`, tự suy ra bảng màu tonal nhất quán cho các vai trò primary/secondary/surface/error ở cả light và dark.\n\nNên đọc màu/text style từ `Theme.of(context).colorScheme` / `.textTheme` thay vì hardcode, để một thay đổi theme (hoặc dark mode) tự động lan toả khắp app."
+      }
+    },
+    {
+      "title": {
+        "en": "Form Handling & Validation",
+        "vi": "Xử lý Form & Validation"
+      },
+      "content": {
+        "en": "Flutter's `Form` widget groups `TextFormField`s and coordinates validation. Attach a `GlobalKey<FormState>`, give each field a `validator` that returns an error string or `null`, then call `formKey.currentState!.validate()` on submit — it runs every field's validator and shows errors inline.\n\n```dart\nfinal _formKey = GlobalKey<FormState>();\n\nForm(\n  key: _formKey,\n  child: TextFormField(\n    validator: (v) => (v == null || v.isEmpty) ? 'Required' : null,\n  ),\n);\n\n// on submit:\nif (_formKey.currentState!.validate()) { /* proceed */ }\n```\n`autovalidateMode` controls whether validation reruns on every change vs. only on submit/interaction.",
+        "vi": "Widget `Form` của Flutter gom nhóm các `TextFormField` và điều phối validation. Gắn một `GlobalKey<FormState>`, mỗi field có `validator` trả về chuỗi lỗi hoặc `null`, rồi gọi `formKey.currentState!.validate()` khi submit — nó chạy validator của mọi field và hiển thị lỗi ngay tại chỗ.\n\n```dart\nfinal _formKey = GlobalKey<FormState>();\n\nForm(\n  key: _formKey,\n  child: TextFormField(\n    validator: (v) => (v == null || v.isEmpty) ? 'Required' : null,\n  ),\n);\n\n// khi submit:\nif (_formKey.currentState!.validate()) { /* tiếp tục */ }\n```\n`autovalidateMode` điều khiển việc validate chạy lại mỗi lần thay đổi hay chỉ khi submit/tương tác."
+      }
+    },
+    {
+      "title": {
+        "en": "Custom Painting with CustomPaint & CustomPainter",
+        "vi": "Vẽ tuỳ chỉnh với CustomPaint & CustomPainter"
+      },
+      "content": {
+        "en": "When built-in widgets can't express a shape (a custom chart, a progress ring, a signature pad), `CustomPaint` + a `CustomPainter` subclass draw directly to a `Canvas` using low-level primitives (`drawLine`, `drawPath`, `drawArc`, ...).\n\n```dart\nclass RingPainter extends CustomPainter {\n  RingPainter(this.progress);\n  final double progress;\n\n  @override\n  void paint(Canvas canvas, Size size) {\n    final paint = Paint()..strokeWidth = 8..style = PaintingStyle.stroke;\n    canvas.drawArc(Offset.zero & size, -1.57, 6.28 * progress, false, paint);\n  }\n\n  @override\n  bool shouldRepaint(covariant RingPainter old) => old.progress != progress;\n}\n```\n`shouldRepaint` is important — returning `true` unconditionally repaints every frame even with no visual change, hurting performance.",
+        "vi": "Khi widget dựng sẵn không thể diễn tả một hình dạng (biểu đồ tuỳ chỉnh, vòng tiến trình, bảng chữ ký), `CustomPaint` + một `CustomPainter` con vẽ trực tiếp lên `Canvas` bằng các phép vẽ cấp thấp (`drawLine`, `drawPath`, `drawArc`, ...).\n\n```dart\nclass RingPainter extends CustomPainter {\n  RingPainter(this.progress);\n  final double progress;\n\n  @override\n  void paint(Canvas canvas, Size size) {\n    final paint = Paint()..strokeWidth = 8..style = PaintingStyle.stroke;\n    canvas.drawArc(Offset.zero & size, -1.57, 6.28 * progress, false, paint);\n  }\n\n  @override\n  bool shouldRepaint(covariant RingPainter old) => old.progress != progress;\n}\n```\n`shouldRepaint` rất quan trọng — trả về `true` vô điều kiện sẽ vẽ lại mỗi frame dù không có thay đổi hình ảnh, gây hại hiệu năng."
+      }
+    },
+    {
+      "title": {
+        "en": "Flutter Web & Desktop Considerations",
+        "vi": "Những điều cần lưu ý với Flutter Web & Desktop"
+      },
+      "content": {
+        "en": "Flutter targets web (CanvasKit or the newer WasmGC/skwasm renderer) and desktop (Windows/macOS/Linux) from the same codebase, but a few things differ from mobile:\n\n- **Input**: mouse hover (`MouseRegion`), keyboard shortcuts, and right-click context menus matter on web/desktop but not mobile.\n- **Layout**: screens are typically wider — use `LayoutBuilder`/`MediaQuery` breakpoints rather than assuming a phone-sized viewport.\n- **Platform checks**: `kIsWeb` (compile-time constant) distinguishes web from `Platform.isX` (which throws on web since `dart:io` isn't available there).\n- **Windowing/scrolling**: desktop apps often need resizable windows and mouse-wheel/trackpad scroll physics tuned differently than touch.",
+        "vi": "Flutter nhắm tới web (renderer CanvasKit hoặc WasmGC/skwasm mới hơn) và desktop (Windows/macOS/Linux) từ cùng một codebase, nhưng có vài điểm khác mobile:\n\n- **Input**: hover chuột (`MouseRegion`), phím tắt bàn phím, và menu chuột phải quan trọng trên web/desktop nhưng không có ở mobile.\n- **Layout**: màn hình thường rộng hơn — nên dùng breakpoint với `LayoutBuilder`/`MediaQuery` thay vì giả định viewport cỡ điện thoại.\n- **Kiểm tra platform**: `kIsWeb` (hằng số biên dịch) phân biệt web với `Platform.isX` (sẽ ném lỗi trên web vì `dart:io` không khả dụng ở đó).\n- **Cửa sổ/scroll**: app desktop thường cần cửa sổ có thể resize và physics scroll bằng chuột/trackpad được tinh chỉnh khác với chạm tay."
+      }
+    },
+    {
+      "title": {
+        "en": "Plugin Architecture: Federated Plugins",
+        "vi": "Kiến trúc Plugin: Federated Plugin"
+      },
+      "content": {
+        "en": "A federated plugin splits into separate packages so platforms can be maintained/versioned independently: an **app-facing package** (the public Dart API apps depend on, e.g. `url_launcher`), a **platform interface package** (an abstract class defining the contract, e.g. `url_launcher_platform_interface`), and one **implementation package per platform** (`url_launcher_android`, `url_launcher_ios`, ...). This lets a community add a new platform (e.g. Linux) without touching the core package, and lets platform implementations evolve independently — the same pattern `firebase_*` and most first-party Flutter plugins use.",
+        "vi": "Một federated plugin được chia thành các package riêng để mỗi nền tảng được duy trì/version độc lập: **app-facing package** (API Dart công khai mà app phụ thuộc vào, ví dụ `url_launcher`), **platform interface package** (một abstract class định nghĩa hợp đồng, ví dụ `url_launcher_platform_interface`), và **một implementation package cho mỗi nền tảng** (`url_launcher_android`, `url_launcher_ios`, ...). Nhờ vậy cộng đồng có thể thêm nền tảng mới (ví dụ Linux) mà không đụng vào package lõi, và các implementation có thể phát triển độc lập — đây là mẫu mà `firebase_*` và hầu hết plugin Flutter chính thức dùng."
+      }
+    },
+    {
+      "title": {
+        "en": "Understanding the Flutter Rendering Pipeline",
+        "vi": "Hiểu về Rendering Pipeline của Flutter"
+      },
+      "content": {
+        "en": "Each frame goes through: **Build** (widgets describe UI, `build()` methods run) → **Layout** (each RenderObject is given constraints top-down and returns a size bottom-up — a single pass) → **Paint** (RenderObjects record drawing instructions into layers) → **Composite** (the GPU/engine composes layers into a final frame) → **Rasterize**.\n\nUnderstanding this explains common optimizations: marking a subtree `const` skips rebuild; wrapping something in `RepaintBoundary` isolates repaint to its own layer; and layout is why widgets can't 'know' their parent's size unless it's passed down as constraints (Flutter layout is generally one-pass, not measure-then-arrange like some other UI systems).",
+        "vi": "Mỗi frame đi qua: **Build** (widget mô tả UI, các `build()` chạy) → **Layout** (mỗi RenderObject nhận constraint từ trên xuống và trả về kích thước từ dưới lên — một lượt duy nhất) → **Paint** (RenderObject ghi lại lệnh vẽ vào layer) → **Composite** (GPU/engine ghép các layer thành frame cuối) → **Rasterize**.\n\nHiểu quy trình này giải thích các tối ưu thường gặp: đánh dấu subtree `const` bỏ qua rebuild; bọc thứ gì đó trong `RepaintBoundary` cô lập việc vẽ lại vào layer riêng; và đây là lý do widget không thể 'biết' kích thước của parent trừ khi được truyền xuống qua constraint (layout của Flutter nhìn chung là một lượt, không phải đo-rồi-sắp-xếp như một số hệ UI khác)."
+      }
+    },
+    {
+      "title": {
+        "en": "Dart Isolates & Concurrency Deep Dive",
+        "vi": "Isolate & Concurrency trong Dart (Chuyên sâu)"
+      },
+      "content": {
+        "en": "Dart is single-threaded per isolate with no shared memory between isolates — each has its own heap and event loop, communicating only via message-passing over `SendPort`/`ReceivePort` (messages are copied, not shared, except for a few transferable types). This avoids data races by design but means CPU-heavy work (image processing, JSON parsing of huge payloads, encryption) must move off the main isolate or it blocks UI frames.\n\n`compute()` spawns a short-lived isolate for one function call and tears it down after — simplest option for a one-off task. `Isolate.spawn()` gives a long-lived isolate you manage yourself, worth it when you need to send multiple messages over time or keep state alive between calls.",
+        "vi": "Dart chạy đơn luồng trong mỗi isolate và không chia sẻ bộ nhớ giữa các isolate — mỗi isolate có heap và event loop riêng, chỉ giao tiếp qua truyền message trên `SendPort`/`ReceivePort` (message được sao chép, không chia sẻ, trừ vài kiểu có thể transfer). Cách này tránh race condition theo thiết kế nhưng có nghĩa là công việc nặng CPU (xử lý ảnh, parse JSON payload lớn, mã hoá) phải chuyển ra khỏi isolate chính nếu không sẽ chặn frame UI.\n\n`compute()` sinh ra một isolate ngắn hạn cho một lần gọi hàm rồi huỷ đi — lựa chọn đơn giản nhất cho việc chạy một lần. `Isolate.spawn()` cho một isolate tồn tại lâu dài mà bạn tự quản lý, đáng dùng khi cần gửi nhiều message theo thời gian hoặc giữ state sống giữa các lần gọi."
+      }
+    },
+    {
+      "title": {
+        "en": "BLoC Pattern in Practice",
+        "vi": "BLoC Pattern trong Thực Tế"
+      },
+      "content": {
+        "en": "BLoC (Business Logic Component) separates UI from logic using Streams: the UI dispatches **Events** in, and the BLoC emits **States** out, with all business logic living in between and no direct dependency on Flutter widgets — making it easy to unit-test.\n\nThe `flutter_bloc` package's `Bloc<Event, State>` maps events to states via `on<EventType>((event, emit) => ...)`, and `BlocBuilder`/`BlocListener`/`BlocConsumer` widgets subscribe the UI to state changes. Compared to plain `ChangeNotifier`/Provider, BLoC enforces a stricter unidirectional event → state flow, which scales well on larger teams at the cost of more boilerplate for simple screens.",
+        "vi": "BLoC (Business Logic Component) tách UI khỏi logic bằng Stream: UI gửi **Event** vào, BLoC phát ra **State**, toàn bộ business logic nằm ở giữa và không phụ thuộc trực tiếp vào widget Flutter — dễ viết unit test.\n\nPackage `flutter_bloc` với `Bloc<Event, State>` ánh xạ event sang state qua `on<EventType>((event, emit) => ...)`, và các widget `BlocBuilder`/`BlocListener`/`BlocConsumer` giúp UI đăng ký theo dõi thay đổi state. So với `ChangeNotifier`/Provider thuần, BLoC ép luồng event → state một chiều nghiêm ngặt hơn, mở rộng tốt với team lớn nhưng đánh đổi bằng nhiều code lặp hơn cho màn hình đơn giản."
+      }
+    },
+    {
+      "title": {
+        "en": "Flutter App Size Optimization",
+        "vi": "Tối ưu Kích thước App Flutter"
+      },
+      "content": {
+        "en": "Common levers to shrink a Flutter app's download/install size:\n\n- Build **split per-ABI** (`--split-per-abi`) or ship an **App Bundle** (.aab) so the Play Store serves only the native libraries each device needs, instead of one universal APK with all architectures.\n- Audit **image assets** — use appropriately sized/compressed images, prefer vector (SVG/`.png` at correct density) over shipping every @1x/@2x/@3x variant unnecessarily, and consider WebP.\n- Rely on **tree shaking** (automatic in release builds) and avoid pulling in large dependencies for a single small utility.\n- Use `flutter build apk --analyze-size` (or the App Size tool in DevTools) to see exactly what's contributing to the binary before optimizing blindly.",
+        "vi": "Các đòn bẩy thường dùng để giảm kích thước tải/cài đặt của app Flutter:\n\n- Build **split theo ABI** (`--split-per-abi`) hoặc phát hành **App Bundle** (.aab) để Play Store chỉ phục vụ thư viện native mà từng thiết bị cần, thay vì một APK universal chứa mọi kiến trúc.\n- Rà soát **tài nguyên ảnh** — dùng ảnh đúng kích thước/nén hợp lý, ưu tiên vector (SVG/`.png` đúng mật độ) thay vì phát hành mọi biến thể @1x/@2x/@3x không cần thiết, cân nhắc WebP.\n- Dựa vào **tree shaking** (tự động trong bản release) và tránh kéo theo dependency lớn chỉ để dùng một tiện ích nhỏ.\n- Dùng `flutter build apk --analyze-size` (hoặc công cụ App Size trong DevTools) để xem chính xác thứ gì đang góp phần vào kích thước file trước khi tối ưu mù quáng."
+      }
+    },
+    {
+      "title": {
+        "en": "CI/CD for a Flutter App",
+        "vi": "CI/CD cho một App Flutter"
+      },
+      "content": {
+        "en": "A typical Flutter CI pipeline (GitHub Actions, Codemagic, Bitrise, or fastlane-driven) on every PR runs: `flutter pub get` → `flutter analyze` → `flutter test` → (optionally) `flutter build` for a preview artifact. On merge/tag, it builds signed release artifacts (`.aab` for Play Store, `.ipa` for App Store via Xcode/fastlane match for signing) and uploads to TestFlight/Play Console internal testing, sometimes fully automated to production with staged rollout.\n\nKey pain points to plan for: caching the Flutter SDK/pub cache to speed builds, managing signing secrets securely (never commit keystores/certs), and running iOS builds on a macOS runner (Linux/Windows runners can't build iOS).",
+        "vi": "Một pipeline CI Flutter điển hình (GitHub Actions, Codemagic, Bitrise, hoặc dùng fastlane) ở mỗi PR sẽ chạy: `flutter pub get` → `flutter analyze` → `flutter test` → (tuỳ chọn) `flutter build` để có artifact preview. Khi merge/gắn tag, nó build artifact release đã ký (`.aab` cho Play Store, `.ipa` cho App Store qua Xcode/fastlane match để ký) và upload lên TestFlight/Play Console internal testing, đôi khi tự động hoàn toàn tới production với rollout theo giai đoạn.\n\nCác điểm cần lưu ý: cache Flutter SDK/pub cache để build nhanh hơn, quản lý secret ký ứng dụng an toàn (không bao giờ commit keystore/cert), và chạy build iOS trên runner macOS (runner Linux/Windows không build được iOS)."
+      }
+    },
+    {
+      "title": {
+        "en": "Sound Null Safety in Depth",
+        "vi": "Sound Null Safety Chuyên Sâu"
+      },
+      "content": {
+        "en": "Dart's null safety is **sound**: the compiler can guarantee a non-nullable variable is never null at runtime, not just warn about it — this lets the compiler and runtime skip null checks in places that would otherwise need them, improving both safety and performance.\n\nKey mechanics: types are non-nullable by default (`String`), append `?` for nullable (`String?`); the `!` operator asserts non-null (throws if wrong); `late` defers a non-nullable variable's initialization; and flow analysis promotes a nullable variable to non-nullable within a scope after a null check (`if (x != null) { x.length; }` works without `!`). Migrating a pre-null-safety codebase means running `dart migrate`, then manually resolving flagged ambiguous cases.",
+        "vi": "Null safety của Dart là **sound (chặt chẽ)**: trình biên dịch có thể đảm bảo một biến non-nullable không bao giờ null lúc runtime, chứ không chỉ cảnh báo — nhờ vậy compiler và runtime có thể bỏ qua kiểm tra null ở những nơi lẽ ra cần, cải thiện cả độ an toàn lẫn hiệu năng.\n\nCơ chế chính: kiểu mặc định là non-nullable (`String`), thêm `?` để thành nullable (`String?`); toán tử `!` khẳng định không null (ném lỗi nếu sai); `late` trì hoãn khởi tạo của biến non-nullable; và flow analysis tự nâng cấp một biến nullable thành non-nullable trong phạm vi sau khi kiểm tra null (`if (x != null) { x.length; }` hoạt động mà không cần `!`). Migrate một codebase trước null-safety nghĩa là chạy `dart migrate`, rồi tự xử lý các trường hợp mơ hồ được đánh dấu."
+      }
+    },
+    {
+      "title": {
+        "en": "Accessibility (Semantics) in Flutter",
+        "vi": "Accessibility (Semantics) trong Flutter"
+      },
+      "content": {
+        "en": "Flutter builds a parallel **Semantics tree** alongside the widget tree, consumed by screen readers (TalkBack/VoiceOver) and other assistive tech. Most built-in widgets (Text, Icon buttons with tooltips, etc.) populate reasonable semantics automatically, but custom-painted or icon-only controls often need explicit help via the `Semantics` widget:\n\n```dart\nSemantics(\n  label: 'Add to favorites',\n  button: true,\n  child: IconButton(icon: const Icon(Icons.favorite_border), onPressed: addFavorite),\n)\n```\nAlso check color contrast, make sure tap targets are at least ~48x48 logical pixels, and support text scaling (`MediaQuery.textScaler`) instead of fixed font sizes. `flutter run` with `--enable-software-rendering` isn't related — use the **Accessibility Inspector**/`SemanticsDebugger` widget or the a11y scanner tools in DevTools to audit.",
+        "vi": "Flutter dựng một **cây Semantics** song song với cây widget, được screen reader (TalkBack/VoiceOver) và các công nghệ hỗ trợ khác sử dụng. Hầu hết widget dựng sẵn (Text, IconButton có tooltip, ...) tự điền semantics hợp lý, nhưng các control vẽ tuỳ chỉnh hoặc chỉ có icon thường cần hỗ trợ tường minh qua widget `Semantics`:\n\n```dart\nSemantics(\n  label: 'Thêm vào yêu thích',\n  button: true,\n  child: IconButton(icon: const Icon(Icons.favorite_border), onPressed: addFavorite),\n)\n```\nCũng nên kiểm tra độ tương phản màu, đảm bảo vùng chạm tối thiểu ~48x48 logical pixel, và hỗ trợ scale chữ (`MediaQuery.textScaler`) thay vì cỡ chữ cố định. Dùng **Accessibility Inspector**/widget `SemanticsDebugger` hoặc công cụ quét a11y trong DevTools để kiểm tra."
       }
     }
   ]

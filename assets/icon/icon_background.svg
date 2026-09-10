@@ -1,9 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="108" y2="108" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#6C6FF2"/>
-      <stop offset="1" stop-color="#232B6B"/>
+      <stop offset="0" stop-color="#9B8CFB"/>
+      <stop offset="0.55" stop-color="#6C63F2"/>
+      <stop offset="1" stop-color="#3D2E8C"/>
     </linearGradient>
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
   </defs>
   <rect x="0" y="0" width="108" height="108" fill="url(#bg)"/>
+  <ellipse cx="33.5" cy="22.7" rx="47.5" ry="30.2" fill="#FFFFFF" opacity="0.16" filter="url(#blur)"/>
 </svg>

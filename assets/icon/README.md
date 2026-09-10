@@ -1,6 +1,8 @@
 # App icon source
 
-The "Ready Signal" mark (phone + checkmark), same design as the logo concept.
+The "Glass Bubble" mark: a glassy chat-bubble with a checkmark, on a
+violet-indigo gradient with a soft top-left glow. ("Ready Signal" — the
+plain phone+checkmark version — was the v1 concept; this replaced it.)
 
 - `icon_square.svg` / `.png` — full-bleed square (no corner rounding), used
   as the iOS App Store icon and the Android legacy launcher icon source.

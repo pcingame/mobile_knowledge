@@ -1,0 +1,1011 @@
+{
+  "id": "system_design",
+  "title": {
+    "en": "System Design for Mobile",
+    "vi": "System Design cho Mobile"
+  },
+  "flashcards": [
+    {
+      "question": {
+        "en": "What is client-server architecture, and how does a mobile app fit into it?",
+        "vi": "Client-server architecture là gì, và mobile app nằm ở đâu trong đó?"
+      },
+      "answer": {
+        "en": "The server holds shared data/logic and exposes it over a network API; the mobile app (client) is one of potentially many clients that consume that API, holding its own local UI state and cache but treating the server as the source of truth for shared data.",
+        "vi": "Server giữ dữ liệu/logic dùng chung và phơi bày qua API mạng; mobile app (client) là một trong nhiều client có thể có, tiêu thụ API đó, giữ state UI và cache cục bộ riêng nhưng coi server là nguồn chân lý cho dữ liệu dùng chung."
+      }
+    },
+    {
+      "question": {
+        "en": "REST vs RPC-style APIs for a mobile client — what's the core difference?",
+        "vi": "REST khác API kiểu RPC thế nào với mobile client?"
+      },
+      "answer": {
+        "en": "REST models the API around resources and standard HTTP verbs (GET /users/1, POST /orders). RPC-style (gRPC, plain JSON-RPC) models it around calling named functions/procedures directly (getUser(1), createOrder(...)). REST fits CRUD-shaped data well; RPC often fits action-oriented or high-performance/streaming needs better.",
+        "vi": "REST mô hình hoá API quanh resource và các HTTP verb chuẩn (GET /users/1, POST /orders). API kiểu RPC (gRPC, JSON-RPC thuần) mô hình hoá quanh việc gọi trực tiếp hàm/thủ tục có tên (getUser(1), createOrder(...)). REST phù hợp dữ liệu dạng CRUD; RPC thường phù hợp hơn cho nhu cầu hướng hành động hoặc hiệu năng cao/streaming."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a BFF (Backend for Frontend), and why might a mobile team want one?",
+        "vi": "BFF (Backend for Frontend) là gì, và vì sao team mobile có thể muốn dùng?"
+      },
+      "answer": {
+        "en": "A BFF is a backend layer built specifically for one type of client (e.g. a 'mobile BFF'), aggregating and shaping data from multiple underlying services into exactly what that client needs — avoiding over-fetching/under-fetching and letting mobile-specific concerns (payload size, versioning) live outside shared core services.",
+        "vi": "BFF là một tầng backend được xây riêng cho một loại client (ví dụ 'mobile BFF'), tổng hợp và định hình dữ liệu từ nhiều service bên dưới thành đúng những gì client đó cần — tránh over-fetching/under-fetching và để các mối quan tâm riêng của mobile (kích thước payload, versioning) nằm tách biệt khỏi các service lõi dùng chung."
+      }
+    },
+    {
+      "question": {
+        "en": "Where can a mobile app cache data, and why does it matter?",
+        "vi": "Mobile app có thể cache dữ liệu ở đâu, và vì sao quan trọng?"
+      },
+      "answer": {
+        "en": "Layers include: in-memory (fastest, cleared on process death), on-disk (survives restarts), and HTTP-level caching via headers (Cache-Control, ETag) handled by the networking library. Caching reduces network calls, latency, data usage, and lets some content work offline.",
+        "vi": "Các tầng gồm: bộ nhớ trong (nhanh nhất, mất khi process bị kill), trên đĩa (sống sót qua restart), và cache cấp HTTP qua header (Cache-Control, ETag) được xử lý bởi thư viện networking. Caching giảm số lệnh gọi mạng, độ trễ, dữ liệu sử dụng, và cho phép một số nội dung hoạt động offline."
+      }
+    },
+    {
+      "question": {
+        "en": "What is an ETag, and how does it enable efficient cache revalidation?",
+        "vi": "ETag là gì, và giúp revalidate cache hiệu quả thế nào?"
+      },
+      "answer": {
+        "en": "An ETag is a server-generated fingerprint of a resource's current content. A client can send it back via `If-None-Match`; if unchanged, the server replies `304 Not Modified` with no body, letting the client reuse its cached copy instead of re-downloading identical data.",
+        "vi": "ETag là một dấu vân tay do server sinh ra cho nội dung hiện tại của một resource. Client có thể gửi lại nó qua `If-None-Match`; nếu không đổi, server trả về `304 Not Modified` không có body, cho phép client tái sử dụng bản cache thay vì tải lại dữ liệu giống hệt."
+      }
+    },
+    {
+      "question": {
+        "en": "Why do mobile apps need pagination for large lists?",
+        "vi": "Vì sao mobile app cần pagination cho danh sách lớn?"
+      },
+      "answer": {
+        "en": "Loading an entire large dataset at once wastes memory, bandwidth, and battery, and delays the first usable screen. Pagination fetches and renders data incrementally (a page at a time), keeping memory bounded and the UI responsive regardless of total dataset size.",
+        "vi": "Tải toàn bộ tập dữ liệu lớn cùng lúc lãng phí bộ nhớ, băng thông, pin, và làm chậm màn hình dùng được đầu tiên. Pagination tải và render dữ liệu tăng dần (từng trang), giữ bộ nhớ có giới hạn và UI phản hồi nhanh bất kể tổng kích thước dữ liệu."
+      }
+    },
+    {
+      "question": {
+        "en": "Cursor-based vs offset-based pagination — what's the tradeoff?",
+        "vi": "Cursor-based khác offset-based pagination thế nào, đánh đổi gì?"
+      },
+      "answer": {
+        "en": "Offset-based (LIMIT/OFFSET) is simple but breaks under concurrent inserts/deletes — items can shift between pages, causing skips or duplicates, and gets slower for deep pages. Cursor-based pagination points to 'the item after X', staying stable and fast regardless of concurrent writes or page depth, at the cost of not supporting random access to an arbitrary page number.",
+        "vi": "Offset-based (LIMIT/OFFSET) đơn giản nhưng dễ hỏng khi có insert/delete đồng thời — item có thể dịch chuyển giữa các trang, gây bỏ sót hoặc trùng lặp, và chậm dần khi trang càng sâu. Cursor-based pagination trỏ tới 'item sau X', ổn định và nhanh bất kể ghi đồng thời hay độ sâu trang, đánh đổi bằng việc không hỗ trợ truy cập ngẫu nhiên tới một số trang bất kỳ."
+      }
+    },
+    {
+      "question": {
+        "en": "What is optimistic concurrency control, and why does it matter for syncing mobile edits?",
+        "vi": "Optimistic concurrency control là gì, và vì sao quan trọng khi đồng bộ chỉnh sửa từ mobile?"
+      },
+      "answer": {
+        "en": "Optimistic concurrency lets a client update a record by also sending the version it last read (e.g. a version number or timestamp); the server rejects the write if the record has since changed, rather than silently overwriting someone else's concurrent edit — critical when a mobile client's edit may be sent long after it was made (offline queue).",
+        "vi": "Optimistic concurrency cho phép client cập nhật một record bằng cách gửi kèm phiên bản nó đọc lần cuối (ví dụ số version hay timestamp); server từ chối lần ghi nếu record đã thay đổi từ đó, thay vì âm thầm ghi đè lên chỉnh sửa đồng thời của người khác — quan trọng khi chỉnh sửa của mobile client có thể được gửi rất lâu sau khi thực hiện (hàng đợi offline)."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a CDN, and why do mobile apps rely on one for images/static assets?",
+        "vi": "CDN là gì, và vì sao mobile app dựa vào nó cho ảnh/tài nguyên tĩnh?"
+      },
+      "answer": {
+        "en": "A CDN (Content Delivery Network) caches static content across geographically distributed edge servers, so a user downloads it from a nearby server instead of the origin — much lower latency and less load on the origin, which matters a lot for image-heavy mobile UIs serving a global user base.",
+        "vi": "CDN (Content Delivery Network) cache nội dung tĩnh trên các edge server phân tán về mặt địa lý, để người dùng tải từ một server gần thay vì origin — độ trễ thấp hơn nhiều và giảm tải cho origin, điều rất quan trọng với UI mobile nhiều ảnh phục vụ người dùng toàn cầu."
+      }
+    },
+    {
+      "question": {
+        "en": "What are common API versioning strategies?",
+        "vi": "Các chiến lược versioning API phổ biến là gì?"
+      },
+      "answer": {
+        "en": "URL versioning (/v1/users, /v2/users) is explicit and simple but can fragment the codebase. Header versioning (Accept: application/vnd.app.v2+json) keeps URLs clean but is less discoverable. Either way, versioning matters for mobile specifically because old app versions can't be force-updated instantly — the backend often must support multiple API versions concurrently for a long tail of installed clients.",
+        "vi": "Versioning theo URL (/v1/users, /v2/users) tường minh, đơn giản nhưng có thể phân mảnh codebase. Versioning theo header (Accept: application/vnd.app.v2+json) giữ URL sạch nhưng khó khám phá hơn. Dù cách nào, versioning đặc biệt quan trọng với mobile vì phiên bản app cũ không thể ép cập nhật ngay lập tức — backend thường phải hỗ trợ đồng thời nhiều phiên bản API cho một lượng lớn client cài đặt cũ."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a message queue, and how might a mobile backend use one?",
+        "vi": "Message queue là gì, và backend cho mobile có thể dùng nó thế nào?"
+      },
+      "answer": {
+        "en": "A message queue (RabbitMQ, SQS, Kafka) decouples producing work from processing it: a request enqueues a message and returns immediately, while a separate worker processes it asynchronously. A mobile backend might use one to send push notifications, process an uploaded image, or run analytics — without making the mobile client's request wait for that slower work.",
+        "vi": "Message queue (RabbitMQ, SQS, Kafka) tách rời việc tạo công việc khỏi việc xử lý nó: một request đẩy message vào hàng đợi và trả về ngay, trong khi một worker riêng xử lý nó bất đồng bộ. Backend cho mobile có thể dùng nó để gửi push notification, xử lý ảnh đã tải lên, hoặc chạy analytics — mà không bắt request của mobile client phải đợi công việc chậm hơn đó."
+      }
+    },
+    {
+      "question": {
+        "en": "What is database sharding?",
+        "vi": "Database sharding là gì?"
+      },
+      "answer": {
+        "en": "Sharding splits a large dataset across multiple database instances (shards), each holding a subset of the data (e.g. by user ID range or hash) — allowing writes and storage to scale beyond what a single database server can handle, at the cost of added complexity for cross-shard queries.",
+        "vi": "Sharding chia một tập dữ liệu lớn ra nhiều instance database (shard), mỗi shard giữ một phần dữ liệu (ví dụ theo khoảng user ID hoặc hash) — cho phép ghi và lưu trữ mở rộng vượt qua giới hạn một server database duy nhất, đánh đổi bằng độ phức tạp thêm cho các query xuyên shard."
+      }
+    },
+    {
+      "question": {
+        "en": "What does the CAP theorem say, and why is it relevant to designing a mobile sync backend?",
+        "vi": "CAP theorem nói gì, và vì sao liên quan tới việc thiết kế backend đồng bộ cho mobile?"
+      },
+      "answer": {
+        "en": "CAP theorem says a distributed system can't simultaneously guarantee full Consistency, Availability, and Partition tolerance — a network partition forces a choice between staying available (possibly serving stale/conflicting data) or staying strictly consistent (possibly rejecting requests). Since mobile clients inherently deal with unreliable connectivity, most mobile-facing systems lean toward availability + eventual consistency rather than strict consistency.",
+        "vi": "CAP theorem nói rằng một hệ thống phân tán không thể đồng thời đảm bảo đầy đủ Consistency, Availability, và Partition tolerance — một network partition buộc phải chọn giữa việc giữ khả dụng (có thể phục vụ dữ liệu cũ/xung đột) hoặc giữ nhất quán chặt chẽ (có thể từ chối request). Vì mobile client vốn dĩ đối mặt với kết nối không đáng tin cậy, hầu hết hệ thống hướng tới mobile nghiêng về khả dụng + eventual consistency thay vì nhất quán chặt chẽ."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a load balancer, and why does API availability depend on one?",
+        "vi": "Load balancer là gì, và vì sao độ khả dụng của API phụ thuộc vào nó?"
+      },
+      "answer": {
+        "en": "A load balancer distributes incoming requests across multiple backend server instances, so no single instance is overwhelmed and the service keeps running even if one instance fails (traffic is routed around it) — a prerequisite for horizontally scaling and for high availability.",
+        "vi": "Load balancer phân phối request đến qua nhiều instance server backend, để không instance nào bị quá tải và dịch vụ vẫn chạy kể cả khi một instance gặp sự cố (traffic được định tuyến tránh nó) — điều kiện tiên quyết để scale theo chiều ngang và đạt độ khả dụng cao."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the circuit breaker pattern, and why does a backend serving mobile clients need it?",
+        "vi": "Circuit breaker pattern là gì, và vì sao backend phục vụ mobile client cần nó?"
+      },
+      "answer": {
+        "en": "A circuit breaker stops calling a dependency that's failing repeatedly (e.g. a downstream service that's down), failing fast instead of piling up slow/timed-out calls — protecting the caller from cascading failure and giving the failing dependency room to recover, instead of every retrying client making its outage worse.",
+        "vi": "Circuit breaker dừng gọi tới một dependency đang liên tục thất bại (ví dụ một service downstream đang sập), thất bại nhanh thay vì chất đống các lệnh gọi chậm/timeout — bảo vệ bên gọi khỏi lỗi lan tầng và cho dependency đang lỗi không gian để phục hồi, thay vì mọi client đang retry làm sự cố tệ hơn."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a health check, and how is it used in system design?",
+        "vi": "Health check là gì, và được dùng thế nào trong system design?"
+      },
+      "answer": {
+        "en": "A health check is a lightweight endpoint (e.g. GET /health) a service exposes to report whether it's running correctly; load balancers and orchestrators poll it to automatically route traffic away from an unhealthy instance and restart it, keeping the overall system available without manual intervention.",
+        "vi": "Health check là một endpoint nhẹ (ví dụ GET /health) mà một service phơi bày để báo cáo nó có đang chạy đúng hay không; load balancer và orchestrator định kỳ kiểm tra nó để tự động định tuyến traffic tránh instance không khoẻ mạnh và khởi động lại nó, giữ hệ thống khả dụng mà không cần can thiệp thủ công."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a sync queue in an offline-first mobile architecture?",
+        "vi": "Sync queue trong kiến trúc offline-first của mobile là gì?"
+      },
+      "answer": {
+        "en": "A sync queue is a local, persisted list of pending changes (creates/updates/deletes) made while offline or before the server confirms them; a background process drains the queue by sending each change to the server once connectivity returns, handling retries and conflict resolution along the way.",
+        "vi": "Sync queue là một danh sách cục bộ, đã lưu trữ các thay đổi đang chờ (tạo/sửa/xoá) được thực hiện khi offline hoặc trước khi server xác nhận; một tiến trình nền xử lý hàng đợi bằng cách gửi từng thay đổi lên server khi có kết nối trở lại, xử lý retry và giải quyết xung đột dọc đường."
+      }
+    },
+    {
+      "question": {
+        "en": "What is back-pressure, and why does it matter for streaming data to a mobile client?",
+        "vi": "Back-pressure là gì, và vì sao quan trọng khi streaming dữ liệu tới mobile client?"
+      },
+      "answer": {
+        "en": "Back-pressure is a mechanism for a slow consumer to signal a fast producer to slow down, instead of the producer overwhelming the consumer's buffer/memory. It matters for mobile because a device can be on a slow connection or have limited memory — a stream (e.g. of live updates) needs to adapt to what the client can actually keep up with, not just what the server can send.",
+        "vi": "Back-pressure là cơ chế để bên tiêu thụ chậm báo cho bên sản xuất nhanh biết cần chậm lại, thay vì bên sản xuất làm tràn buffer/bộ nhớ của bên tiêu thụ. Điều này quan trọng với mobile vì thiết bị có thể ở kết nối chậm hoặc bộ nhớ hạn chế — một stream (ví dụ cập nhật live) cần thích ứng với những gì client thực sự theo kịp, không chỉ những gì server có thể gửi."
+      }
+    },
+    {
+      "question": {
+        "en": "Polling vs long-polling vs WebSockets — how do they differ for delivering real-time updates to a mobile client?",
+        "vi": "Polling, long-polling, và WebSocket khác nhau thế nào khi đưa cập nhật real-time tới mobile client?"
+      },
+      "answer": {
+        "en": "Polling repeatedly asks 'anything new?' on a timer — simple but wasteful and adds latency up to the polling interval. Long-polling holds the request open until there's new data (or a timeout), reducing wasted requests. WebSockets keep one persistent, bidirectional connection open, giving the lowest latency and overhead for frequent updates, at the cost of more server-side connection management.",
+        "vi": "Polling liên tục hỏi 'có gì mới không?' theo chu kỳ — đơn giản nhưng lãng phí và thêm độ trễ tối đa bằng chu kỳ polling. Long-polling giữ request mở cho tới khi có dữ liệu mới (hoặc timeout), giảm request lãng phí. WebSocket giữ một kết nối hai chiều, liên tục duy nhất, cho độ trễ và chi phí thấp nhất với cập nhật thường xuyên, đánh đổi bằng việc quản lý kết nối phía server phức tạp hơn."
+      }
+    },
+    {
+      "question": {
+        "en": "What is queue-based load leveling, and when would a mobile backend use it?",
+        "vi": "Queue-based load leveling là gì, và khi nào backend cho mobile dùng nó?"
+      },
+      "answer": {
+        "en": "Queue-based load leveling puts incoming work onto a queue that's drained at a sustainable rate, smoothing out traffic spikes (e.g. a flash sale or viral moment) so a sudden burst of mobile client requests doesn't overwhelm downstream processing — clients may see slightly delayed processing during a spike, but the system stays up instead of falling over.",
+        "vi": "Queue-based load leveling đưa công việc đến vào một hàng đợi được xử lý với tốc độ bền vững, làm mượt các đợt tăng đột biến traffic (ví dụ flash sale hay khoảnh khắc viral) để một đợt bùng nổ request từ mobile client không làm quá tải xử lý phía sau — client có thể thấy xử lý chậm hơn một chút trong đợt tăng, nhưng hệ thống vẫn đứng vững thay vì sập."
+      }
+    },
+    {
+      "question": {
+        "en": "What is back-of-the-envelope estimation used for in a system design interview?",
+        "vi": "Ước lượng back-of-the-envelope dùng để làm gì trong phỏng vấn system design?"
+      },
+      "answer": {
+        "en": "It's a quick, order-of-magnitude calculation (requests/sec, storage growth per day, bandwidth) from stated assumptions (user count, usage frequency) used to sanity-check a design's scale — e.g. confirming a single database can plausibly handle the estimated write throughput, or that storage growth over a year is reasonable — without needing exact numbers.",
+        "vi": "Đây là phép tính nhanh, theo bậc độ lớn (request/giây, tăng trưởng lưu trữ mỗi ngày, băng thông) từ các giả định đã nêu (số người dùng, tần suất sử dụng) dùng để kiểm tra tính hợp lý về quy mô của một thiết kế — ví dụ xác nhận một database duy nhất có khả năng xử lý thông lượng ghi ước tính, hay tăng trưởng lưu trữ trong một năm là hợp lý — mà không cần số liệu chính xác."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a single point of failure (SPOF), and how do you design around one?",
+        "vi": "Single point of failure (SPOF) là gì, và làm sao để thiết kế tránh nó?"
+      },
+      "answer": {
+        "en": "A SPOF is any component whose failure takes down the whole system, with nothing to take over. You design around one by adding redundancy — multiple instances behind a load balancer, database replicas, multi-region deployment — so no single component's failure is fatal to the overall system.",
+        "vi": "SPOF là bất kỳ thành phần nào mà khi hỏng sẽ làm sập toàn bộ hệ thống, không có gì thay thế. Cách thiết kế tránh nó là thêm dự phòng — nhiều instance phía sau load balancer, database replica, triển khai đa vùng — để lỗi của một thành phần đơn lẻ không gây chết cho toàn hệ thống."
+      }
+    },
+    {
+      "question": {
+        "en": "What is GraphQL, and how might it help a mobile client compared to REST?",
+        "vi": "GraphQL là gì, và có thể giúp gì cho mobile client so với REST?"
+      },
+      "answer": {
+        "en": "GraphQL lets a client specify exactly which fields it needs in a single query, across potentially multiple resources, instead of hitting multiple REST endpoints or receiving fixed response shapes — reducing over-fetching (unused fields) and under-fetching (needing several round-trips), which matters especially on a slow mobile connection.",
+        "vi": "GraphQL cho phép client chỉ định chính xác những field nó cần trong một query duy nhất, có thể qua nhiều resource, thay vì gọi nhiều endpoint REST hoặc nhận response có hình dạng cố định — giảm over-fetching (field không dùng) và under-fetching (cần nhiều round-trip), điều đặc biệt quan trọng trên kết nối mobile chậm."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a sequence diagram, and why is it useful when designing a mobile feature that talks to a backend?",
+        "vi": "Sequence diagram là gì, và vì sao hữu ích khi thiết kế một tính năng mobile giao tiếp với backend?"
+      },
+      "answer": {
+        "en": "A sequence diagram shows the order of interactions between components (client, API gateway, service, database) over time for a specific flow (e.g. login, checkout) — useful for spotting unnecessary round-trips, race conditions, or unclear error-handling steps before writing any code.",
+        "vi": "Sequence diagram thể hiện thứ tự tương tác giữa các thành phần (client, API gateway, service, database) theo thời gian cho một luồng cụ thể (ví dụ đăng nhập, thanh toán) — hữu ích để phát hiện round-trip không cần thiết, race condition, hay bước xử lý lỗi chưa rõ ràng trước khi viết bất kỳ dòng code nào."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a capacity estimate meant to validate in a system design, beyond just 'will it work'?",
+        "vi": "Ước lượng năng lực (capacity estimate) nhằm kiểm chứng điều gì trong system design, ngoài việc 'có chạy được không'?"
+      },
+      "answer": {
+        "en": "It validates the design's cost and choice of components at the expected scale — e.g. whether a proposed database can realistically handle projected QPS, whether storage costs stay reasonable as data grows, or whether a single-region deployment is enough versus needing multi-region — catching a design that 'works' technically but doesn't scale economically or operationally.",
+        "vi": "Nó kiểm chứng chi phí và lựa chọn thành phần của thiết kế ở quy mô dự kiến — ví dụ một database đề xuất có thực sự xử lý được QPS dự tính hay không, chi phí lưu trữ có hợp lý khi dữ liệu tăng hay không, hay triển khai một vùng có đủ hay cần đa vùng — bắt được một thiết kế 'chạy được' về mặt kỹ thuật nhưng không mở rộng được về kinh tế hay vận hành."
+      }
+    }
+  ],
+  "quiz": [
+    {
+      "question": {
+        "en": "What does a mobile app typically treat the server as, in a client-server architecture?",
+        "vi": "Trong kiến trúc client-server, mobile app thường coi server là gì?"
+      },
+      "options": [
+        {
+          "en": "The source of truth for shared data",
+          "vi": "Nguồn chân lý cho dữ liệu dùng chung"
+        },
+        {
+          "en": "The only place UI logic can run",
+          "vi": "Nơi duy nhất logic UI có thể chạy"
+        },
+        {
+          "en": "An optional component that can always be skipped",
+          "vi": "Một thành phần tuỳ chọn luôn có thể bỏ qua"
+        },
+        {
+          "en": "A local cache only",
+          "vi": "Chỉ là một cache cục bộ"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "The server holds and arbitrates shared data across clients; the mobile client keeps local UI state and cache but defers to the server for authoritative shared data.",
+        "vi": "Server giữ và phân xử dữ liệu dùng chung giữa các client; mobile client giữ state UI và cache cục bộ nhưng dựa vào server cho dữ liệu dùng chung có thẩm quyền."
+      }
+    },
+    {
+      "question": {
+        "en": "Which API style models operations as calling named functions directly, rather than resource-oriented HTTP verbs?",
+        "vi": "Kiểu API nào mô hình hoá thao tác bằng cách gọi trực tiếp hàm có tên, thay vì HTTP verb hướng resource?"
+      },
+      "options": [
+        {
+          "en": "RPC-style (e.g. gRPC)",
+          "vi": "Kiểu RPC (ví dụ gRPC)"
+        },
+        {
+          "en": "REST",
+          "vi": "REST"
+        },
+        {
+          "en": "GraphQL only",
+          "vi": "Chỉ GraphQL"
+        },
+        {
+          "en": "WebDAV",
+          "vi": "WebDAV"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "RPC-style APIs expose named procedures/functions to call directly, unlike REST's resource+verb model.",
+        "vi": "API kiểu RPC phơi bày các thủ tục/hàm có tên để gọi trực tiếp, khác với mô hình resource+verb của REST."
+      }
+    },
+    {
+      "question": {
+        "en": "What problem does a BFF (Backend for Frontend) primarily solve?",
+        "vi": "BFF (Backend for Frontend) chủ yếu giải quyết vấn đề gì?"
+      },
+      "options": [
+        {
+          "en": "Shaping/aggregating data from multiple services into exactly what one client type needs",
+          "vi": "Định hình/tổng hợp dữ liệu từ nhiều service thành đúng những gì một loại client cần"
+        },
+        {
+          "en": "Replacing the need for a database entirely",
+          "vi": "Loại bỏ hoàn toàn nhu cầu có database"
+        },
+        {
+          "en": "Eliminating the need for authentication",
+          "vi": "Loại bỏ nhu cầu xác thực"
+        },
+        {
+          "en": "Making the mobile app work without any network at all",
+          "vi": "Giúp mobile app hoạt động hoàn toàn không cần mạng"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "A BFF tailors an API surface to one client's specific needs, avoiding over/under-fetching and isolating client-specific concerns from shared core services.",
+        "vi": "BFF tuỳ chỉnh bề mặt API theo đúng nhu cầu của một loại client, tránh over/under-fetching và cô lập các mối quan tâm riêng của client khỏi service lõi dùng chung."
+      }
+    },
+    {
+      "question": {
+        "en": "What does an HTTP 304 Not Modified response, combined with an ETag, let a client do?",
+        "vi": "Phản hồi HTTP 304 Not Modified, kết hợp với ETag, cho phép client làm gì?"
+      },
+      "options": [
+        {
+          "en": "Reuse its cached copy instead of re-downloading unchanged data",
+          "vi": "Tái sử dụng bản cache thay vì tải lại dữ liệu chưa đổi"
+        },
+        {
+          "en": "Automatically log the user out",
+          "vi": "Tự động đăng xuất người dùng"
+        },
+        {
+          "en": "Force the server to delete the resource",
+          "vi": "Buộc server xoá resource"
+        },
+        {
+          "en": "Upgrade the connection to WebSocket",
+          "vi": "Nâng cấp kết nối lên WebSocket"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "A 304 tells the client its cached version is still valid, so it can skip re-downloading a body that hasn't changed.",
+        "vi": "304 báo cho client biết phiên bản cache của nó vẫn còn hợp lệ, nên có thể bỏ qua việc tải lại một body chưa thay đổi."
+      }
+    },
+    {
+      "question": {
+        "en": "Why is cursor-based pagination generally more robust than offset-based pagination under concurrent writes?",
+        "vi": "Vì sao cursor-based pagination nhìn chung ổn định hơn offset-based pagination khi có ghi đồng thời?"
+      },
+      "options": [
+        {
+          "en": "It points to 'the item after X' rather than a numeric position that can shift as rows are inserted/deleted",
+          "vi": "Nó trỏ tới 'item sau X' thay vì một vị trí số có thể dịch chuyển khi hàng bị insert/delete"
+        },
+        {
+          "en": "It loads the entire dataset into memory first",
+          "vi": "Nó tải toàn bộ dữ liệu vào bộ nhớ trước"
+        },
+        {
+          "en": "It requires no database index at all",
+          "vi": "Nó hoàn toàn không cần index database"
+        },
+        {
+          "en": "It only works for read-only databases",
+          "vi": "Nó chỉ hoạt động với database chỉ-đọc"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Offset-based pagination can skip or duplicate items when rows shift between page requests; cursor-based pagination anchors to a specific item, staying stable regardless of concurrent changes.",
+        "vi": "Offset-based pagination có thể bỏ sót hoặc trùng lặp item khi hàng dịch chuyển giữa các lần gọi trang; cursor-based pagination neo vào một item cụ thể, ổn định bất kể thay đổi đồng thời."
+      }
+    },
+    {
+      "question": {
+        "en": "What does optimistic concurrency control prevent when a mobile client syncs a queued offline edit?",
+        "vi": "Optimistic concurrency control ngăn chặn điều gì khi mobile client đồng bộ một chỉnh sửa offline đã xếp hàng?"
+      },
+      "options": [
+        {
+          "en": "Silently overwriting a change someone else made to the same record in the meantime",
+          "vi": "Âm thầm ghi đè lên một thay đổi mà người khác đã thực hiện trên cùng record trong lúc đó"
+        },
+        {
+          "en": "The app from ever going offline",
+          "vi": "App không bao giờ được offline"
+        },
+        {
+          "en": "The server from ever rejecting a request",
+          "vi": "Server không bao giờ được từ chối request"
+        },
+        {
+          "en": "The client from caching any data",
+          "vi": "Client không được cache bất kỳ dữ liệu nào"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "By checking the version the client last read against the server's current version, the server can reject a write that would clobber a newer, conflicting change.",
+        "vi": "Bằng cách kiểm tra phiên bản mà client đọc lần cuối so với phiên bản hiện tại của server, server có thể từ chối một lần ghi sẽ ghi đè lên một thay đổi mới hơn, xung đột."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the main benefit of serving images through a CDN instead of directly from the origin server?",
+        "vi": "Lợi ích chính của việc phục vụ ảnh qua CDN thay vì trực tiếp từ origin server là gì?"
+      },
+      "options": [
+        {
+          "en": "Lower latency for users, served from a geographically nearby edge server, and less load on the origin",
+          "vi": "Độ trễ thấp hơn cho người dùng, phục vụ từ edge server gần về mặt địa lý, và giảm tải cho origin"
+        },
+        {
+          "en": "It removes the need for image compression",
+          "vi": "Nó loại bỏ nhu cầu nén ảnh"
+        },
+        {
+          "en": "It makes images load without any network connection",
+          "vi": "Nó giúp ảnh tải được mà không cần kết nối mạng"
+        },
+        {
+          "en": "It automatically translates image alt text",
+          "vi": "Nó tự động dịch alt text của ảnh"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "CDNs cache content at edge locations close to users, cutting latency and offloading the origin server from repeated identical requests.",
+        "vi": "CDN cache nội dung tại các vị trí edge gần người dùng, giảm độ trễ và giảm tải cho origin server khỏi các request giống hệt lặp lại."
+      }
+    },
+    {
+      "question": {
+        "en": "Why does API versioning matter specifically for mobile apps, more than for a web app?",
+        "vi": "Vì sao API versioning đặc biệt quan trọng với mobile app hơn so với web app?"
+      },
+      "options": [
+        {
+          "en": "Old app versions can't be force-updated instantly, so the backend must support multiple API versions for a long tail of installed clients",
+          "vi": "Phiên bản app cũ không thể ép cập nhật ngay lập tức, nên backend phải hỗ trợ nhiều phiên bản API cho một lượng lớn client cài đặt cũ"
+        },
+        {
+          "en": "Mobile apps never call APIs",
+          "vi": "Mobile app không bao giờ gọi API"
+        },
+        {
+          "en": "Web apps never need versioning at all",
+          "vi": "Web app hoàn toàn không bao giờ cần versioning"
+        },
+        {
+          "en": "Mobile devices cannot parse JSON",
+          "vi": "Thiết bị mobile không thể parse JSON"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Unlike a web app (which reloads the latest code on every visit), a mobile app version persists on a device until the user updates, so old API contracts often need continued support.",
+        "vi": "Khác với web app (tải lại code mới nhất ở mỗi lần truy cập), phiên bản mobile app tồn tại trên thiết bị cho tới khi người dùng cập nhật, nên hợp đồng API cũ thường cần được tiếp tục hỗ trợ."
+      }
+    },
+    {
+      "question": {
+        "en": "What does a message queue let a backend do that directly processing everything synchronously does not?",
+        "vi": "Message queue cho phép backend làm điều gì mà xử lý mọi thứ đồng bộ trực tiếp không làm được?"
+      },
+      "options": [
+        {
+          "en": "Return a response immediately while slower work (e.g. sending a push notification) happens asynchronously",
+          "vi": "Trả về phản hồi ngay lập tức trong khi công việc chậm hơn (ví dụ gửi push notification) diễn ra bất đồng bộ"
+        },
+        {
+          "en": "Store data permanently instead of a database",
+          "vi": "Lưu trữ dữ liệu vĩnh viễn thay cho database"
+        },
+        {
+          "en": "Render the mobile app's UI",
+          "vi": "Render UI của mobile app"
+        },
+        {
+          "en": "Eliminate the need for any backend server",
+          "vi": "Loại bỏ nhu cầu có bất kỳ backend server nào"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "A message queue decouples accepting a request from finishing the work it implies, letting the client get a fast response while a worker processes the queued message later.",
+        "vi": "Message queue tách rời việc nhận một request khỏi việc hoàn thành công việc nó yêu cầu, cho phép client nhận phản hồi nhanh trong khi một worker xử lý message đã xếp hàng sau đó."
+      }
+    },
+    {
+      "question": {
+        "en": "What does database sharding trade off in exchange for scaling write throughput and storage beyond one server?",
+        "vi": "Database sharding đánh đổi điều gì để đổi lấy khả năng scale thông lượng ghi và lưu trữ vượt quá một server?"
+      },
+      "options": [
+        {
+          "en": "Added complexity for queries that need to span multiple shards",
+          "vi": "Độ phức tạp tăng thêm cho các query cần trải trên nhiều shard"
+        },
+        {
+          "en": "Slower reads for any single-shard query",
+          "vi": "Đọc chậm hơn cho bất kỳ query trên một shard nào"
+        },
+        {
+          "en": "The complete loss of the ability to write data",
+          "vi": "Mất hoàn toàn khả năng ghi dữ liệu"
+        },
+        {
+          "en": "Automatic data encryption",
+          "vi": "Tự động mã hoá dữ liệu"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Sharding distributes data so no single server needs to hold it all, but a query touching data across shards becomes more complex than a single-database query.",
+        "vi": "Sharding phân tán dữ liệu để không server nào phải giữ toàn bộ, nhưng một query cần dữ liệu trải trên nhiều shard trở nên phức tạp hơn so với query trên một database duy nhất."
+      }
+    },
+    {
+      "question": {
+        "en": "According to the CAP theorem, what must a distributed system sacrifice during a network partition?",
+        "vi": "Theo CAP theorem, một hệ thống phân tán phải hy sinh điều gì trong lúc xảy ra network partition?"
+      },
+      "options": [
+        {
+          "en": "Either strict consistency or availability (it can't fully guarantee both)",
+          "vi": "Hoặc nhất quán chặt chẽ hoặc khả dụng (không thể đảm bảo đầy đủ cả hai)"
+        },
+        {
+          "en": "Nothing — CAP theorem does not apply to real systems",
+          "vi": "Không gì cả — CAP theorem không áp dụng cho hệ thống thực tế"
+        },
+        {
+          "en": "Partition tolerance itself",
+          "vi": "Chính khả năng chịu partition"
+        },
+        {
+          "en": "The ability to ever recover",
+          "vi": "Khả năng phục hồi vĩnh viễn"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "CAP theorem states that under a network partition, a system must choose between remaining available (possibly with stale data) or remaining strictly consistent (possibly rejecting requests).",
+        "vi": "CAP theorem nói rằng khi xảy ra network partition, hệ thống phải chọn giữa việc giữ khả dụng (có thể với dữ liệu cũ) hoặc giữ nhất quán chặt chẽ (có thể từ chối request)."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the primary role of a load balancer in a backend serving mobile clients?",
+        "vi": "Vai trò chính của load balancer trong backend phục vụ mobile client là gì?"
+      },
+      "options": [
+        {
+          "en": "Distribute incoming requests across multiple server instances for capacity and resilience",
+          "vi": "Phân phối request đến qua nhiều instance server để tăng năng lực và độ kiên cường"
+        },
+        {
+          "en": "Encrypt all client-side local storage",
+          "vi": "Mã hoá toàn bộ lưu trữ cục bộ phía client"
+        },
+        {
+          "en": "Compile the mobile app's source code",
+          "vi": "Biên dịch mã nguồn của mobile app"
+        },
+        {
+          "en": "Render push notification UI",
+          "vi": "Render UI của push notification"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "A load balancer spreads load across instances and can route around a failed one, supporting both scale and availability.",
+        "vi": "Load balancer phân tán tải qua nhiều instance và có thể định tuyến tránh một instance gặp sự cố, hỗ trợ cả khả năng mở rộng và tính khả dụng."
+      }
+    },
+    {
+      "question": {
+        "en": "What does a circuit breaker do when a downstream dependency starts failing repeatedly?",
+        "vi": "Circuit breaker làm gì khi một dependency downstream bắt đầu liên tục thất bại?"
+      },
+      "options": [
+        {
+          "en": "Stops calling it and fails fast, instead of piling up slow/timed-out calls",
+          "vi": "Dừng gọi tới nó và thất bại nhanh, thay vì chất đống các lệnh gọi chậm/timeout"
+        },
+        {
+          "en": "Automatically fixes the downstream service",
+          "vi": "Tự động sửa service downstream"
+        },
+        {
+          "en": "Doubles the request rate to that dependency",
+          "vi": "Nhân đôi tốc độ request tới dependency đó"
+        },
+        {
+          "en": "Deletes the dependency's data",
+          "vi": "Xoá dữ liệu của dependency đó"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "A circuit breaker 'opens' to stop calling a failing dependency, protecting the caller and giving the dependency room to recover instead of making the outage worse.",
+        "vi": "Circuit breaker 'mở' để dừng gọi tới một dependency đang lỗi, bảo vệ bên gọi và cho dependency không gian để phục hồi thay vì làm sự cố tệ hơn."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the purpose of a health check endpoint?",
+        "vi": "Mục đích của một endpoint health check là gì?"
+      },
+      "options": [
+        {
+          "en": "Letting load balancers/orchestrators detect an unhealthy instance and route traffic away from it",
+          "vi": "Cho phép load balancer/orchestrator phát hiện instance không khoẻ mạnh và định tuyến traffic tránh nó"
+        },
+        {
+          "en": "Displaying app version info to end users",
+          "vi": "Hiển thị thông tin phiên bản app cho người dùng cuối"
+        },
+        {
+          "en": "Logging in a user automatically",
+          "vi": "Tự động đăng nhập người dùng"
+        },
+        {
+          "en": "Compressing API responses",
+          "vi": "Nén response của API"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Health checks are polled by infrastructure to automatically detect and route around unhealthy instances, keeping the system available without manual intervention.",
+        "vi": "Health check được hạ tầng định kỳ kiểm tra để tự động phát hiện và định tuyến tránh instance không khoẻ mạnh, giữ hệ thống khả dụng mà không cần can thiệp thủ công."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the purpose of a local sync queue in an offline-first mobile app?",
+        "vi": "Mục đích của một sync queue cục bộ trong mobile app offline-first là gì?"
+      },
+      "options": [
+        {
+          "en": "Persisting pending changes made offline so they can be sent to the server once connectivity returns",
+          "vi": "Lưu trữ các thay đổi đang chờ được thực hiện khi offline để gửi lên server khi có kết nối trở lại"
+        },
+        {
+          "en": "Permanently storing data instead of ever syncing to a server",
+          "vi": "Lưu trữ vĩnh viễn dữ liệu mà không bao giờ đồng bộ lên server"
+        },
+        {
+          "en": "Replacing the need for a backend entirely",
+          "vi": "Loại bỏ hoàn toàn nhu cầu có backend"
+        },
+        {
+          "en": "Speeding up the UI's rendering framerate",
+          "vi": "Tăng tốc framerate render của UI"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "A sync queue records changes made while offline (or before server confirmation) so a background process can reliably deliver them once the device is back online.",
+        "vi": "Sync queue ghi lại các thay đổi thực hiện khi offline (hoặc trước khi server xác nhận) để một tiến trình nền có thể gửi chúng một cách đáng tin cậy khi thiết bị có kết nối trở lại."
+      }
+    },
+    {
+      "question": {
+        "en": "Why does back-pressure matter when streaming data to a mobile client?",
+        "vi": "Vì sao back-pressure quan trọng khi streaming dữ liệu tới mobile client?"
+      },
+      "options": [
+        {
+          "en": "It lets a slow client signal the server to slow down, instead of being overwhelmed by data it can't keep up with",
+          "vi": "Nó cho phép một client chậm báo cho server cần chậm lại, thay vì bị tràn ngập bởi dữ liệu nó không theo kịp"
+        },
+        {
+          "en": "It makes the stream run faster unconditionally",
+          "vi": "Nó làm stream chạy nhanh hơn vô điều kiện"
+        },
+        {
+          "en": "It removes the need for any network connection",
+          "vi": "Nó loại bỏ nhu cầu có bất kỳ kết nối mạng nào"
+        },
+        {
+          "en": "It only applies to server-to-server communication",
+          "vi": "Nó chỉ áp dụng cho giao tiếp server-tới-server"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Back-pressure adapts data flow to what the consumer can actually process, which matters when a mobile client may have a slow connection or limited memory.",
+        "vi": "Back-pressure điều chỉnh luồng dữ liệu theo những gì bên tiêu thụ thực sự xử lý được, điều quan trọng khi mobile client có thể có kết nối chậm hoặc bộ nhớ hạn chế."
+      }
+    },
+    {
+      "question": {
+        "en": "Which real-time delivery method keeps a single persistent, bidirectional connection open for the lowest latency?",
+        "vi": "Phương thức đưa cập nhật real-time nào giữ một kết nối hai chiều, liên tục duy nhất để có độ trễ thấp nhất?"
+      },
+      "options": [
+        {
+          "en": "WebSockets",
+          "vi": "WebSocket"
+        },
+        {
+          "en": "Simple polling",
+          "vi": "Polling đơn giản"
+        },
+        {
+          "en": "Long-polling",
+          "vi": "Long-polling"
+        },
+        {
+          "en": "A one-time HTTP GET",
+          "vi": "Một lệnh HTTP GET một lần"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "WebSockets maintain one open connection for ongoing bidirectional messages, avoiding the repeated connection setup and polling-interval delay of the other approaches.",
+        "vi": "WebSocket duy trì một kết nối mở cho các message hai chiều liên tục, tránh việc thiết lập kết nối lặp lại và độ trễ theo chu kỳ polling của các cách khác."
+      }
+    },
+    {
+      "question": {
+        "en": "What problem does queue-based load leveling solve during a sudden traffic spike?",
+        "vi": "Queue-based load leveling giải quyết vấn đề gì trong một đợt tăng đột biến traffic?"
+      },
+      "options": [
+        {
+          "en": "It smooths bursty incoming work into a sustainable processing rate instead of overwhelming downstream systems",
+          "vi": "Nó làm mượt công việc đến theo đợt thành một tốc độ xử lý bền vững thay vì làm quá tải hệ thống phía sau"
+        },
+        {
+          "en": "It permanently blocks all new requests",
+          "vi": "Nó chặn vĩnh viễn mọi request mới"
+        },
+        {
+          "en": "It increases the traffic spike further",
+          "vi": "Nó làm đợt tăng đột biến traffic tệ hơn"
+        },
+        {
+          "en": "It replaces the need for a database",
+          "vi": "Nó thay thế nhu cầu có database"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "By queuing incoming work and draining it at a steady rate, the system absorbs a burst without falling over, even if processing is briefly delayed.",
+        "vi": "Bằng cách xếp hàng công việc đến và xử lý với tốc độ ổn định, hệ thống hấp thụ được một đợt tăng đột biến mà không sập, dù xử lý có thể bị trì hoãn một chút."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the main purpose of a back-of-the-envelope estimate in a system design interview?",
+        "vi": "Mục đích chính của ước lượng back-of-the-envelope trong phỏng vấn system design là gì?"
+      },
+      "options": [
+        {
+          "en": "Sanity-checking a design's scale (throughput, storage) using rough, order-of-magnitude numbers",
+          "vi": "Kiểm tra tính hợp lý về quy mô của thiết kế (thông lượng, lưu trữ) bằng số liệu thô, theo bậc độ lớn"
+        },
+        {
+          "en": "Producing an exact, audited cost report",
+          "vi": "Tạo ra một báo cáo chi phí chính xác, đã kiểm toán"
+        },
+        {
+          "en": "Replacing the need to discuss any architecture at all",
+          "vi": "Loại bỏ hoàn toàn nhu cầu thảo luận về kiến trúc"
+        },
+        {
+          "en": "Testing the candidate's mental arithmetic speed as the sole goal",
+          "vi": "Kiểm tra tốc độ tính nhẩm của ứng viên như mục tiêu duy nhất"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "The point is a quick plausibility check on scale — confirming a proposed component can realistically handle the estimated load — not precision.",
+        "vi": "Mục đích là kiểm tra nhanh tính hợp lý về quy mô — xác nhận một thành phần đề xuất có khả năng xử lý tải ước tính hay không — không phải độ chính xác tuyệt đối."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the standard way to design around a single point of failure (SPOF)?",
+        "vi": "Cách chuẩn để thiết kế tránh một single point of failure (SPOF) là gì?"
+      },
+      "options": [
+        {
+          "en": "Add redundancy (multiple instances, replicas, multi-region) so no one component's failure is fatal",
+          "vi": "Thêm dự phòng (nhiều instance, replica, đa vùng) để lỗi của một thành phần không gây chết cho toàn hệ thống"
+        },
+        {
+          "en": "Remove all servers and run everything on the client",
+          "vi": "Loại bỏ mọi server và chạy mọi thứ trên client"
+        },
+        {
+          "en": "Use only one server to simplify operations",
+          "vi": "Chỉ dùng một server để đơn giản hoá vận hành"
+        },
+        {
+          "en": "Disable monitoring to reduce noise",
+          "vi": "Tắt monitoring để giảm nhiễu"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Redundancy means the system has a fallback if any one component fails, which is the standard mitigation for a SPOF.",
+        "vi": "Dự phòng nghĩa là hệ thống có phương án thay thế nếu bất kỳ thành phần nào gặp sự cố, đây là cách giảm thiểu chuẩn cho một SPOF."
+      }
+    },
+    {
+      "question": {
+        "en": "What does GraphQL let a mobile client do that a fixed-shape REST response generally does not?",
+        "vi": "GraphQL cho phép mobile client làm gì mà một response REST có hình dạng cố định nói chung không làm được?"
+      },
+      "options": [
+        {
+          "en": "Request exactly the fields it needs in one query, reducing over-fetching and under-fetching",
+          "vi": "Yêu cầu đúng những field nó cần trong một query, giảm over-fetching và under-fetching"
+        },
+        {
+          "en": "Skip authentication entirely",
+          "vi": "Bỏ qua hoàn toàn xác thực"
+        },
+        {
+          "en": "Avoid using JSON as a data format",
+          "vi": "Tránh dùng JSON làm định dạng dữ liệu"
+        },
+        {
+          "en": "Run entirely without a network connection",
+          "vi": "Chạy hoàn toàn không cần kết nối mạng"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "GraphQL's client-specified queries let the client pull exactly the data it needs from potentially multiple resources in one round-trip, unlike REST's typically fixed response shape per endpoint.",
+        "vi": "Query do client tự chỉ định của GraphQL cho phép client lấy đúng dữ liệu cần từ có thể nhiều resource trong một round-trip, khác với hình dạng response thường cố định theo từng endpoint của REST."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a sequence diagram most useful for catching before writing code for a new mobile feature?",
+        "vi": "Sequence diagram hữu ích nhất để bắt lỗi gì trước khi viết code cho một tính năng mobile mới?"
+      },
+      "options": [
+        {
+          "en": "Unnecessary round-trips, race conditions, or unclear error-handling in a multi-component flow",
+          "vi": "Round-trip không cần thiết, race condition, hay xử lý lỗi chưa rõ ràng trong một luồng nhiều thành phần"
+        },
+        {
+          "en": "Syntax errors in Dart/Swift/Kotlin code",
+          "vi": "Lỗi cú pháp trong code Dart/Swift/Kotlin"
+        },
+        {
+          "en": "The exact pixel layout of a screen",
+          "vi": "Layout pixel chính xác của một màn hình"
+        },
+        {
+          "en": "App Store review guideline violations",
+          "vi": "Vi phạm hướng dẫn review của App Store"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "By laying out the order of interactions between components over time, a sequence diagram exposes structural issues in a flow that are easy to miss when just writing code directly.",
+        "vi": "Bằng cách trình bày thứ tự tương tác giữa các thành phần theo thời gian, sequence diagram phơi bày các vấn đề cấu trúc trong một luồng mà dễ bị bỏ sót khi chỉ viết code trực tiếp."
+      }
+    }
+  ],
+  "notes": [
+    {
+      "title": {
+        "en": "Client-Server Architecture for Mobile Apps",
+        "vi": "Kiến trúc Client-Server cho Mobile App"
+      },
+      "content": {
+        "en": "A mobile app is almost always the **client** half of a client-server system: the server owns shared, authoritative data and business logic behind an API; the app holds local UI state, a cache, and enough offline capability to stay useful without a live connection.\n\nKey design questions this framing raises: what's the API contract (REST/GraphQL/gRPC) and who consumes it (just this app, or web too — pointing toward a shared API vs. a mobile-specific BFF)? What does the client cache, and for how long? What happens when the client is offline or the server is unreachable — does the feature degrade gracefully or fail outright? Answering these deliberately, rather than defaulting to 'always call the server synchronously,' is the core of designing a mobile app's system architecture, not just its UI.",
+        "vi": "Một mobile app hầu như luôn là nửa **client** của một hệ thống client-server: server sở hữu dữ liệu và logic nghiệp vụ dùng chung, có thẩm quyền đằng sau một API; app giữ state UI cục bộ, một cache, và đủ khả năng offline để vẫn hữu ích khi không có kết nối trực tiếp.\n\nCác câu hỏi thiết kế then chốt mà khung này đặt ra: hợp đồng API là gì (REST/GraphQL/gRPC) và ai tiêu thụ nó (chỉ app này, hay cả web — gợi ý một API dùng chung so với BFF riêng cho mobile)? Client cache gì, và trong bao lâu? Điều gì xảy ra khi client offline hoặc không tới được server — tính năng có suy giảm nhẹ nhàng hay thất bại hoàn toàn? Trả lời những điều này một cách có chủ đích, thay vì mặc định 'luôn gọi server đồng bộ,' chính là cốt lõi của việc thiết kế kiến trúc hệ thống cho một mobile app, không chỉ là UI của nó."
+      }
+    },
+    {
+      "title": {
+        "en": "Caching Strategies Across the Stack",
+        "vi": "Chiến lược Caching Xuyên suốt Stack"
+      },
+      "content": {
+        "en": "Caching for a mobile app happens at several layers, each with a different tradeoff:\n\n- **In-memory cache**: fastest, but lost on process death — good for data reused within one session (e.g. a scrolled-past list item).\n- **On-disk cache**: survives app restarts, enabling some offline functionality — the right layer for anything that should still be there tomorrow.\n- **HTTP-level caching** (`Cache-Control`, `ETag`/`If-None-Match`, `Last-Modified`): lets the client skip re-downloading unchanged data via a cheap `304 Not Modified` round-trip, or skip the network call entirely if `Cache-Control: max-age` hasn't expired.\n- **CDN caching**: for shared static content (images, app config), caching at the edge closest to the user rather than the origin.\n\nA common design mistake is skipping HTTP-level caching because 'the app has its own local cache' — the two are complementary: local caching avoids the network call from the *same device* twice; HTTP caching (plus a CDN) reduces cost and latency for *every* device.",
+        "vi": "Caching cho một mobile app xảy ra ở nhiều tầng, mỗi tầng có đánh đổi khác nhau:\n\n- **Cache trong bộ nhớ**: nhanh nhất, nhưng mất khi process bị kill — phù hợp dữ liệu dùng lại trong một phiên (ví dụ một item list đã cuộn qua).\n- **Cache trên đĩa**: sống sót qua app restart, cho phép một phần chức năng offline — tầng đúng cho bất cứ thứ gì cần còn đó vào ngày mai.\n- **Caching cấp HTTP** (`Cache-Control`, `ETag`/`If-None-Match`, `Last-Modified`): cho phép client bỏ qua việc tải lại dữ liệu chưa đổi qua một round-trip `304 Not Modified` rẻ, hoặc bỏ qua hoàn toàn lệnh gọi mạng nếu `Cache-Control: max-age` chưa hết hạn.\n- **Cache CDN**: cho nội dung tĩnh dùng chung (ảnh, config app), cache tại edge gần người dùng nhất thay vì origin.\n\nMột lỗi thiết kế thường gặp là bỏ qua caching cấp HTTP vì 'app đã có cache cục bộ riêng' — hai thứ này bổ trợ nhau: cache cục bộ tránh gọi mạng hai lần từ *cùng một thiết bị*; caching HTTP (cộng CDN) giảm chi phí và độ trễ cho *mọi* thiết bị."
+      }
+    },
+    {
+      "title": {
+        "en": "Pagination Techniques: Offset vs Cursor",
+        "vi": "Kỹ thuật Pagination: Offset và Cursor"
+      },
+      "content": {
+        "en": "Loading a large list a page at a time is standard, but *how* pages are addressed matters:\n\n- **Offset-based** (`?page=3&size=20` or `LIMIT 20 OFFSET 40`): simple to implement and supports jumping to an arbitrary page, but if rows are inserted/deleted between requests, items can shift across the page boundary — a user might see a duplicate or miss an item entirely. It also gets slower for deep pages on some databases, since the database still has to scan past the skipped rows.\n- **Cursor-based** (`?after=item_123&size=20`): anchors each page to a specific item ('give me the 20 items after this one'), which stays correct regardless of concurrent inserts/deletes and stays fast at any depth — the standard choice for infinite-scroll feeds. The tradeoff is no random access to 'page 5' directly, which is rarely needed for a scrolling mobile UI anyway.\n\nMost production APIs for scrollable mobile feeds use cursor-based pagination for exactly this reason.",
+        "vi": "Tải một danh sách lớn theo từng trang là chuẩn, nhưng *cách* trang được đánh địa chỉ mới quan trọng:\n\n- **Offset-based** (`?page=3&size=20` hay `LIMIT 20 OFFSET 40`): dễ triển khai và hỗ trợ nhảy tới trang bất kỳ, nhưng nếu hàng bị insert/delete giữa các lần gọi, item có thể dịch qua ranh giới trang — người dùng có thể thấy trùng lặp hoặc bỏ sót hoàn toàn một item. Nó cũng chậm dần với trang sâu trên một số database, vì database vẫn phải quét qua các hàng bị bỏ qua.\n- **Cursor-based** (`?after=item_123&size=20`): neo mỗi trang vào một item cụ thể ('cho tôi 20 item sau item này'), luôn đúng bất kể insert/delete đồng thời và luôn nhanh ở bất kỳ độ sâu nào — lựa chọn chuẩn cho feed cuộn vô hạn. Đánh đổi là không có truy cập ngẫu nhiên trực tiếp tới 'trang 5', điều hiếm khi cần cho UI mobile dạng cuộn.\n\nHầu hết API production cho feed mobile có thể cuộn dùng cursor-based pagination chính vì lý do này."
+      }
+    },
+    {
+      "title": {
+        "en": "CAP Theorem & Eventual Consistency in Practice",
+        "vi": "CAP Theorem & Eventual Consistency Trong Thực tế"
+      },
+      "content": {
+        "en": "The CAP theorem says a distributed system facing a network **P**artition must choose between **C**onsistency (every read sees the latest write) and **A**vailability (every request gets a response, even if possibly stale) — it can't fully guarantee both at once during a partition.\n\nFor a mobile-facing system, this isn't abstract: a mobile device losing connectivity *is* a partition, happening routinely. Most consumer mobile systems choose **AP** (availability + eventual consistency) over strict consistency — an app keeps working with locally cached/queued data during a network hiccup, and the system converges to a consistent state once connectivity returns and pending writes sync, possibly resolving conflicts along the way. Systems that truly can't tolerate stale reads (e.g. a bank balance before a large transfer) instead accept reduced availability at that specific point, requiring a live connection to proceed.",
+        "vi": "CAP theorem nói rằng một hệ thống phân tán đối mặt với một **P**artition mạng phải chọn giữa **C**onsistency (mọi lần đọc thấy được lần ghi mới nhất) và **A**vailability (mọi request đều nhận được phản hồi, dù có thể cũ) — không thể đảm bảo đầy đủ cả hai cùng lúc trong lúc partition.\n\nVới một hệ thống hướng tới mobile, điều này không trừu tượng: một thiết bị mobile mất kết nối *chính là* một partition, xảy ra thường xuyên. Hầu hết hệ thống mobile tiêu dùng chọn **AP** (khả dụng + eventual consistency) thay vì nhất quán chặt chẽ — app vẫn hoạt động với dữ liệu cache/xếp hàng cục bộ trong lúc trục trặc mạng, và hệ thống hội tụ về trạng thái nhất quán khi kết nối trở lại và các lần ghi đang chờ đồng bộ, có thể giải quyết xung đột dọc đường. Các hệ thống thực sự không thể chấp nhận đọc dữ liệu cũ (ví dụ số dư ngân hàng trước một lần chuyển tiền lớn) thay vào đó chấp nhận giảm khả dụng tại đúng điểm đó, yêu cầu kết nối trực tiếp để tiếp tục."
+      }
+    },
+    {
+      "title": {
+        "en": "Database Sharding & Partitioning Basics",
+        "vi": "Cơ bản về Sharding & Partitioning Database"
+      },
+      "content": {
+        "en": "As a backend's data grows beyond what one database server can efficiently store or serve, **sharding** splits it across multiple database instances, each holding a subset of the data (a 'shard'). A **shard key** (e.g. user ID, or a hash of it) determines which shard a given row lives on, ideally chosen so load spreads evenly and most queries only need to touch one shard.\n\nThe main cost: queries that need data from multiple shards (e.g. 'find all orders above $100 across all users') become significantly more complex — either fanning out to every shard and merging results, or maintaining a separate index/service for cross-shard queries. Because of this, sharding is usually a scaling tool reached for once vertical scaling and read replicas are no longer enough, not a starting point.",
+        "vi": "Khi dữ liệu của một backend tăng vượt quá những gì một server database có thể lưu trữ/phục vụ hiệu quả, **sharding** chia nó ra nhiều instance database, mỗi cái giữ một phần dữ liệu (một 'shard'). Một **shard key** (ví dụ user ID, hoặc hash của nó) quyết định một hàng cho trước nằm ở shard nào, lý tưởng được chọn sao cho tải phân bố đều và hầu hết query chỉ cần chạm vào một shard.\n\nChi phí chính: các query cần dữ liệu từ nhiều shard (ví dụ 'tìm mọi đơn hàng trên $100 trên toàn bộ người dùng') trở nên phức tạp hơn đáng kể — hoặc quạt ra mọi shard rồi gộp kết quả, hoặc duy trì một index/service riêng cho query xuyên shard. Vì vậy, sharding thường là công cụ scale được dùng khi scale theo chiều dọc và read replica không còn đủ, không phải điểm khởi đầu."
+      }
+    },
+    {
+      "title": {
+        "en": "Message Queues & Asynchronous Processing",
+        "vi": "Message Queue & Xử lý Bất đồng bộ"
+      },
+      "content": {
+        "en": "A message queue decouples *accepting* a piece of work from *doing* it: a producer (e.g. an API handler) publishes a message describing work to be done and returns immediately; one or more consumers (workers) pull messages off the queue and process them independently, at their own pace.\n\nThis matters for anything a mobile client triggers that's slow or shouldn't block the response: sending a push notification, resizing an uploaded photo, running fraud-detection on a transaction, generating a report. Without a queue, the API request would have to wait for all of that synchronously — slow and fragile (a downstream failure fails the whole request). With a queue, the API responds fast ('accepted'), and the actual work happens asynchronously, retried independently if it fails. Common systems: RabbitMQ, Amazon SQS, Kafka (which also doubles as an event log for multiple consumers).",
+        "vi": "Message queue tách rời việc *nhận* một công việc khỏi việc *thực hiện* nó: một producer (ví dụ một API handler) publish một message mô tả công việc cần làm và trả về ngay; một hoặc nhiều consumer (worker) lấy message ra khỏi hàng đợi và xử lý độc lập, theo tốc độ riêng.\n\nĐiều này quan trọng với bất cứ điều gì mobile client kích hoạt mà chậm hoặc không nên chặn response: gửi push notification, resize ảnh đã tải lên, chạy phát hiện gian lận trên một giao dịch, tạo báo cáo. Không có hàng đợi, API request sẽ phải đợi tất cả những việc đó đồng bộ — chậm và mong manh (một lỗi downstream làm hỏng cả request). Có hàng đợi, API phản hồi nhanh ('đã nhận'), và công việc thực sự diễn ra bất đồng bộ, được retry độc lập nếu thất bại. Hệ thống phổ biến: RabbitMQ, Amazon SQS, Kafka (còn kiêm luôn vai trò event log cho nhiều consumer)."
+      }
+    },
+    {
+      "title": {
+        "en": "Real-Time Communication: Polling, Long-Polling, WebSockets, Push",
+        "vi": "Giao tiếp Real-Time: Polling, Long-Polling, WebSocket, Push"
+      },
+      "content": {
+        "en": "Delivering timely updates to a mobile client (a new chat message, a live score) has several approaches, in increasing order of efficiency and complexity:\n\n- **Polling**: the client asks 'anything new?' on a fixed timer. Simple, but wastes requests when there's nothing new, and delays delivery by up to the polling interval.\n- **Long-polling**: the client asks once, but the server holds the request open (not responding) until there's new data or a timeout — fewer wasted requests than polling, still uses standard HTTP.\n- **WebSockets**: a single persistent, bidirectional connection stays open, and either side can send a message anytime — lowest latency and per-message overhead, but requires the server to hold open connections for every connected client, which has its own scaling considerations.\n- **Push notifications (FCM/APNs)**: for updates that matter even when the app isn't in the foreground/running, delivered via the platform's push infrastructure rather than the app's own connection.\n\nMany apps combine these: WebSockets (or long-polling as a fallback) for in-app real-time updates while foregrounded, push notifications for anything that should reach the user while the app is backgrounded or closed.",
+        "vi": "Đưa cập nhật kịp thời tới mobile client (một tin nhắn chat mới, tỉ số trực tiếp) có vài cách tiếp cận, theo thứ tự tăng dần về hiệu quả và độ phức tạp:\n\n- **Polling**: client hỏi 'có gì mới không?' theo chu kỳ cố định. Đơn giản, nhưng lãng phí request khi không có gì mới, và trễ việc đưa tin tối đa bằng chu kỳ polling.\n- **Long-polling**: client hỏi một lần, nhưng server giữ request mở (không phản hồi) cho tới khi có dữ liệu mới hoặc timeout — ít request lãng phí hơn polling, vẫn dùng HTTP chuẩn.\n- **WebSocket**: một kết nối hai chiều, liên tục duy nhất luôn mở, và bên nào cũng có thể gửi message bất cứ lúc nào — độ trễ và chi phí mỗi message thấp nhất, nhưng yêu cầu server giữ mở kết nối cho mọi client đang kết nối, có những cân nhắc về scale riêng.\n- **Push notification (FCM/APNs)**: cho cập nhật quan trọng kể cả khi app không ở nền trước/không chạy, được đưa qua hạ tầng push của nền tảng thay vì kết nối riêng của app.\n\nNhiều app kết hợp các cách này: WebSocket (hoặc long-polling làm fallback) cho cập nhật real-time trong app khi ở nền trước, push notification cho bất cứ điều gì cần tới người dùng khi app ở nền hoặc đã đóng."
+      }
+    },
+    {
+      "title": {
+        "en": "Circuit Breakers & Resilience Patterns",
+        "vi": "Circuit Breaker & Các Mẫu Kiên cường"
+      },
+      "content": {
+        "en": "A backend that calls other services (a payment provider, an internal microservice) needs to handle those dependencies failing without failing itself catastrophically. Two common resilience patterns:\n\n- **Circuit breaker**: tracks failures for a given dependency; after enough failures, it 'opens' — subsequent calls fail immediately (without even attempting the network call) for a cooldown period, then the breaker tries a few test calls ('half-open') to see if the dependency has recovered before fully closing again. This prevents piling up slow, doomed requests against a dependency that's clearly down, and gives that dependency room to recover instead of being hit harder by retries.\n- **Timeouts & retries with backoff**: every external call should have a timeout (never wait forever), and retries should back off exponentially rather than hammering a struggling dependency immediately again.\n\nTogether, these patterns are what keeps one failing dependency from cascading into a full outage of everything that depends on it — directly relevant to any backend serving a mobile client that expects a timely response either way (success or a clear failure) rather than a hang.",
+        "vi": "Một backend gọi tới dịch vụ khác (một nhà cung cấp thanh toán, một microservice nội bộ) cần xử lý việc các dependency đó gặp sự cố mà không tự sập theo kiểu thảm khốc. Hai mẫu kiên cường phổ biến:\n\n- **Circuit breaker**: theo dõi số lần thất bại của một dependency; sau đủ số lần thất bại, nó 'mở' — các lệnh gọi tiếp theo thất bại ngay lập tức (thậm chí không thử gọi mạng) trong một khoảng thời gian nghỉ, sau đó breaker thử vài lệnh gọi kiểm tra ('half-open') để xem dependency đã phục hồi chưa trước khi đóng lại hoàn toàn. Điều này ngăn việc chất đống các request chậm, chắc chắn thất bại lên một dependency rõ ràng đang sập, và cho dependency đó không gian để phục hồi thay vì bị đánh mạnh hơn bởi các lần retry.\n- **Timeout & retry với backoff**: mọi lệnh gọi bên ngoài nên có timeout (không bao giờ đợi vô hạn), và retry nên backoff theo cấp số nhân thay vì ngay lập tức gọi liên tục vào một dependency đang gặp khó khăn.\n\nKết hợp lại, các mẫu này là thứ giữ cho một dependency lỗi không lan thành sự cố toàn bộ cho mọi thứ phụ thuộc vào nó — liên quan trực tiếp tới bất kỳ backend nào phục vụ mobile client vốn mong đợi phản hồi kịp thời dù thế nào (thành công hay thất bại rõ ràng) thay vì bị treo."
+      }
+    },
+    {
+      "title": {
+        "en": "CDNs & Static Asset Delivery",
+        "vi": "CDN & Phân phối Tài nguyên Tĩnh"
+      },
+      "content": {
+        "en": "A CDN (Content Delivery Network) is a network of geographically distributed servers (edge/PoP locations) that cache and serve static content — images, videos, downloadable app assets, sometimes even API responses that don't change per-user. When a mobile client requests an asset, it's routed to the nearest edge server rather than the origin, cutting round-trip latency and offloading repeated identical requests away from the origin entirely.\n\nFor a mobile app, this matters most for image-heavy screens (product photos, avatars, feed content): serving them via a CDN with appropriate cache headers (`Cache-Control: max-age=...`, immutable URLs when content changes rather than being overwritten in place) means a user on the other side of the world gets fast image loads too, and the origin server's bandwidth bill doesn't scale linearly with every image view. Many CDNs also offer on-the-fly image resizing/format conversion (WebP/AVIF) at the edge, so the client can request exactly the resolution it needs.",
+        "vi": "CDN (Content Delivery Network) là một mạng lưới server phân tán về mặt địa lý (vị trí edge/PoP) cache và phục vụ nội dung tĩnh — ảnh, video, tài nguyên app có thể tải xuống, đôi khi cả response API không đổi theo từng người dùng. Khi mobile client yêu cầu một tài nguyên, nó được định tuyến tới edge server gần nhất thay vì origin, cắt giảm độ trễ round-trip và hoàn toàn giảm tải các request giống hệt lặp lại khỏi origin.\n\nVới một mobile app, điều này quan trọng nhất cho màn hình nhiều ảnh (ảnh sản phẩm, avatar, nội dung feed): phục vụ chúng qua CDN với header cache phù hợp (`Cache-Control: max-age=...`, URL bất biến khi nội dung đổi thay vì bị ghi đè tại chỗ) nghĩa là người dùng ở nửa kia thế giới cũng tải ảnh nhanh, và hoá đơn băng thông của origin server không tăng tuyến tính theo mỗi lượt xem ảnh. Nhiều CDN còn cung cấp resize ảnh/chuyển đổi định dạng (WebP/AVIF) tức thời tại edge, để client yêu cầu đúng độ phân giải nó cần."
+      }
+    },
+    {
+      "title": {
+        "en": "Back-of-the-Envelope Estimation for System Design Interviews",
+        "vi": "Ước lượng Back-of-the-Envelope cho Phỏng vấn System Design"
+      },
+      "content": {
+        "en": "Interviewers use system design questions to see whether a candidate can reason about scale, not just draw boxes and arrows. Back-of-the-envelope estimation is the tool for that: starting from stated (or reasonably assumed) numbers — daily active users, actions per user per day, average payload size — derive rough figures like requests per second, storage growth per year, and bandwidth, using round numbers and powers of 10 rather than a calculator.\n\nExample shape: '10M DAU, each opening the feed ~5 times/day, each feed load ~50KB → ~50M feed loads/day → ~580 req/s average (more at peak) → ~2.5TB/day of feed traffic.' The exact numbers matter less than showing the estimate changes the design decision — e.g. confirming a single database can plausibly handle that write rate, or that a CDN is clearly warranted at that read volume, or that storage costs at that growth rate justify a cheaper cold-storage tier for older data.",
+        "vi": "Người phỏng vấn dùng câu hỏi system design để xem ứng viên có suy luận được về quy mô hay không, không chỉ vẽ hộp và mũi tên. Ước lượng back-of-the-envelope là công cụ cho việc đó: bắt đầu từ số liệu đã nêu (hoặc giả định hợp lý) — người dùng hoạt động hàng ngày, số hành động mỗi người dùng mỗi ngày, kích thước payload trung bình — suy ra các con số thô như request mỗi giây, tăng trưởng lưu trữ mỗi năm, băng thông, dùng số tròn và luỹ thừa của 10 thay vì máy tính.\n\nVí dụ hình dạng: '10 triệu DAU, mỗi người mở feed ~5 lần/ngày, mỗi lần tải feed ~50KB → ~50 triệu lần tải feed/ngày → ~580 req/giây trung bình (cao hơn ở giờ cao điểm) → ~2.5TB/ngày traffic feed.' Con số chính xác ít quan trọng hơn việc cho thấy ước lượng thay đổi quyết định thiết kế thế nào — ví dụ xác nhận một database duy nhất có khả năng xử lý được tốc độ ghi đó, hay CDN rõ ràng là cần thiết ở lượng đọc đó, hay chi phí lưu trữ ở tốc độ tăng trưởng đó biện minh cho một tầng lưu trữ lạnh rẻ hơn cho dữ liệu cũ."
+      }
+    },
+    {
+      "title": {
+        "en": "Case Study: Designing a Chat App's Mobile Architecture",
+        "vi": "Case Study: Thiết kế Kiến trúc Mobile cho một App Chat"
+      },
+      "content": {
+        "en": "A classic system design exercise — designing a chat app — pulls together most of the concepts above into one flow:\n\n1. **Sending a message**: the client optimistically shows the message as 'sending' (optimistic UI), then POSTs it to the backend, which persists it and pushes it to the recipient.\n2. **Real-time delivery**: the recipient's app holds a WebSocket connection (while foregrounded) to receive new messages instantly; if backgrounded, a push notification (FCM/APNs) wakes it or shows an alert instead.\n3. **Offline support**: messages sent while offline go into a local sync queue and are sent once connectivity returns; messages received while offline are fetched via a paginated 'history since last sync' API call on reconnect, using a cursor rather than an offset so no messages are skipped if others were sent concurrently.\n4. **Scale**: message storage is sharded (e.g. by conversation ID), a message queue smooths bursts of delivery fan-out for large group chats, and read receipts/typing indicators use a lighter-weight, more lossy channel (they don't need the same delivery guarantees as the messages themselves).\n\nWalking through a concrete flow like this is usually more revealing in an interview than reciting definitions, since it forces every concept to interact with the others realistically.",
+        "vi": "Một bài tập system design kinh điển — thiết kế một app chat — gom hầu hết các khái niệm trên vào một luồng duy nhất:\n\n1. **Gửi tin nhắn**: client lạc quan hiển thị tin nhắn là 'đang gửi' (optimistic UI), rồi POST nó lên backend, backend lưu và đẩy nó tới người nhận.\n2. **Đưa tin real-time**: app của người nhận giữ một kết nối WebSocket (khi ở nền trước) để nhận tin nhắn mới ngay lập tức; nếu ở nền, một push notification (FCM/APNs) đánh thức nó hoặc hiện cảnh báo thay vào đó.\n3. **Hỗ trợ offline**: tin nhắn gửi khi offline vào một sync queue cục bộ và được gửi khi có kết nối trở lại; tin nhắn nhận khi offline được lấy qua một lệnh gọi API 'lịch sử từ lần đồng bộ trước' có phân trang khi kết nối lại, dùng cursor thay vì offset để không tin nhắn nào bị bỏ sót nếu có tin khác được gửi đồng thời.\n4. **Quy mô**: lưu trữ tin nhắn được sharding (ví dụ theo conversation ID), một message queue làm mượt các đợt bùng nổ đưa tin cho group chat lớn, và read receipt/typing indicator dùng một kênh nhẹ hơn, chấp nhận mất mát nhiều hơn (chúng không cần đảm bảo đưa tin giống như chính tin nhắn).\n\nĐi qua một luồng cụ thể như thế này thường tiết lộ nhiều hơn trong phỏng vấn so với việc đọc lại định nghĩa, vì nó buộc mọi khái niệm phải tương tác với nhau một cách thực tế."
+      }
+    }
+  ]
+}

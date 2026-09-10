@@ -264,6 +264,216 @@
         "en": "A monorepo keeps everything in one repository — atomic cross-project commits (e.g. change an API and its Flutter client together) and shared tooling/CI, at the cost of a larger repo and more complex access control. Polyrepo keeps each project in its own repository — simpler ownership and smaller checkouts, at the cost of coordinating versioned dependencies (e.g. a shared design-system package) across repos.",
         "vi": "Monorepo giữ mọi thứ trong một repository — commit xuyên dự án nguyên tử (ví dụ đổi một API cùng lúc với client Flutter của nó) và tooling/CI dùng chung, đánh đổi bằng repo lớn hơn và access control phức tạp hơn. Polyrepo giữ mỗi dự án trong repository riêng — quyền sở hữu đơn giản hơn và checkout nhỏ hơn, đánh đổi bằng việc phải phối hợp version của các dependency dùng chung (ví dụ package design-system) giữa các repo."
       }
+    },
+    {
+      "question": {
+        "en": "What is the repository pattern and what problem does it solve?",
+        "vi": "Repository pattern là gì và giải quyết vấn đề gì?"
+      },
+      "answer": {
+        "en": "A repository is a single point of access that abstracts where data comes from (network, local database, cache) behind one interface, so the rest of the app (ViewModels/use cases) doesn't need to know or care about the data source. This makes it easy to swap sources, add caching, or fake data in tests.",
+        "vi": "Repository là một điểm truy cập duy nhất trừu tượng hoá nơi dữ liệu đến từ đâu (mạng, database cục bộ, cache) đằng sau một interface, để phần còn lại của app (ViewModel/use case) không cần biết hay quan tâm tới nguồn dữ liệu. Điều này giúp dễ dàng thay nguồn, thêm cache, hoặc giả lập dữ liệu khi test."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the difference between mocking and stubbing in tests?",
+        "vi": "Mocking khác stubbing thế nào trong test?"
+      },
+      "answer": {
+        "en": "A stub returns canned/predetermined data when called, with no verification of how it was called. A mock additionally records and lets you verify interactions (was this method called, how many times, with what arguments) — stubs focus on state/output, mocks focus on behavior/interaction verification.",
+        "vi": "Stub trả về dữ liệu định sẵn khi được gọi, không xác minh cách nó được gọi. Mock còn ghi lại và cho phép xác minh các tương tác (method này có được gọi không, bao nhiêu lần, với tham số gì) — stub tập trung vào state/output, mock tập trung vào xác minh hành vi/tương tác."
+      }
+    },
+    {
+      "question": {
+        "en": "What is rate limiting and why do mobile backends implement it?",
+        "vi": "Rate limiting là gì và vì sao backend cho mobile triển khai nó?"
+      },
+      "answer": {
+        "en": "Rate limiting caps how many requests a client can make in a given time window, protecting the backend from being overwhelmed (accidentally, e.g. a retry loop bug, or deliberately, e.g. abuse) and ensuring fair usage across clients. A well-behaved mobile client should handle a 429 (Too Many Requests) response with backoff rather than hammering the endpoint.",
+        "vi": "Rate limiting giới hạn số lượng request một client được gọi trong một khoảng thời gian cho trước, bảo vệ backend khỏi bị quá tải (vô tình, ví dụ lỗi vòng lặp retry, hoặc cố ý, ví dụ lạm dụng) và đảm bảo công bằng giữa các client. Một mobile client hoạt động đúng nên xử lý phản hồi 429 (Too Many Requests) bằng cách backoff thay vì gọi liên tục vào endpoint."
+      }
+    },
+    {
+      "question": {
+        "en": "What is idempotency and why does it matter for a mobile app's retry logic?",
+        "vi": "Idempotency là gì và vì sao quan trọng với logic retry của mobile app?"
+      },
+      "answer": {
+        "en": "An idempotent operation produces the same result no matter how many times it's applied (e.g. 'set balance to $100' vs. 'add $10 to balance'). Mobile networks are unreliable, so requests get retried; if a non-idempotent operation (like a payment) is retried after a timeout where the first attempt actually succeeded, it can duplicate the effect — hence APIs use idempotency keys for operations like payments.",
+        "vi": "Một thao tác idempotent tạo ra cùng kết quả bất kể được áp dụng bao nhiêu lần (ví dụ 'đặt số dư thành $100' so với 'cộng thêm $10 vào số dư'). Mạng di động không đáng tin cậy, nên request bị retry; nếu một thao tác không idempotent (như thanh toán) bị retry sau timeout mà lần đầu thực ra đã thành công, nó có thể nhân đôi hiệu ứng — vì vậy API dùng idempotency key cho các thao tác như thanh toán."
+      }
+    },
+    {
+      "question": {
+        "en": "What is certificate pinning and what does it protect against?",
+        "vi": "Certificate pinning là gì và bảo vệ chống lại điều gì?"
+      },
+      "answer": {
+        "en": "Certificate pinning hardcodes (pins) the expected server certificate/public key in the app, rejecting connections even to a certificate that's validly signed by a trusted CA if it doesn't match the pin. It protects against man-in-the-middle attacks from a compromised or malicious CA (or a corporate/attacker proxy with a trusted root installed on the device).",
+        "vi": "Certificate pinning ghim cứng (pin) chứng chỉ/public key máy chủ mong đợi vào app, từ chối kết nối kể cả tới chứng chỉ được ký hợp lệ bởi CA tin cậy nếu nó không khớp với pin. Nó bảo vệ chống tấn công man-in-the-middle từ một CA bị xâm nhập hoặc độc hại (hoặc một proxy doanh nghiệp/kẻ tấn công có cài root chứng chỉ tin cậy trên thiết bị)."
+      }
+    },
+    {
+      "question": {
+        "en": "What does a mobile app's cold start vs warm start mean, and why does it matter?",
+        "vi": "Cold start khác warm start thế nào ở mobile app, và vì sao quan trọng?"
+      },
+      "answer": {
+        "en": "Cold start happens when the app process isn't running and must be created from scratch (slowest, involves process creation, class loading, initializers). Warm start resumes an app whose process is still alive but whose Activity/UI was destroyed (faster, skips process/class setup). Cold start time is a key perceived-performance metric users notice on first launch or after a device reboot.",
+        "vi": "Cold start xảy ra khi process của app không chạy và phải được tạo từ đầu (chậm nhất, gồm tạo process, load class, chạy initializer). Warm start tiếp tục một app có process vẫn còn sống nhưng Activity/UI đã bị huỷ (nhanh hơn, bỏ qua bước thiết lập process/class). Thời gian cold start là chỉ số hiệu năng cảm nhận quan trọng mà người dùng nhận thấy ở lần mở đầu tiên hoặc sau khi khởi động lại thiết bị."
+      }
+    },
+    {
+      "question": {
+        "en": "Why does image loading/caching matter so much for mobile app performance?",
+        "vi": "Vì sao tải/cache ảnh lại quan trọng với hiệu năng mobile app?"
+      },
+      "answer": {
+        "en": "Images are typically the largest asset a mobile screen loads — decoding a full-resolution image just to show it at thumbnail size wastes memory and CPU, and re-downloading the same image repeatedly wastes bandwidth and battery. Libraries like Glide/Coil (Android), Kingfisher/SDWebImage (iOS), or cached_network_image (Flutter) handle resizing, memory+disk caching, and cancellation automatically.",
+        "vi": "Ảnh thường là tài nguyên lớn nhất mà một màn hình mobile tải — decode ảnh full-resolution chỉ để hiển thị ở kích thước thumbnail lãng phí bộ nhớ và CPU, và tải lại cùng một ảnh nhiều lần lãng phí băng thông và pin. Các thư viện như Glide/Coil (Android), Kingfisher/SDWebImage (iOS), hay cached_network_image (Flutter) tự động xử lý resize, cache bộ nhớ+đĩa, và huỷ tải."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the difference between authentication and authorization?",
+        "vi": "Authentication khác Authorization thế nào?"
+      },
+      "answer": {
+        "en": "Authentication verifies who a user is (login, biometrics, a valid session token). Authorization determines what that authenticated user is allowed to do (permissions, roles, access to a specific resource). A mobile app can correctly authenticate a user yet still deny an action because they aren't authorized for it.",
+        "vi": "Authentication xác minh người dùng là ai (đăng nhập, sinh trắc học, token phiên hợp lệ). Authorization xác định người dùng đã xác thực đó được phép làm gì (quyền, vai trò, truy cập một tài nguyên cụ thể). Một mobile app có thể xác thực đúng người dùng nhưng vẫn từ chối một hành động vì họ không được phân quyền cho hành động đó."
+      }
+    },
+    {
+      "question": {
+        "en": "What is biometric authentication (Face ID/Touch ID/BiometricPrompt) actually protecting on a mobile device?",
+        "vi": "Xác thực sinh trắc học (Face ID/Touch ID/BiometricPrompt) thực chất bảo vệ điều gì trên mobile?"
+      },
+      "answer": {
+        "en": "Biometric APIs typically gate access to something already securely stored (a Keychain item, an Android Keystore-backed key) rather than sending biometric data anywhere — the biometric check happens in a secure enclave/hardware module, and a successful match just unlocks local access to the already-encrypted secret. The app never sees or transmits raw fingerprint/face data.",
+        "vi": "API sinh trắc học thường chỉ mở khoá truy cập tới thứ gì đó đã được lưu trữ an toàn từ trước (một item trong Keychain, một khoá dựa trên Android Keystore) chứ không gửi dữ liệu sinh trắc học đi đâu cả — việc kiểm tra sinh trắc học diễn ra trong secure enclave/module phần cứng, và khớp thành công chỉ mở khoá truy cập cục bộ tới bí mật đã được mã hoá từ trước. App không bao giờ thấy hay truyền dữ liệu vân tay/khuôn mặt thô."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a memory leak on mobile, and why is it more damaging there than on a server?",
+        "vi": "Rò rỉ bộ nhớ trên mobile là gì, và vì sao nó gây hại hơn so với trên server?"
+      },
+      "answer": {
+        "en": "A memory leak is memory that's no longer needed but can't be garbage-collected because something still references it. On a server, a leak might be masked by process restarts and abundant RAM; on mobile, devices have tight memory budgets, the OS kills apps under memory pressure (losing user state), and a leak accumulated over a long session directly degrades that one user's experience with no restart to hide it.",
+        "vi": "Rò rỉ bộ nhớ là bộ nhớ không còn cần nữa nhưng không thể thu gom rác vì vẫn còn thứ gì đó tham chiếu tới nó. Trên server, rò rỉ có thể bị che giấu bởi việc restart process và RAM dồi dào; trên mobile, thiết bị có ngân sách bộ nhớ eo hẹp, hệ điều hành kill app khi áp lực bộ nhớ (mất state người dùng), và rò rỉ tích luỹ qua một phiên dài trực tiếp làm giảm trải nghiệm của đúng người dùng đó mà không có restart nào che giấu."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the difference between a webhook and a mobile push notification?",
+        "vi": "Webhook khác push notification trên mobile thế nào?"
+      },
+      "answer": {
+        "en": "A webhook is a server-to-server HTTP callback: service A calls a URL on service B's backend when an event happens. A push notification is delivered server-to-device via a platform push service (FCM/APNs) to wake or notify a specific mobile app instance — a backend often uses a webhook internally to learn an event happened, then triggers a push to inform the end user's device.",
+        "vi": "Webhook là một callback HTTP giữa server với server: dịch vụ A gọi một URL trên backend của dịch vụ B khi một sự kiện xảy ra. Push notification được gửi từ server tới thiết bị qua dịch vụ push nền tảng (FCM/APNs) để đánh thức hoặc thông báo cho một instance mobile app cụ thể — một backend thường dùng webhook nội bộ để biết sự kiện đã xảy ra, rồi kích hoạt push để thông báo cho thiết bị người dùng cuối."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a design system, and why do mobile teams invest in one?",
+        "vi": "Design system là gì, và vì sao team mobile đầu tư vào nó?"
+      },
+      "answer": {
+        "en": "A design system is a shared library of reusable components, tokens (colors, spacing, typography), and usage guidelines used consistently across an app (and often across platforms/web too). It speeds up development (no reinventing a button every screen), keeps the UI visually and behaviorally consistent, and gives designers and engineers a shared vocabulary.",
+        "vi": "Design system là một thư viện dùng chung gồm component tái sử dụng, token (màu, khoảng cách, typography), và hướng dẫn sử dụng áp dụng nhất quán trong toàn app (và thường cả trên các nền tảng/web khác). Nó tăng tốc phát triển (không phải làm lại nút bấm ở mỗi màn hình), giữ UI nhất quán về hình ảnh và hành vi, và cho designer lẫn engineer một ngôn ngữ chung."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the difference between vertical scaling and horizontal scaling for a mobile app's backend?",
+        "vi": "Scale theo chiều dọc khác chiều ngang thế nào với backend của mobile app?"
+      },
+      "answer": {
+        "en": "Vertical scaling means making a single server more powerful (more CPU/RAM) — simple but has a hard ceiling and a single point of failure. Horizontal scaling means adding more server instances behind a load balancer — more resilient and effectively unlimited, but requires the backend to be stateless (or externalize state to shared storage) so any instance can handle any request.",
+        "vi": "Scale theo chiều dọc nghĩa là làm một server duy nhất mạnh hơn (thêm CPU/RAM) — đơn giản nhưng có giới hạn cứng và là điểm lỗi đơn (single point of failure). Scale theo chiều ngang nghĩa là thêm nhiều instance server phía sau một load balancer — kiên cường hơn và gần như không giới hạn, nhưng yêu cầu backend phải stateless (hoặc đưa state ra lưu trữ dùng chung) để bất kỳ instance nào cũng xử lý được bất kỳ request nào."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a service-level agreement (SLA), and why might it matter to a mobile app's third-party dependencies?",
+        "vi": "Service-level agreement (SLA) là gì, và vì sao có thể quan trọng với dependency bên thứ ba của mobile app?"
+      },
+      "answer": {
+        "en": "An SLA is a formal commitment about a service's reliability — typically uptime percentage (e.g. 99.9%) and response time. If a mobile app depends on a third-party API/SDK (payments, maps, analytics), that provider's SLA (or lack of one) directly bounds how reliable your own app's features can be, and informs whether you need a fallback/degraded mode when that dependency is down.",
+        "vi": "SLA là một cam kết chính thức về độ tin cậy của dịch vụ — thường là tỉ lệ uptime (ví dụ 99.9%) và thời gian phản hồi. Nếu mobile app phụ thuộc vào API/SDK bên thứ ba (thanh toán, bản đồ, analytics), SLA của nhà cung cấp đó (hoặc việc không có SLA) trực tiếp giới hạn độ tin cậy tính năng của chính app bạn, và cho biết có cần chế độ dự phòng/suy giảm khi dependency đó gặp sự cố hay không."
+      }
+    },
+    {
+      "question": {
+        "en": "What is technical debt, and why is it a deliberate tradeoff rather than always a mistake?",
+        "vi": "Nợ kỹ thuật (technical debt) là gì, và vì sao đôi khi là đánh đổi chủ đích chứ không phải luôn là sai lầm?"
+      },
+      "answer": {
+        "en": "Technical debt is the implied future cost of choosing a quicker/simpler implementation now over a more thorough one — like financial debt, it's fine to take on deliberately (ship a feature fast to validate demand) as long as you plan to 'pay it back' (refactor before it compounds); the problem is debt taken on unknowingly or never repaid, which slows every future change.",
+        "vi": "Nợ kỹ thuật là chi phí tương lai ngầm định của việc chọn một cách triển khai nhanh/đơn giản hơn ngay bây giờ thay vì một cách kỹ lưỡng hơn — giống như nợ tài chính, việc vay nợ có chủ đích (ra mắt tính năng nhanh để kiểm chứng nhu cầu) là ổn miễn là có kế hoạch 'trả nợ' (refactor trước khi nó tích luỹ); vấn đề là nợ vay không chủ ý hoặc không bao giờ trả, làm chậm mọi thay đổi trong tương lai."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a race condition, and give a mobile-relevant example.",
+        "vi": "Race condition là gì, cho một ví dụ liên quan tới mobile."
+      },
+      "answer": {
+        "en": "A race condition happens when the correctness of code depends on the unpredictable timing/order of concurrent operations. Example: two coroutines/threads both read a cached value, both find it stale, and both independently trigger a network refresh and write the result back — wasting a request and potentially leaving stale data depending on which write lands last.",
+        "vi": "Race condition xảy ra khi tính đúng đắn của code phụ thuộc vào thời điểm/thứ tự khó đoán của các thao tác đồng thời. Ví dụ: hai coroutine/thread cùng đọc một giá trị cache, cả hai đều thấy nó cũ, và cả hai độc lập kích hoạt refresh mạng rồi ghi kết quả về — lãng phí một request và có thể để lại dữ liệu cũ tuỳ vào lần ghi nào diễn ra sau cùng."
+      }
+    },
+    {
+      "question": {
+        "en": "What is semantic versioning (semver), and why does it matter when updating a mobile app's dependencies?",
+        "vi": "Semantic versioning (semver) là gì, và vì sao quan trọng khi cập nhật dependency của mobile app?"
+      },
+      "answer": {
+        "en": "Semver (MAJOR.MINOR.PATCH) encodes what kind of change a new version contains: PATCH = bug fixes only (safe to update), MINOR = new backward-compatible features (usually safe), MAJOR = breaking changes (requires review/migration). Trusting semver correctly lets you auto-update patch/minor versions with low risk while treating major bumps as work to plan for.",
+        "vi": "Semver (MAJOR.MINOR.PATCH) mã hoá loại thay đổi mà một phiên bản mới chứa: PATCH = chỉ sửa lỗi (an toàn để cập nhật), MINOR = tính năng mới tương thích ngược (thường an toàn), MAJOR = thay đổi phá vỡ tương thích (cần review/migration). Tin tưởng semver đúng cách cho phép tự động cập nhật phiên bản patch/minor với rủi ro thấp trong khi coi bước nhảy major là công việc cần lên kế hoạch."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the difference between a synchronous and an eventual-consistency data model for a mobile app with offline support?",
+        "vi": "Khác biệt giữa mô hình dữ liệu đồng bộ và eventual-consistency cho mobile app hỗ trợ offline là gì?"
+      },
+      "answer": {
+        "en": "A synchronous model requires an immediate round-trip to the server to confirm a change succeeded — impossible to guarantee offline. An eventual-consistency model lets local changes apply immediately (optimistic), queues them, and syncs to the server when connectivity returns, accepting that different devices may briefly see different states until sync completes and conflicts (if any) are resolved.",
+        "vi": "Mô hình đồng bộ yêu cầu một round-trip ngay lập tức tới server để xác nhận thay đổi thành công — không thể đảm bảo khi offline. Mô hình eventual-consistency cho phép thay đổi cục bộ áp dụng ngay (optimistic), xếp hàng chúng, và đồng bộ lên server khi có kết nối trở lại, chấp nhận rằng các thiết bị khác nhau có thể tạm thời thấy state khác nhau cho tới khi đồng bộ hoàn tất và xung đột (nếu có) được giải quyết."
+      }
+    },
+    {
+      "question": {
+        "en": "What are structured logs, and why are they preferred over plain text logs for production mobile apps?",
+        "vi": "Structured log là gì, và vì sao được ưu tiên hơn log dạng text thuần cho mobile app production?"
+      },
+      "answer": {
+        "en": "Structured logs emit events as key-value data (often JSON) instead of free-form text, e.g. `{event: \"login_failed\", userId: ..., reason: \"timeout\"}`. This lets logging/observability backends filter, aggregate, and alert on specific fields reliably, instead of relying on fragile text pattern matching across free-form log lines.",
+        "vi": "Structured log phát ra sự kiện dưới dạng dữ liệu key-value (thường là JSON) thay vì văn bản tự do, ví dụ `{event: \"login_failed\", userId: ..., reason: \"timeout\"}`. Điều này cho phép hệ thống logging/observability lọc, tổng hợp, và cảnh báo trên các trường cụ thể một cách đáng tin cậy, thay vì dựa vào việc khớp mẫu văn bản mong manh qua các dòng log tự do."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the strangler fig pattern, and how might it apply to migrating a legacy mobile codebase?",
+        "vi": "Strangler fig pattern là gì, và có thể áp dụng thế nào để migrate codebase mobile cũ?"
+      },
+      "answer": {
+        "en": "The strangler fig pattern migrates a system incrementally by building the new implementation alongside the old one, routing traffic/features to the new version screen-by-screen or feature-by-feature, until the old implementation has no callers left and can be deleted — avoiding a risky big-bang rewrite. E.g. migrating screens one at a time from a legacy UI framework to Compose/SwiftUI while both coexist in the same app.",
+        "vi": "Strangler fig pattern migrate một hệ thống theo kiểu tăng dần bằng cách xây triển khai mới song song với cái cũ, định tuyến traffic/tính năng sang phiên bản mới theo từng màn hình hoặc từng tính năng, cho tới khi triển khai cũ không còn ai gọi tới và có thể xoá đi — tránh một cuộc viết lại toàn bộ rủi ro cao (big-bang rewrite). Ví dụ: migrate từng màn hình một từ framework UI cũ sang Compose/SwiftUI trong khi cả hai cùng tồn tại trong cùng một app."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the difference between a smoke test and a full regression test suite?",
+        "vi": "Smoke test khác regression test suite đầy đủ thế nào?"
+      },
+      "answer": {
+        "en": "A smoke test is a small, fast set of checks confirming the most critical paths work at all (app launches, login succeeds, the main screen loads) — run frequently, e.g. on every build, to catch catastrophic breakage quickly. A full regression suite exhaustively re-tests existing functionality for any unintended side effect of a change — thorough but slower, typically run before a release rather than on every commit.",
+        "vi": "Smoke test là một tập kiểm tra nhỏ, nhanh xác nhận các đường dẫn quan trọng nhất hoạt động (app khởi chạy được, đăng nhập thành công, màn hình chính tải được) — chạy thường xuyên, ví dụ ở mỗi bản build, để nhanh chóng bắt lỗi hỏng nghiêm trọng. Bộ regression test đầy đủ kiểm tra lại toàn diện chức năng hiện có để tìm bất kỳ tác dụng phụ ngoài ý muốn nào của một thay đổi — kỹ lưỡng nhưng chậm hơn, thường chạy trước khi phát hành thay vì ở mỗi commit."
+      }
     }
   ],
   "quiz": [
@@ -904,6 +1114,586 @@
         "en": "A monorepo lets a single commit change an API and its client together atomically, and shares CI/tooling config — at the cost of a larger, more complex repository.",
         "vi": "Monorepo cho phép một commit thay đổi API và client của nó cùng lúc, nguyên tử, và dùng chung config CI/tooling — đánh đổi bằng một repository lớn hơn, phức tạp hơn."
       }
+    },
+    {
+      "question": {
+        "en": "What is the main benefit of the repository pattern in a mobile app's architecture?",
+        "vi": "Lợi ích chính của repository pattern trong kiến trúc mobile app là gì?"
+      },
+      "options": [
+        {
+          "en": "It hides where data comes from behind one interface, so the rest of the app doesn't depend on a specific data source",
+          "vi": "Nó ẩn nơi dữ liệu đến từ đâu đằng sau một interface, để phần còn lại của app không phụ thuộc vào một nguồn dữ liệu cụ thể"
+        },
+        {
+          "en": "It automatically encrypts all network traffic",
+          "vi": "Nó tự động mã hoá mọi lưu lượng mạng"
+        },
+        {
+          "en": "It replaces the need for a ViewModel",
+          "vi": "Nó thay thế nhu cầu dùng ViewModel"
+        },
+        {
+          "en": "It makes UI rendering faster",
+          "vi": "Nó làm render UI nhanh hơn"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "By abstracting the data source behind an interface, the repository lets callers stay agnostic to whether data comes from network, cache, or local database, and makes swapping/faking that source easy.",
+        "vi": "Bằng cách trừu tượng hoá nguồn dữ liệu đằng sau một interface, repository giúp bên gọi không cần biết dữ liệu đến từ mạng, cache, hay database cục bộ, và giúp việc thay/giả lập nguồn đó dễ dàng."
+      }
+    },
+    {
+      "question": {
+        "en": "What distinguishes a mock from a stub in testing terminology?",
+        "vi": "Điều gì phân biệt mock với stub trong thuật ngữ testing?"
+      },
+      "options": [
+        {
+          "en": "A mock lets you verify how it was called (interactions); a stub only returns canned data",
+          "vi": "Mock cho phép xác minh cách nó được gọi (tương tác); stub chỉ trả về dữ liệu định sẵn"
+        },
+        {
+          "en": "A stub can only be used in Android, a mock only in iOS",
+          "vi": "Stub chỉ dùng được trong Android, mock chỉ dùng được trong iOS"
+        },
+        {
+          "en": "Mocks are always slower to run than stubs",
+          "vi": "Mock luôn chạy chậm hơn stub"
+        },
+        {
+          "en": "There is no real difference between the two terms",
+          "vi": "Không có khác biệt thực sự giữa hai thuật ngữ"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Stubs focus purely on returning predetermined output; mocks additionally record calls so a test can assert on how the dependency was used.",
+        "vi": "Stub chỉ tập trung vào việc trả về output định sẵn; mock còn ghi lại các lệnh gọi để test có thể assert về cách dependency được sử dụng."
+      }
+    },
+    {
+      "question": {
+        "en": "What should a well-behaved mobile client do when it receives an HTTP 429 (Too Many Requests) response?",
+        "vi": "Một mobile client hoạt động đúng nên làm gì khi nhận phản hồi HTTP 429 (Too Many Requests)?"
+      },
+      "options": [
+        {
+          "en": "Back off and retry later instead of immediately retrying the request",
+          "vi": "Backoff và thử lại sau thay vì retry ngay lập tức"
+        },
+        {
+          "en": "Immediately retry the exact same request as fast as possible",
+          "vi": "Ngay lập tức retry đúng request đó nhanh nhất có thể"
+        },
+        {
+          "en": "Uninstall itself",
+          "vi": "Tự gỡ cài đặt"
+        },
+        {
+          "en": "Ignore the response code entirely",
+          "vi": "Bỏ qua hoàn toàn mã phản hồi này"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "429 signals the client has been rate-limited; retrying immediately worsens the problem, while backoff respects the server's rate limit and gives it room to recover.",
+        "vi": "429 báo hiệu client đã bị giới hạn tốc độ; retry ngay lập tức làm vấn đề tệ hơn, còn backoff tôn trọng giới hạn tốc độ của server và cho nó không gian để phục hồi."
+      }
+    },
+    {
+      "question": {
+        "en": "Why do payment APIs commonly require an idempotency key on a charge request?",
+        "vi": "Vì sao API thanh toán thường yêu cầu một idempotency key trên request tính phí?"
+      },
+      "options": [
+        {
+          "en": "To ensure a retried request (e.g. after a timeout) doesn't accidentally charge the user twice for the same operation",
+          "vi": "Để đảm bảo một request bị retry (ví dụ sau timeout) không vô tình tính phí người dùng hai lần cho cùng một thao tác"
+        },
+        {
+          "en": "To speed up the payment processing time",
+          "vi": "Để tăng tốc thời gian xử lý thanh toán"
+        },
+        {
+          "en": "To automatically convert currencies",
+          "vi": "Để tự động chuyển đổi tiền tệ"
+        },
+        {
+          "en": "It is only used for logging purposes",
+          "vi": "Nó chỉ dùng cho mục đích logging"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Since mobile networks are unreliable, a client may retry a request whose first attempt actually succeeded server-side; an idempotency key lets the server recognize the retry and avoid applying the charge twice.",
+        "vi": "Vì mạng di động không đáng tin cậy, client có thể retry một request mà lần thử đầu thực ra đã thành công phía server; idempotency key cho phép server nhận ra lần retry và tránh áp dụng tính phí hai lần."
+      }
+    },
+    {
+      "question": {
+        "en": "What does certificate pinning protect a mobile app against?",
+        "vi": "Certificate pinning bảo vệ mobile app chống lại điều gì?"
+      },
+      "options": [
+        {
+          "en": "Man-in-the-middle attacks using a certificate from a compromised or unexpected certificate authority",
+          "vi": "Tấn công man-in-the-middle dùng chứng chỉ từ một CA bị xâm nhập hoặc không mong đợi"
+        },
+        {
+          "en": "Slow network connections",
+          "vi": "Kết nối mạng chậm"
+        },
+        {
+          "en": "The app being uninstalled remotely",
+          "vi": "App bị gỡ cài đặt từ xa"
+        },
+        {
+          "en": "Losing local data when offline",
+          "vi": "Mất dữ liệu cục bộ khi offline"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "By pinning the expected certificate/key, the app rejects connections to anything else — including a validly-CA-signed certificate from an attacker who has compromised or coerced a CA.",
+        "vi": "Bằng cách pin chứng chỉ/khoá mong đợi, app từ chối kết nối tới bất kỳ thứ gì khác — kể cả một chứng chỉ được ký hợp lệ bởi CA từ kẻ tấn công đã xâm nhập hoặc ép buộc một CA."
+      }
+    },
+    {
+      "question": {
+        "en": "Which is generally the slowest type of app launch?",
+        "vi": "Loại khởi chạy app nào thường chậm nhất?"
+      },
+      "options": [
+        {
+          "en": "Cold start — the process must be created from scratch",
+          "vi": "Cold start — process phải được tạo từ đầu"
+        },
+        {
+          "en": "Warm start — the process is already alive",
+          "vi": "Warm start — process đã sẵn sống"
+        },
+        {
+          "en": "Both are always exactly the same speed",
+          "vi": "Cả hai luôn có tốc độ hoàn toàn giống nhau"
+        },
+        {
+          "en": "Warm start is always slower than cold start",
+          "vi": "Warm start luôn chậm hơn cold start"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Cold start requires creating the process, loading classes, and running initializers — the most expensive launch path, unlike warm start which reuses an already-running process.",
+        "vi": "Cold start yêu cầu tạo process, load class, và chạy initializer — đường khởi chạy tốn kém nhất, khác với warm start tái sử dụng một process đang chạy sẵn."
+      }
+    },
+    {
+      "question": {
+        "en": "Why do mobile apps typically use an image loading library instead of manually downloading and displaying full-resolution images?",
+        "vi": "Vì sao mobile app thường dùng thư viện tải ảnh thay vì tự tải và hiển thị ảnh full-resolution thủ công?"
+      },
+      "options": [
+        {
+          "en": "Libraries handle resizing, memory/disk caching, and cancellation automatically, saving memory, bandwidth, and battery",
+          "vi": "Thư viện tự động xử lý resize, cache bộ nhớ/đĩa, và huỷ tải, tiết kiệm bộ nhớ, băng thông, và pin"
+        },
+        {
+          "en": "Manual image loading is not technically possible on mobile",
+          "vi": "Tải ảnh thủ công về mặt kỹ thuật không thể thực hiện trên mobile"
+        },
+        {
+          "en": "Image libraries always produce higher visual quality images",
+          "vi": "Thư viện ảnh luôn tạo ra ảnh chất lượng hình ảnh cao hơn"
+        },
+        {
+          "en": "It's required by app store guidelines",
+          "vi": "Đây là yêu cầu bắt buộc của hướng dẫn app store"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Decoding a full-resolution image just to show a thumbnail wastes memory/CPU, and repeated downloads waste bandwidth/battery — image libraries solve both with resizing and caching.",
+        "vi": "Decode ảnh full-resolution chỉ để hiển thị thumbnail lãng phí bộ nhớ/CPU, và tải lại nhiều lần lãng phí băng thông/pin — thư viện ảnh giải quyết cả hai bằng resize và cache."
+      }
+    },
+    {
+      "question": {
+        "en": "A mobile app correctly verifies a user's identity but then denies them access to an admin-only screen. What concept does the denial represent?",
+        "vi": "Một mobile app xác minh đúng danh tính người dùng nhưng sau đó từ chối cho họ truy cập màn hình chỉ dành cho admin. Việc từ chối đó thể hiện khái niệm nào?"
+      },
+      "options": [
+        {
+          "en": "Authorization",
+          "vi": "Authorization"
+        },
+        {
+          "en": "Authentication",
+          "vi": "Authentication"
+        },
+        {
+          "en": "Encryption",
+          "vi": "Encryption"
+        },
+        {
+          "en": "Caching",
+          "vi": "Caching"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Verifying identity is authentication; deciding what an authenticated identity is permitted to do is authorization — the two are distinct steps.",
+        "vi": "Xác minh danh tính là authentication; quyết định danh tính đã xác thực đó được phép làm gì là authorization — đây là hai bước riêng biệt."
+      }
+    },
+    {
+      "question": {
+        "en": "What does a successful Face ID / Touch ID check actually do under the hood, in most implementations?",
+        "vi": "Một lần kiểm tra Face ID / Touch ID thành công thực chất làm gì bên dưới, trong hầu hết triển khai?"
+      },
+      "options": [
+        {
+          "en": "Unlocks local access to an already-securely-stored secret (e.g. a Keychain item), without transmitting raw biometric data anywhere",
+          "vi": "Mở khoá truy cập cục bộ tới một bí mật đã được lưu trữ an toàn từ trước (ví dụ một item Keychain), mà không truyền dữ liệu sinh trắc học thô đi đâu cả"
+        },
+        {
+          "en": "Sends the user's fingerprint image to the app's backend for verification",
+          "vi": "Gửi ảnh vân tay của người dùng lên backend của app để xác minh"
+        },
+        {
+          "en": "Uploads a face scan to Apple/Google's servers",
+          "vi": "Tải ảnh quét khuôn mặt lên server của Apple/Google"
+        },
+        {
+          "en": "Disables all other authentication methods permanently",
+          "vi": "Vô hiệu hoá vĩnh viễn mọi phương thức xác thực khác"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "The biometric match happens in a secure hardware enclave; the app only learns success/failure and, on success, gains access to a secret it already had stored securely — no raw biometric data is exposed to the app or transmitted.",
+        "vi": "Việc khớp sinh trắc học diễn ra trong một secure enclave phần cứng; app chỉ biết kết quả thành công/thất bại và, khi thành công, được truy cập tới một bí mật đã lưu trữ an toàn từ trước — không có dữ liệu sinh trắc học thô nào bị lộ cho app hay được truyền đi."
+      }
+    },
+    {
+      "question": {
+        "en": "Why is a memory leak generally more immediately damaging on a mobile device than on a typical server?",
+        "vi": "Vì sao rò rỉ bộ nhớ nói chung gây hại ngay lập tức hơn trên thiết bị mobile so với trên server thông thường?"
+      },
+      "options": [
+        {
+          "en": "Mobile devices have much tighter memory budgets and the OS may kill the app (losing user state) rather than a process simply restarting with fresh memory",
+          "vi": "Thiết bị mobile có ngân sách bộ nhớ eo hẹp hơn nhiều và hệ điều hành có thể kill app (mất state người dùng) thay vì chỉ đơn giản khởi động lại process với bộ nhớ mới"
+        },
+        {
+          "en": "Mobile devices never run a garbage collector",
+          "vi": "Thiết bị mobile không bao giờ chạy garbage collector"
+        },
+        {
+          "en": "Servers are immune to memory leaks entirely",
+          "vi": "Server hoàn toàn miễn nhiễm với rò rỉ bộ nhớ"
+        },
+        {
+          "en": "Memory leaks only happen in Objective-C, not modern mobile code",
+          "vi": "Rò rỉ bộ nhớ chỉ xảy ra trong Objective-C, không phải trong code mobile hiện đại"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Constrained memory plus a long-lived single user session (with no convenient restart) means a leak's effects accumulate and degrade that specific user's experience directly, often ending in the OS killing the app.",
+        "vi": "Bộ nhớ hạn chế cộng với một phiên người dùng đơn tồn tại lâu (không có restart tiện lợi) nghĩa là hiệu ứng của rò rỉ tích luỹ và làm giảm trực tiếp trải nghiệm của đúng người dùng đó, thường kết thúc bằng việc hệ điều hành kill app."
+      }
+    },
+    {
+      "question": {
+        "en": "In a typical flow, how does a webhook relate to a push notification reaching a mobile device?",
+        "vi": "Trong một luồng điển hình, webhook liên quan thế nào tới việc push notification tới được thiết bị mobile?"
+      },
+      "options": [
+        {
+          "en": "A backend often learns an event happened via a webhook, then triggers a push notification through FCM/APNs to inform the device",
+          "vi": "Backend thường biết một sự kiện đã xảy ra qua webhook, rồi kích hoạt push notification qua FCM/APNs để thông báo cho thiết bị"
+        },
+        {
+          "en": "A webhook and a push notification are the exact same mechanism",
+          "vi": "Webhook và push notification là hoàn toàn cùng một cơ chế"
+        },
+        {
+          "en": "Push notifications are sent directly between two backends, never to a device",
+          "vi": "Push notification được gửi trực tiếp giữa hai backend, không bao giờ tới thiết bị"
+        },
+        {
+          "en": "Webhooks can only be used for billing",
+          "vi": "Webhook chỉ dùng được cho thanh toán"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Webhooks are server-to-server; push is server-to-device — a common pattern chains them, with a webhook informing your backend of an event that then triggers a push to the relevant user's device.",
+        "vi": "Webhook là server-tới-server; push là server-tới-thiết bị — một mẫu phổ biến nối chúng lại, với webhook báo cho backend biết về một sự kiện, sau đó kích hoạt push tới thiết bị của người dùng liên quan."
+      }
+    },
+    {
+      "question": {
+        "en": "What is a key benefit of adopting a shared design system across a mobile team?",
+        "vi": "Lợi ích chính của việc áp dụng design system dùng chung trong team mobile là gì?"
+      },
+      "options": [
+        {
+          "en": "Consistent, reusable components and tokens speed up development and keep the UI visually/behaviorally consistent",
+          "vi": "Component và token dùng chung, tái sử dụng được giúp tăng tốc phát triển và giữ UI nhất quán về hình ảnh/hành vi"
+        },
+        {
+          "en": "It eliminates the need for any UI testing",
+          "vi": "Nó loại bỏ nhu cầu kiểm thử UI"
+        },
+        {
+          "en": "It automatically translates the app into every language",
+          "vi": "Nó tự động dịch app sang mọi ngôn ngữ"
+        },
+        {
+          "en": "It removes the need for a backend API",
+          "vi": "Nó loại bỏ nhu cầu có backend API"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "A design system's reusable components and tokens avoid reinventing common UI pieces per screen and keep the whole app consistent, which is its main value.",
+        "vi": "Component và token tái sử dụng của design system tránh việc làm lại các phần UI thông dụng ở mỗi màn hình và giữ toàn bộ app nhất quán, đó là giá trị chính của nó."
+      }
+    },
+    {
+      "question": {
+        "en": "What does horizontal scaling of a mobile app's backend require that vertical scaling does not?",
+        "vi": "Scale theo chiều ngang cho backend của mobile app yêu cầu điều gì mà scale theo chiều dọc không cần?"
+      },
+      "options": [
+        {
+          "en": "The backend generally needs to be stateless (or externalize state) so requests can be handled by any server instance",
+          "vi": "Backend nói chung cần phải stateless (hoặc đưa state ra ngoài) để request có thể được xử lý bởi bất kỳ instance server nào"
+        },
+        {
+          "en": "A more powerful single machine",
+          "vi": "Một máy đơn mạnh hơn"
+        },
+        {
+          "en": "No load balancer is ever needed",
+          "vi": "Không bao giờ cần load balancer"
+        },
+        {
+          "en": "The mobile app itself must be rewritten in a different language",
+          "vi": "Bản thân mobile app phải được viết lại bằng ngôn ngữ khác"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Horizontal scaling spreads requests across multiple instances behind a load balancer, which only works correctly if any instance can serve any request — requiring statelessness or shared external state.",
+        "vi": "Scale theo chiều ngang phân tán request qua nhiều instance phía sau một load balancer, chỉ hoạt động đúng nếu bất kỳ instance nào cũng phục vụ được bất kỳ request nào — yêu cầu tính stateless hoặc state chia sẻ bên ngoài."
+      }
+    },
+    {
+      "question": {
+        "en": "Why does a third-party dependency's SLA (or lack of one) matter to a mobile app that relies on it?",
+        "vi": "Vì sao SLA của một dependency bên thứ ba (hoặc việc không có SLA) lại quan trọng với mobile app phụ thuộc vào nó?"
+      },
+      "options": [
+        {
+          "en": "It bounds how reliable your app's dependent features can realistically be, and informs whether a fallback is needed",
+          "vi": "Nó giới hạn mức độ đáng tin cậy thực tế của các tính năng phụ thuộc trong app, và cho biết có cần phương án dự phòng hay không"
+        },
+        {
+          "en": "SLAs guarantee the third-party service can never have downtime",
+          "vi": "SLA đảm bảo dịch vụ bên thứ ba không bao giờ có thời gian gián đoạn"
+        },
+        {
+          "en": "SLAs are only relevant to server-side teams, never to mobile",
+          "vi": "SLA chỉ liên quan tới team backend, không bao giờ liên quan tới mobile"
+        },
+        {
+          "en": "SLAs replace the need for error handling in the app",
+          "vi": "SLA thay thế nhu cầu xử lý lỗi trong app"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Your app's reliability for a feature can't exceed the reliability of what it depends on; a known SLA (or the lack of one) tells you whether you need a degraded/offline fallback for that dependency.",
+        "vi": "Độ tin cậy của app cho một tính năng không thể vượt quá độ tin cậy của thứ nó phụ thuộc vào; một SLA đã biết (hoặc việc không có SLA) cho biết có cần phương án dự phòng/suy giảm cho dependency đó hay không."
+      }
+    },
+    {
+      "question": {
+        "en": "What distinguishes deliberate, well-managed technical debt from a plain mistake?",
+        "vi": "Điều gì phân biệt nợ kỹ thuật có chủ đích, được quản lý tốt với một sai lầm thông thường?"
+      },
+      "options": [
+        {
+          "en": "It's taken on knowingly, with a plan to address it before it compounds",
+          "vi": "Nó được vay có chủ đích, với kế hoạch xử lý trước khi nó tích luỹ"
+        },
+        {
+          "en": "Technical debt is always a bug, regardless of intent",
+          "vi": "Nợ kỹ thuật luôn là một bug, bất kể chủ đích"
+        },
+        {
+          "en": "It only applies to backend code, never mobile code",
+          "vi": "Nó chỉ áp dụng cho code backend, không bao giờ áp dụng cho code mobile"
+        },
+        {
+          "en": "It can never be paid back once introduced",
+          "vi": "Nó không bao giờ có thể được trả một khi đã phát sinh"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Like financial debt, technical debt is a reasonable tool when taken on deliberately with an intent to repay it — the danger is debt that's unknowing or never addressed.",
+        "vi": "Giống như nợ tài chính, nợ kỹ thuật là một công cụ hợp lý khi được vay có chủ đích với ý định trả lại — nguy hiểm là khoản nợ vay không chủ ý hoặc không bao giờ được xử lý."
+      }
+    },
+    {
+      "question": {
+        "en": "What causes a race condition?",
+        "vi": "Điều gì gây ra race condition?"
+      },
+      "options": [
+        {
+          "en": "The correctness of the code depends on the unpredictable timing or order of concurrent operations",
+          "vi": "Tính đúng đắn của code phụ thuộc vào thời điểm hoặc thứ tự khó đoán của các thao tác đồng thời"
+        },
+        {
+          "en": "A single-threaded function running alone",
+          "vi": "Một hàm đơn luồng chạy một mình"
+        },
+        {
+          "en": "A missing null check",
+          "vi": "Thiếu kiểm tra null"
+        },
+        {
+          "en": "A typo in a variable name",
+          "vi": "Gõ sai tên biến"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Race conditions specifically arise from concurrency — when the outcome depends on which operation happens to run first, rather than being deterministic.",
+        "vi": "Race condition đặc biệt phát sinh từ concurrency — khi kết quả phụ thuộc vào thao tác nào tình cờ chạy trước, thay vì mang tính xác định."
+      }
+    },
+    {
+      "question": {
+        "en": "Under semantic versioning, which update is generally safest to apply automatically?",
+        "vi": "Theo semantic versioning, loại cập nhật nào nói chung an toàn nhất để tự động áp dụng?"
+      },
+      "options": [
+        {
+          "en": "A PATCH version bump",
+          "vi": "Bước nhảy phiên bản PATCH"
+        },
+        {
+          "en": "A MAJOR version bump",
+          "vi": "Bước nhảy phiên bản MAJOR"
+        },
+        {
+          "en": "Any version bump is equally risky",
+          "vi": "Bất kỳ bước nhảy phiên bản nào cũng rủi ro như nhau"
+        },
+        {
+          "en": "Semver does not define any ordering of risk",
+          "vi": "Semver không định nghĩa thứ tự rủi ro nào"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "By convention, PATCH bumps contain only bug fixes with no API changes, making them the lowest-risk update to apply automatically; MAJOR bumps signal breaking changes requiring review.",
+        "vi": "Theo quy ước, bước nhảy PATCH chỉ chứa sửa lỗi, không thay đổi API, khiến nó là cập nhật rủi ro thấp nhất để áp dụng tự động; bước nhảy MAJOR báo hiệu thay đổi phá vỡ tương thích cần review."
+      }
+    },
+    {
+      "question": {
+        "en": "What does an eventual-consistency model accept, in exchange for supporting offline edits?",
+        "vi": "Mô hình eventual-consistency chấp nhận điều gì, để đổi lấy việc hỗ trợ chỉnh sửa offline?"
+      },
+      "options": [
+        {
+          "en": "Different devices may briefly see different states until sync completes and any conflicts are resolved",
+          "vi": "Các thiết bị khác nhau có thể tạm thời thấy state khác nhau cho tới khi đồng bộ hoàn tất và mọi xung đột được giải quyết"
+        },
+        {
+          "en": "The app can never work offline at all",
+          "vi": "App hoàn toàn không thể hoạt động offline"
+        },
+        {
+          "en": "All writes are instantly visible on every device with zero delay",
+          "vi": "Mọi lần ghi đều hiển thị tức thì trên mọi thiết bị mà không có độ trễ"
+        },
+        {
+          "en": "Conflicts are impossible by design",
+          "vi": "Xung đột không thể xảy ra theo thiết kế"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Eventual consistency trades immediate, guaranteed synchronization for the ability to keep working offline, accepting temporary divergence between devices until they reconcile.",
+        "vi": "Eventual consistency đánh đổi việc đồng bộ tức thì, được đảm bảo để lấy khả năng tiếp tục hoạt động offline, chấp nhận sự khác biệt tạm thời giữa các thiết bị cho tới khi chúng hoà giải."
+      }
+    },
+    {
+      "question": {
+        "en": "Why are structured logs generally preferred over free-form text logs in production?",
+        "vi": "Vì sao structured log nói chung được ưu tiên hơn log dạng text tự do trong production?"
+      },
+      "options": [
+        {
+          "en": "They let observability tools filter, aggregate, and alert on specific fields reliably instead of relying on fragile text pattern matching",
+          "vi": "Chúng cho phép công cụ observability lọc, tổng hợp, và cảnh báo trên các trường cụ thể một cách đáng tin cậy thay vì dựa vào khớp mẫu văn bản mong manh"
+        },
+        {
+          "en": "They always take up less disk space than text logs",
+          "vi": "Chúng luôn chiếm ít dung lượng đĩa hơn log text"
+        },
+        {
+          "en": "Free-form text logs cannot be stored at all",
+          "vi": "Log văn bản tự do hoàn toàn không thể lưu trữ được"
+        },
+        {
+          "en": "Structured logs are required by app store review",
+          "vi": "Structured log là yêu cầu bắt buộc của app store review"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "Key-value structured data (often JSON) is far more reliable to query and alert on programmatically than parsing arbitrary free-form text.",
+        "vi": "Dữ liệu có cấu trúc key-value (thường là JSON) đáng tin cậy hơn nhiều để truy vấn và cảnh báo bằng chương trình so với việc parse văn bản tự do bất kỳ."
+      }
+    },
+    {
+      "question": {
+        "en": "What is the core idea of the strangler fig pattern for migrating a legacy codebase?",
+        "vi": "Ý tưởng cốt lõi của strangler fig pattern để migrate codebase cũ là gì?"
+      },
+      "options": [
+        {
+          "en": "Incrementally route traffic/features to a new implementation until the old one has no callers left and can be removed",
+          "vi": "Định tuyến dần dần traffic/tính năng sang triển khai mới cho tới khi cái cũ không còn ai gọi tới và có thể loại bỏ"
+        },
+        {
+          "en": "Rewrite the entire app from scratch in one release",
+          "vi": "Viết lại toàn bộ app từ đầu trong một lần phát hành"
+        },
+        {
+          "en": "Delete the old code immediately before writing any new code",
+          "vi": "Xoá code cũ ngay lập tức trước khi viết bất kỳ code mới nào"
+        },
+        {
+          "en": "Only applies to backend systems, never to mobile UI code",
+          "vi": "Chỉ áp dụng cho hệ thống backend, không bao giờ áp dụng cho code UI mobile"
+        }
+      ],
+      "answerIndex": 0,
+      "explanation": {
+        "en": "The pattern avoids a risky big-bang rewrite by having the new and old implementations coexist, gradually shifting traffic/screens to the new one piece by piece.",
+        "vi": "Mẫu này tránh một cuộc viết lại toàn bộ rủi ro cao bằng cách để triển khai mới và cũ cùng tồn tại, dần dần chuyển traffic/màn hình sang cái mới từng phần một."
+      }
     }
   ],
   "notes": [
@@ -1015,6 +1805,206 @@
       "content": {
         "en": "A shortlist of reasons apps commonly bounce back from review, useful to know for both interviews and shipping a real app:\n\n1. **Crashes or broken core flows** — the single most common rejection; test the exact flow a reviewer would follow before submitting.\n2. **Broken or missing demo credentials** — if the app requires login, the reviewer needs a working account; provide one in the submission notes.\n3. **Misleading metadata** — screenshots or description promising functionality the app doesn't actually have.\n4. **Missing privacy disclosures** — not declaring what data is collected and why (App Store's 'Privacy Nutrition Labels', Play Store's Data Safety section) when the app actually collects it.\n5. **Guideline-specific issues** — iOS: using private APIs, not following Human Interface Guidelines for standard interactions (e.g. non-standard back gestures); Android: violating Play Store policy on permissions (requesting more than the app's stated purpose needs).\n\nInterview framing: review rejection is often treated as a pure legal/business concern, but it's directly relevant to engineering — QA-ing the exact reviewer flow and keeping permission requests minimal and justified are both things developers control.",
         "vi": "Danh sách ngắn các lý do app thường bị trả về khi review, hữu ích để biết cho cả phỏng vấn lẫn khi ship một app thật:\n\n1. **Crash hoặc luồng chính bị lỗi** — lý do bị từ chối phổ biến nhất; hãy test đúng luồng mà reviewer sẽ đi qua trước khi submit.\n2. **Tài khoản demo lỗi hoặc thiếu** — nếu app yêu cầu đăng nhập, reviewer cần một tài khoản hoạt động được; cung cấp trong ghi chú khi submit.\n3. **Metadata gây hiểu lầm** — screenshot hoặc mô tả hứa hẹn chức năng mà app thực tế không có.\n4. **Thiếu công bố về privacy** — không khai báo dữ liệu nào được thu thập và vì sao (Privacy Nutrition Labels của App Store, phần Data Safety của Play Store) trong khi app thực tế có thu thập.\n5. **Vấn đề đặc thù guideline** — iOS: dùng private API, không tuân theo Human Interface Guidelines cho tương tác chuẩn (ví dụ cử chỉ back không chuẩn); Android: vi phạm chính sách permission của Play Store (xin nhiều quyền hơn mục đích app đã khai báo cần).\n\nGóc nhìn phỏng vấn: việc bị từ chối review thường bị coi là vấn đề pháp lý/kinh doanh thuần tuý, nhưng nó liên quan trực tiếp đến engineering — QA đúng luồng mà reviewer sẽ đi qua và giữ các yêu cầu permission tối thiểu, có lý do rõ ràng, đều là những thứ developer kiểm soát được."
+      }
+    },
+    {
+      "title": {
+        "en": "The Repository Pattern",
+        "vi": "Repository Pattern"
+      },
+      "content": {
+        "en": "A repository is the single point of access an app's business logic (use cases/ViewModels) goes through to read or write data, hiding *where* that data actually comes from — a network API, a local database, an in-memory cache, or some combination.\n\n```\nViewModel -> Repository -> [Remote DataSource, Local DataSource]\n```\nA typical repository implementation decides caching strategy (return cached data immediately, refresh in the background; or check cache first, fall back to network on miss), and exposes a single clean interface to the rest of the app so those decisions live in one place. This is also what makes testing easy: in a unit test, a fake repository implementation returns fixed data with no real network/database involved.",
+        "vi": "Repository là điểm truy cập duy nhất mà business logic của app (use case/ViewModel) đi qua để đọc hoặc ghi dữ liệu, ẩn đi *nơi* dữ liệu đó thực sự đến từ đâu — một API mạng, một database cục bộ, một cache trong bộ nhớ, hoặc kết hợp các nguồn đó.\n\n```\nViewModel -> Repository -> [Remote DataSource, Local DataSource]\n```\nMột triển khai repository điển hình quyết định chiến lược cache (trả về dữ liệu cache ngay, refresh ở nền; hoặc kiểm tra cache trước, chuyển sang mạng khi thiếu), và phơi bày một interface sạch duy nhất cho phần còn lại của app để những quyết định đó nằm ở một chỗ. Đây cũng là điều giúp việc test dễ dàng: trong unit test, một triển khai repository giả trả về dữ liệu cố định mà không cần mạng/database thật."
+      }
+    },
+    {
+      "title": {
+        "en": "Test Doubles: Mocks, Stubs, Fakes & Spies",
+        "vi": "Test Double: Mock, Stub, Fake & Spy"
+      },
+      "content": {
+        "en": "'Mock' is often used loosely to mean any fake dependency in a test, but the terms have precise, distinct meanings:\n\n- **Dummy**: a placeholder object passed but never actually used.\n- **Stub**: returns predetermined/canned responses; used to control the code path under test (e.g. a stubbed repository that always 'succeeds').\n- **Fake**: a lightweight working implementation (e.g. an in-memory database instead of a real one) — behaves correctly but takes a shortcut unsuitable for production.\n- **Spy**: a real (or partially real) object that also records how it was called, for later inspection.\n- **Mock**: pre-programmed with expectations about which calls it should receive, and fails the test itself if those expectations aren't met.\n\nKnowing the distinction helps pick the right tool: stubs/fakes for controlling state and keeping tests focused on behavior, mocks/spies when the interaction itself (was X called correctly) is what you're actually testing.",
+        "vi": "'Mock' thường được dùng lỏng lẻo để chỉ bất kỳ dependency giả nào trong test, nhưng các thuật ngữ này có ý nghĩa chính xác, riêng biệt:\n\n- **Dummy**: một object giữ chỗ được truyền vào nhưng không bao giờ thực sự dùng tới.\n- **Stub**: trả về phản hồi định sẵn/đóng hộp; dùng để kiểm soát đường code được test (ví dụ một repository stub luôn 'thành công').\n- **Fake**: một triển khai hoạt động nhẹ (ví dụ database trong bộ nhớ thay vì database thật) — hoạt động đúng nhưng đi tắt không phù hợp cho production.\n- **Spy**: một object thật (hoặc một phần thật) còn ghi lại cách nó được gọi, để kiểm tra sau.\n- **Mock**: được lập trình sẵn kỳ vọng về lệnh gọi nào nó nên nhận, và tự làm test thất bại nếu kỳ vọng đó không được đáp ứng.\n\nBiết được sự khác biệt giúp chọn đúng công cụ: stub/fake để kiểm soát state và giữ test tập trung vào hành vi, mock/spy khi chính tương tác (X có được gọi đúng không) là thứ đang thực sự được test."
+      }
+    },
+    {
+      "title": {
+        "en": "Resilient Networking: Rate Limits, Backoff & Idempotency",
+        "vi": "Networking Kiên cường: Rate Limit, Backoff & Idempotency"
+      },
+      "content": {
+        "en": "Three concepts that make mobile-to-backend networking robust over unreliable connections:\n\n- **Rate limiting**: backends cap requests per client per time window (returning `429 Too Many Requests`) to stay healthy under load or abuse. A well-behaved client respects this instead of hammering the endpoint.\n- **Exponential backoff with jitter**: on failure, wait progressively longer between retries (1s, 2s, 4s, 8s...) with a small random jitter added, so many clients that failed simultaneously don't all retry in lockstep and overwhelm a recovering server.\n- **Idempotency**: an idempotent request produces the same effect no matter how many times it's applied. Since a mobile client can't always tell if a request that timed out actually succeeded server-side, non-idempotent operations (payments, order creation) need an idempotency key so a safe retry doesn't duplicate the effect.\n\nTogether these let a mobile app retry safely and considerately instead of either giving up too early or making an unreliable network worse.",
+        "vi": "Ba khái niệm giúp networking giữa mobile và backend kiên cường qua kết nối không đáng tin cậy:\n\n- **Rate limiting**: backend giới hạn số request theo từng client trong một khoảng thời gian (trả về `429 Too Many Requests`) để giữ ổn định dưới tải hoặc lạm dụng. Một client hoạt động đúng tôn trọng điều này thay vì gọi liên tục vào endpoint.\n- **Exponential backoff với jitter**: khi thất bại, đợi thời gian tăng dần giữa các lần retry (1s, 2s, 4s, 8s...) cộng thêm một khoảng jitter ngẫu nhiên nhỏ, để nhiều client cùng thất bại đồng thời không retry cùng lúc và làm quá tải một server đang phục hồi.\n- **Idempotency**: một request idempotent tạo ra cùng hiệu ứng bất kể được áp dụng bao nhiêu lần. Vì mobile client không phải lúc nào cũng biết một request bị timeout có thực sự thành công phía server hay không, các thao tác không idempotent (thanh toán, tạo đơn hàng) cần idempotency key để một lần retry an toàn không nhân đôi hiệu ứng.\n\nKết hợp lại, những điều này giúp mobile app retry an toàn và cân nhắc thay vì bỏ cuộc quá sớm hoặc làm một mạng không đáng tin cậy trở nên tệ hơn."
+      }
+    },
+    {
+      "title": {
+        "en": "Mobile Network Security: Certificate Pinning & Secure Transport",
+        "vi": "Bảo mật Mạng Mobile: Certificate Pinning & Secure Transport"
+      },
+      "content": {
+        "en": "HTTPS alone protects against a passive eavesdropper, but relies on trusting the certificate authority (CA) system — if an attacker controls or coerces a trusted CA, they could issue a valid-looking certificate for your domain and man-in-the-middle the connection undetected by standard TLS validation.\n\n**Certificate pinning** closes this gap by hardcoding the expected certificate or public key in the app, so it rejects any connection whose certificate doesn't match — even one signed by an otherwise-trusted CA. The tradeoff: pinned certificates must be rotated carefully (an expired pin with no fallback can lock out an entire app version), so most implementations pin the public key (survives cert renewal, as long as the key doesn't change) rather than the full certificate, and/or ship multiple pins (current + backup) to allow safe rotation.",
+        "vi": "HTTPS một mình bảo vệ chống nghe lén thụ động, nhưng dựa vào việc tin tưởng hệ thống chứng chỉ CA — nếu kẻ tấn công kiểm soát hoặc ép buộc một CA tin cậy, họ có thể cấp một chứng chỉ trông hợp lệ cho domain của bạn và thực hiện man-in-the-middle mà không bị phát hiện bởi kiểm tra TLS tiêu chuẩn.\n\n**Certificate pinning** lấp khoảng trống này bằng cách ghim cứng chứng chỉ hoặc public key mong đợi vào app, để nó từ chối bất kỳ kết nối nào có chứng chỉ không khớp — kể cả chứng chỉ được ký bởi một CA vốn được tin cậy. Đánh đổi: chứng chỉ đã pin phải được xoay vòng cẩn thận (một pin hết hạn không có fallback có thể khoá cả một phiên bản app), nên hầu hết triển khai pin public key (sống sót qua việc gia hạn chứng chỉ, miễn khoá không đổi) thay vì toàn bộ chứng chỉ, và/hoặc phát hành nhiều pin (hiện tại + dự phòng) để cho phép xoay vòng an toàn."
+      }
+    },
+    {
+      "title": {
+        "en": "App Startup Performance: Cold, Warm & Hot Starts",
+        "vi": "Hiệu năng Khởi động App: Cold, Warm & Hot Start"
+      },
+      "content": {
+        "en": "App launch isn't one uniform event; its cost depends on what state the OS finds the app in:\n\n- **Cold start**: the process doesn't exist — the OS creates it, loads the binary/classes, runs static initializers, and only then builds the first screen. Slowest, and the one users judge an app's 'launch speed' by most, especially right after install/update or device reboot.\n- **Warm start**: the process is still alive (backgrounded), but the Activity/UI needs recreating — skips process creation but still redoes UI setup.\n- **Hot start**: the process and UI are both still alive; the app just needs to come back to the foreground — fastest, close to instantaneous.\n\nOptimizing cold start usually means deferring non-essential work out of `Application.onCreate()`/`main()` (lazy-init what isn't needed for the first frame), minimizing what runs before the first screen paints, and — on Android — tools like Baseline Profiles to AOT-compile the startup path.",
+        "vi": "Khởi chạy app không phải một sự kiện đồng nhất; chi phí của nó phụ thuộc vào trạng thái mà hệ điều hành thấy app đang ở:\n\n- **Cold start**: process không tồn tại — hệ điều hành tạo nó, load binary/class, chạy initializer tĩnh, rồi mới dựng màn hình đầu tiên. Chậm nhất, và là thứ người dùng đánh giá 'tốc độ khởi chạy' của app nhiều nhất, đặc biệt ngay sau khi cài/cập nhật hoặc khởi động lại thiết bị.\n- **Warm start**: process vẫn còn sống (đang ở nền), nhưng Activity/UI cần được tạo lại — bỏ qua tạo process nhưng vẫn làm lại thiết lập UI.\n- **Hot start**: cả process và UI đều còn sống; app chỉ cần quay lại nền trước — nhanh nhất, gần như tức thì.\n\nTối ưu cold start thường nghĩa là trì hoãn công việc không thiết yếu ra khỏi `Application.onCreate()`/`main()` (khởi tạo lười những gì không cần cho frame đầu tiên), giảm thiểu những gì chạy trước khi màn hình đầu tiên được vẽ, và — trên Android — công cụ như Baseline Profile để biên dịch trước (AOT) đường khởi động."
+      }
+    },
+    {
+      "title": {
+        "en": "Image Loading & Caching Strategy",
+        "vi": "Chiến lược Tải & Cache Ảnh"
+      },
+      "content": {
+        "en": "Images dominate most mobile screens' data and memory footprint, so dedicated image-loading libraries (Coil/Glide on Android, Kingfisher/SDWebImage on iOS, `cached_network_image` on Flutter) handle several concerns together:\n\n- **Downsampling**: decode an image at (roughly) the target display size rather than its full resolution, avoiding wasted memory for a 4000px photo shown in a 100px thumbnail.\n- **Two-tier caching**: an in-memory cache (fast, but cleared under memory pressure/app restart) plus a disk cache (survives restarts, avoids re-downloading).\n- **Request deduplication & cancellation**: if the same image is requested twice (or a list cell scrolls off-screen before its image loads), avoid duplicate downloads and cancel work that's no longer needed.\n\nGetting this wrong is a very common source of both jank (decoding large images on the main thread) and OutOfMemory crashes on lower-end devices, especially in image-heavy lists.",
+        "vi": "Ảnh chiếm phần lớn dấu chân dữ liệu và bộ nhớ của hầu hết màn hình mobile, nên các thư viện tải ảnh chuyên dụng (Coil/Glide trên Android, Kingfisher/SDWebImage trên iOS, `cached_network_image` trên Flutter) xử lý cùng lúc nhiều mối quan tâm:\n\n- **Downsampling**: decode ảnh ở kích thước (xấp xỉ) hiển thị mục tiêu thay vì độ phân giải đầy đủ, tránh lãng phí bộ nhớ cho một ảnh 4000px hiển thị ở thumbnail 100px.\n- **Cache hai tầng**: cache trong bộ nhớ (nhanh, nhưng bị xoá khi áp lực bộ nhớ/app restart) cộng với cache đĩa (sống sót qua restart, tránh tải lại).\n- **Gộp request & huỷ tải**: nếu cùng một ảnh được yêu cầu hai lần (hoặc một cell trong list cuộn ra khỏi màn hình trước khi ảnh tải xong), tránh tải trùng và huỷ công việc không còn cần thiết.\n\nLàm sai điều này là nguồn rất phổ biến gây cả giật lag (decode ảnh lớn trên main thread) lẫn crash OutOfMemory trên thiết bị cấu hình thấp, đặc biệt trong danh sách nhiều ảnh."
+      }
+    },
+    {
+      "title": {
+        "en": "Authentication vs Authorization, and Biometric Auth",
+        "vi": "Authentication và Authorization, và Xác thực Sinh trắc học"
+      },
+      "content": {
+        "en": "**Authentication** answers 'who is this user' (login credentials, a valid session/JWT, a biometric check). **Authorization** answers 'what is this authenticated user allowed to do' (roles, permissions, resource ownership) — an app can authenticate someone correctly and still, correctly, deny them a specific action they aren't authorized for.\n\nBiometric authentication (Face ID, Touch ID, Android's BiometricPrompt) typically isn't itself a credential sent anywhere — it's a local gate to something already stored securely (a Keychain item, a Keystore-backed key). The biometric match happens inside secure hardware (a Secure Enclave / TEE); the app only ever learns pass/fail, never sees raw biometric data, which is also why biometric auth should be layered on top of a real credential (a password/token still exists underneath) rather than being the entire authentication story.",
+        "vi": "**Authentication** trả lời câu hỏi 'người dùng này là ai' (thông tin đăng nhập, phiên/JWT hợp lệ, kiểm tra sinh trắc học). **Authorization** trả lời câu hỏi 'người dùng đã xác thực này được phép làm gì' (vai trò, quyền, quyền sở hữu tài nguyên) — một app có thể xác thực đúng ai đó và vẫn, một cách đúng đắn, từ chối họ một hành động cụ thể mà họ không được phân quyền.\n\nXác thực sinh trắc học (Face ID, Touch ID, BiometricPrompt của Android) thường tự nó không phải là một thông tin xác thực được gửi đi đâu — nó là một cổng cục bộ tới thứ gì đó đã được lưu trữ an toàn từ trước (một item Keychain, một khoá dựa trên Keystore). Việc khớp sinh trắc học diễn ra bên trong phần cứng an toàn (Secure Enclave / TEE); app chỉ bao giờ biết pass/fail, không bao giờ thấy dữ liệu sinh trắc học thô, đây cũng là lý do xác thực sinh trắc học nên được xếp lớp trên một thông tin xác thực thật (mật khẩu/token vẫn tồn tại bên dưới) thay vì là toàn bộ câu chuyện xác thực."
+      }
+    },
+    {
+      "title": {
+        "en": "Memory Leaks on Mobile: Why They Hurt More",
+        "vi": "Rò rỉ Bộ nhớ trên Mobile: Vì sao Gây hại Nhiều hơn"
+      },
+      "content": {
+        "en": "A memory leak is memory that's logically garbage (nothing legitimately needs it anymore) but can't be reclaimed because something still holds a reference to it — a listener never unregistered, a closure/callback capturing a long-dead screen's context, a static/singleton field holding an Activity or View.\n\nMobile makes leaks more consequential than on a typical server: devices have a fraction of a server's RAM, there's no periodic process restart to reset accumulated leaks, and the OS actively kills backgrounded apps under memory pressure — a leaky app degrades within a single long user session and can eventually crash or get killed, directly visible to that user. Tools like Android's LeakCanary or Xcode's Memory Graph Debugger/Instruments (Leaks/Allocations) are the standard way to catch these before they ship.",
+        "vi": "Rò rỉ bộ nhớ là bộ nhớ về mặt logic đã là rác (không còn gì thực sự cần nó nữa) nhưng không thể thu hồi vì vẫn còn thứ gì đó giữ tham chiếu tới nó — một listener chưa bao giờ được gỡ đăng ký, một closure/callback capture context của một màn hình đã 'chết' từ lâu, một field static/singleton giữ một Activity hay View.\n\nMobile khiến rò rỉ gây hậu quả nghiêm trọng hơn so với server thông thường: thiết bị chỉ có một phần nhỏ RAM so với server, không có việc restart process định kỳ để reset các rò rỉ tích luỹ, và hệ điều hành chủ động kill app ở nền khi áp lực bộ nhớ — một app rò rỉ suy giảm ngay trong một phiên người dùng dài và cuối cùng có thể crash hoặc bị kill, người dùng đó thấy trực tiếp. Công cụ như LeakCanary của Android hay Memory Graph Debugger/Instruments (Leaks/Allocations) của Xcode là cách chuẩn để bắt những lỗi này trước khi phát hành."
+      }
+    },
+    {
+      "title": {
+        "en": "Webhooks vs Push Notifications",
+        "vi": "Webhook và Push Notification"
+      },
+      "content": {
+        "en": "These two mechanisms are often confused because they both 'push' information, but they solve different problems:\n\n- A **webhook** is server-to-server: service A registers a URL with service B, and B calls that URL (an HTTP POST) whenever a relevant event happens — e.g. a payment processor notifying your backend that a charge succeeded.\n- A **push notification** is server-to-device: your backend asks a platform push service (FCM for Android, APNs for iOS) to deliver a message to a specific device/app instance, waking it or showing a notification even if the app isn't running.\n\nA common end-to-end flow: an external event triggers a webhook to your backend -> your backend updates its own state -> your backend then calls FCM/APNs to push a notification to the relevant user's device, informing them of that event.",
+        "vi": "Hai cơ chế này thường bị nhầm lẫn vì cả hai đều 'đẩy' thông tin, nhưng chúng giải quyết các vấn đề khác nhau:\n\n- **Webhook** là server-tới-server: dịch vụ A đăng ký một URL với dịch vụ B, và B gọi URL đó (một HTTP POST) mỗi khi có sự kiện liên quan xảy ra — ví dụ một bộ xử lý thanh toán báo cho backend của bạn biết một lần tính phí đã thành công.\n- **Push notification** là server-tới-thiết bị: backend của bạn yêu cầu một dịch vụ push nền tảng (FCM cho Android, APNs cho iOS) gửi một message tới một thiết bị/instance app cụ thể, đánh thức nó hoặc hiện thông báo kể cả khi app không chạy.\n\nMột luồng end-to-end phổ biến: một sự kiện bên ngoài kích hoạt webhook tới backend của bạn -> backend cập nhật state riêng -> backend sau đó gọi FCM/APNs để push thông báo tới thiết bị của người dùng liên quan, báo cho họ biết về sự kiện đó."
+      }
+    },
+    {
+      "title": {
+        "en": "Design Systems for Mobile Teams",
+        "vi": "Design System cho Team Mobile"
+      },
+      "content": {
+        "en": "A design system is a shared source of truth for a product's visual and interaction language: **tokens** (colors, spacing scale, typography, corner radii — often defined once and consumed across platforms), **components** (a Button, Card, TextField with defined variants/states), and **guidelines** (when to use which component, accessibility rules, voice/tone).\n\nFor a mobile team, the payoff compounds over time: new screens assemble from existing, tested components instead of reinventing them; a rebrand or dark-mode rollout becomes a token change instead of hundreds of hardcoded-color edits; and designers/engineers share exact vocabulary (the Figma component and the code component have the same name and behavior), reducing handoff friction. The cost is upfront investment and discipline to keep the system and the implementation in sync as the product evolves.",
+        "vi": "Design system là nguồn chân lý dùng chung cho ngôn ngữ hình ảnh và tương tác của sản phẩm: **token** (màu, thang khoảng cách, typography, bo góc — thường định nghĩa một lần và dùng trên nhiều nền tảng), **component** (Button, Card, TextField với các biến thể/trạng thái đã định nghĩa), và **hướng dẫn** (khi nào dùng component nào, quy tắc accessibility, giọng điệu).\n\nVới team mobile, lợi ích tích luỹ theo thời gian: màn hình mới được lắp ráp từ component đã có, đã test thay vì làm lại chúng; một lần rebrand hay ra mắt dark-mode trở thành thay đổi token thay vì hàng trăm lần sửa màu hardcode; và designer/engineer dùng chung chính xác một vốn từ vựng (component Figma và component code có cùng tên và hành vi), giảm ma sát bàn giao. Chi phí là đầu tư ban đầu và kỷ luật để giữ hệ thống và triển khai đồng bộ khi sản phẩm phát triển."
+      }
+    },
+    {
+      "title": {
+        "en": "Scaling a Mobile App's Backend: Vertical vs Horizontal",
+        "vi": "Scale Backend cho Mobile App: Chiều dọc và Chiều ngang"
+      },
+      "content": {
+        "en": "As a mobile app's user base grows, its backend needs to handle more load two ways:\n\n- **Vertical scaling**: give a single server more resources (CPU, RAM). Simple — no architecture changes needed — but has a hard ceiling (the biggest machine you can buy) and remains a single point of failure.\n- **Horizontal scaling**: run multiple server instances behind a load balancer that distributes requests among them. Scales further and survives an individual instance failing, but requires the application to be effectively **stateless** per request — any session/user-specific state has to live in shared storage (a database, Redis) that every instance can reach, rather than in one instance's memory, or a user's requests would need to always hit the same instance.\n\nMost production backends combine both: reasonably-sized instances (vertical) scaled out horizontally, with autoscaling adding/removing instances based on load.",
+        "vi": "Khi lượng người dùng của một mobile app tăng, backend của nó cần xử lý tải nhiều hơn theo hai cách:\n\n- **Scale chiều dọc**: cho một server duy nhất nhiều tài nguyên hơn (CPU, RAM). Đơn giản — không cần thay đổi kiến trúc — nhưng có giới hạn cứng (máy lớn nhất bạn có thể mua) và vẫn là điểm lỗi đơn.\n- **Scale chiều ngang**: chạy nhiều instance server phía sau một load balancer phân phối request giữa chúng. Mở rộng được nhiều hơn và sống sót khi một instance riêng lẻ gặp sự cố, nhưng yêu cầu ứng dụng phải **stateless** hiệu quả theo từng request — bất kỳ state phiên/người dùng cụ thể nào phải sống trong lưu trữ dùng chung (database, Redis) mà mọi instance đều tiếp cận được, thay vì trong bộ nhớ của một instance, nếu không request của người dùng sẽ luôn cần tới đúng instance đó.\n\nHầu hết backend production kết hợp cả hai: instance có kích thước hợp lý (chiều dọc) được scale ra chiều ngang, với autoscaling thêm/bớt instance dựa trên tải."
+      }
+    },
+    {
+      "title": {
+        "en": "SLAs and Depending on Third-Party Services",
+        "vi": "SLA và Việc Phụ thuộc Dịch vụ Bên thứ ba"
+      },
+      "content": {
+        "en": "A service-level agreement (SLA) is a measurable promise about reliability — commonly uptime (e.g. '99.9% availability,' meaning at most ~8.7 hours of downtime per year) and response time. Mobile apps routinely depend on third-party services (payment processors, maps, push infrastructure, analytics, auth providers) whose SLA — stated or implicit — becomes a ceiling on your own app's reliability for whatever feature relies on it.\n\nThis has design consequences: a feature built on a provider with no stated SLA (or a known-flaky one) should degrade gracefully (cached data, an offline queue, a clear error state) rather than treating that dependency as infallible; a feature on a provider with a strong SLA can more safely assume availability. Reviewing a new dependency's SLA (and its historical status-page incident record) is a reasonable due-diligence step before building a critical feature on top of it.",
+        "vi": "Service-level agreement (SLA) là một cam kết có thể đo lường về độ tin cậy — thường là uptime (ví dụ '99.9% availability,' nghĩa là tối đa khoảng ~8.7 giờ gián đoạn mỗi năm) và thời gian phản hồi. Mobile app thường xuyên phụ thuộc vào dịch vụ bên thứ ba (bộ xử lý thanh toán, bản đồ, hạ tầng push, analytics, nhà cung cấp auth) mà SLA của họ — công bố hay ngầm định — trở thành giới hạn trên cho độ tin cậy của chính app bạn với bất kỳ tính năng nào dựa vào nó.\n\nĐiều này có hệ quả về thiết kế: một tính năng xây trên nhà cung cấp không công bố SLA (hoặc được biết là hay lỗi) nên suy giảm một cách nhẹ nhàng (dữ liệu cache, hàng đợi offline, trạng thái lỗi rõ ràng) thay vì coi dependency đó là không thể sai; một tính năng trên nhà cung cấp có SLA mạnh có thể an toàn hơn khi giả định luôn khả dụng. Xem xét SLA của một dependency mới (và lịch sử sự cố trên trang status của họ) là một bước thẩm định hợp lý trước khi xây một tính năng quan trọng dựa trên nó."
+      }
+    },
+    {
+      "title": {
+        "en": "Technical Debt: A Deliberate Tradeoff",
+        "vi": "Nợ Kỹ thuật: Một Đánh đổi Có Chủ đích"
+      },
+      "content": {
+        "en": "Technical debt is the future cost incurred by choosing an expedient implementation now over a more thorough one — a metaphor deliberately borrowed from finance because the core insight is the same: debt taken on knowingly, with a plan to repay it, is a legitimate tool (ship an MVP screen quickly to validate a feature before investing in a robust version); debt taken on unknowingly, or never repaid, accrues 'interest' as every future change to that area becomes slower and riskier.\n\nPractical habits that keep debt manageable: flagging a shortcut explicitly (a `// TODO` with context, or a tracked ticket) rather than leaving it silent; periodically allocating time to pay down high-interest debt (code that's touched often and is painful to change) rather than only ever adding new features; and distinguishing debt from a plain design mistake — debt is a choice made with eyes open under a real constraint (time, unclear requirements), not simply doing something wrong.",
+        "vi": "Nợ kỹ thuật là chi phí tương lai phát sinh từ việc chọn một cách triển khai nhanh gọn bây giờ thay vì một cách kỹ lưỡng hơn — một phép ẩn dụ mượn có chủ đích từ tài chính vì hiểu biết cốt lõi là như nhau: nợ vay có chủ ý, với kế hoạch trả, là một công cụ hợp lệ (ra mắt nhanh một màn hình MVP để kiểm chứng một tính năng trước khi đầu tư vào phiên bản vững chắc); nợ vay không chủ ý, hoặc không bao giờ trả, tích luỹ 'lãi suất' khi mỗi thay đổi tương lai trong khu vực đó trở nên chậm hơn và rủi ro hơn.\n\nCác thói quen thực tế giữ nợ trong tầm kiểm soát: đánh dấu một lối tắt tường minh (một `// TODO` có ngữ cảnh, hoặc một ticket được theo dõi) thay vì để nó âm thầm; định kỳ dành thời gian trả bớt khoản nợ 'lãi suất cao' (code hay bị đụng vào và khó thay đổi) thay vì chỉ luôn thêm tính năng mới; và phân biệt nợ với một sai lầm thiết kế thông thường — nợ là một lựa chọn được đưa ra một cách sáng suốt dưới một ràng buộc thực sự (thời gian, yêu cầu chưa rõ), không đơn thuần là làm sai điều gì đó."
+      }
+    },
+    {
+      "title": {
+        "en": "Race Conditions in Mobile App Code",
+        "vi": "Race Condition trong Code Mobile App"
+      },
+      "content": {
+        "en": "A race condition occurs when correct behavior depends on the relative timing/order of concurrent operations, and that order isn't guaranteed. On mobile, common sources are: two async callbacks both mutating the same in-memory state, a UI update triggered from a background thread racing with one from the main thread, or two coroutines both checking a cache's staleness and both independently deciding to refresh it.\n\nMitigations depend on the platform's concurrency model: confining mutable state to a single actor/thread (Swift's `@MainActor` or an `actor`; Kotlin's structured concurrency scopes with a single dispatcher for the shared state) so by construction only one operation touches it at a time; using atomic/thread-safe data structures when shared mutable state genuinely can't be avoided; or restructuring the logic to be free of shared mutable state altogether (e.g. a single coroutine owning cache-refresh decisions, with others just awaiting its result instead of racing to trigger it themselves).",
+        "vi": "Race condition xảy ra khi hành vi đúng phụ thuộc vào thời điểm/thứ tự tương đối của các thao tác đồng thời, và thứ tự đó không được đảm bảo. Trên mobile, nguồn phổ biến là: hai callback bất đồng bộ cùng thay đổi cùng một state trong bộ nhớ, một cập nhật UI kích hoạt từ luồng nền đua với một cập nhật từ main thread, hoặc hai coroutine cùng kiểm tra độ cũ của cache và cả hai độc lập quyết định refresh nó.\n\nCách giảm thiểu phụ thuộc vào mô hình concurrency của nền tảng: giới hạn state có thể thay đổi vào một actor/luồng duy nhất (`@MainActor` hay `actor` của Swift; scope structured concurrency của Kotlin với một dispatcher duy nhất cho state dùng chung) để theo thiết kế chỉ một thao tác chạm vào nó tại một thời điểm; dùng cấu trúc dữ liệu atomic/an toàn luồng khi state chia sẻ có thể thay đổi thực sự không tránh được; hoặc tái cấu trúc logic để hoàn toàn không có state chia sẻ có thể thay đổi (ví dụ một coroutine duy nhất sở hữu quyết định refresh cache, các coroutine khác chỉ await kết quả của nó thay vì đua nhau kích hoạt)."
+      }
+    },
+    {
+      "title": {
+        "en": "Semantic Versioning for Dependencies",
+        "vi": "Semantic Versioning cho Dependency"
+      },
+      "content": {
+        "en": "Semantic versioning (semver) is the `MAJOR.MINOR.PATCH` convention most package ecosystems (pub.dev, npm, CocoaPods/SPM, Maven/Gradle) rely on: **PATCH** increments for backward-compatible bug fixes only, **MINOR** for backward-compatible new functionality, and **MAJOR** for breaking changes.\n\nThis convention is what makes dependency version ranges (e.g. `^1.2.0` meaning 'any 1.x.x >= 1.2.0') a reasonable default — you can generally accept PATCH/MINOR updates automatically with low risk. The catch: semver is a convention the package author has to follow correctly, not a compiler-enforced guarantee — a library can technically break behavior in a 'minor' release by mistake, so automated updates still deserve CI test coverage rather than blind trust, and a MAJOR bump specifically should always be treated as scheduled migration work, reading the changelog before upgrading.",
+        "vi": "Semantic versioning (semver) là quy ước `MAJOR.MINOR.PATCH` mà hầu hết hệ sinh thái package (pub.dev, npm, CocoaPods/SPM, Maven/Gradle) dựa vào: **PATCH** tăng cho sửa lỗi tương thích ngược, **MINOR** cho tính năng mới tương thích ngược, và **MAJOR** cho thay đổi phá vỡ tương thích.\n\nQuy ước này là điều khiến khoảng phiên bản dependency (ví dụ `^1.2.0` nghĩa là 'bất kỳ 1.x.x >= 1.2.0') trở thành mặc định hợp lý — nói chung có thể chấp nhận cập nhật PATCH/MINOR tự động với rủi ro thấp. Điểm cần lưu ý: semver là một quy ước mà tác giả package phải tuân theo đúng cách, không phải một đảm bảo được trình biên dịch ép buộc — một thư viện về mặt kỹ thuật có thể phá vỡ hành vi trong một bản phát hành 'minor' do nhầm lẫn, nên cập nhật tự động vẫn cần độ phủ test CI thay vì tin tưởng mù quáng, và bước nhảy MAJOR đặc biệt nên luôn được coi là công việc migration đã lên lịch, đọc changelog trước khi nâng cấp."
+      }
+    },
+    {
+      "title": {
+        "en": "Offline-First Data & Eventual Consistency",
+        "vi": "Dữ liệu Offline-First & Eventual Consistency"
+      },
+      "content": {
+        "en": "An offline-first app treats the local device as the primary source of truth for reads and writes, syncing to the server opportunistically rather than requiring a round-trip for every action. This means adopting an **eventual consistency** model: a local write applies immediately (optimistic UI), gets queued, and is pushed to the server when connectivity allows — accepting that, for a window of time, different devices for the same account may disagree about the current state.\n\nThe hard part is conflict resolution when two devices modify the same data while both offline: common strategies are last-write-wins (simple, can silently lose one user's change), operational transforms/CRDTs (merge changes algorithmically, used by collaborative editors), or surfacing the conflict to the user to resolve manually. Choosing offline-first is a deliberate tradeoff: better resilience to poor connectivity, at the cost of this added sync/conflict complexity that a purely online, synchronous model never has to deal with.",
+        "vi": "Một app offline-first coi thiết bị cục bộ là nguồn chân lý chính cho cả đọc và ghi, đồng bộ lên server khi có cơ hội thay vì yêu cầu round-trip cho mỗi hành động. Điều này nghĩa là áp dụng mô hình **eventual consistency**: một lần ghi cục bộ áp dụng ngay (optimistic UI), được xếp hàng, và đẩy lên server khi có kết nối — chấp nhận rằng, trong một khoảng thời gian, các thiết bị khác nhau của cùng một tài khoản có thể không đồng thuận về state hiện tại.\n\nPhần khó là giải quyết xung đột khi hai thiết bị sửa cùng dữ liệu trong khi cả hai đều offline: các chiến lược phổ biến là last-write-wins (đơn giản, có thể âm thầm làm mất thay đổi của một người dùng), operational transform/CRDT (gộp thay đổi bằng thuật toán, dùng bởi trình soạn thảo cộng tác), hoặc đưa xung đột ra cho người dùng tự giải quyết. Chọn offline-first là một đánh đổi có chủ đích: khả năng chống chịu tốt hơn với kết nối kém, đánh đổi bằng độ phức tạp đồng bộ/xung đột thêm vào mà một mô hình đồng bộ, chỉ-online thuần tuý không bao giờ phải xử lý."
+      }
+    },
+    {
+      "title": {
+        "en": "Structured Logging & Observability",
+        "vi": "Structured Logging & Observability"
+      },
+      "content": {
+        "en": "Free-form text logs (`print(\"user \" + id + \" failed login\")`) are easy to write but hard to query reliably at scale — finding 'all failed logins in the last hour for users on iOS 17' means fragile text parsing. **Structured logs** emit each event as key-value data instead:\n\n```json\n{\"event\": \"login_failed\", \"userId\": \"u_123\", \"platform\": \"ios\", \"osVersion\": \"17.4\", \"reason\": \"timeout\"}\n```\nThis lets a logging/observability backend (Datadog, Firebase Crashlytics custom logs, Sentry breadcrumbs, etc.) index and query on specific fields, build dashboards, and alert on thresholds ('failed logins > X in 5 minutes') reliably. On mobile specifically, logs are also typically batched and sent asynchronously (not on every event) to avoid burning battery/data on chatty logging, and should never include PII or secrets in plaintext given logs often end up in third-party tooling.",
+        "vi": "Log dạng text tự do (`print(\"user \" + id + \" failed login\")`) dễ viết nhưng khó truy vấn đáng tin cậy ở quy mô lớn — tìm 'mọi lần đăng nhập thất bại trong giờ qua của người dùng iOS 17' nghĩa là parse text mong manh. **Structured log** phát ra mỗi sự kiện dưới dạng dữ liệu key-value thay vào đó:\n\n```json\n{\"event\": \"login_failed\", \"userId\": \"u_123\", \"platform\": \"ios\", \"osVersion\": \"17.4\", \"reason\": \"timeout\"}\n```\nĐiều này cho phép backend logging/observability (Datadog, custom log của Firebase Crashlytics, breadcrumb của Sentry, v.v.) index và truy vấn trên các trường cụ thể, xây dashboard, và cảnh báo theo ngưỡng ('đăng nhập thất bại > X trong 5 phút') một cách đáng tin cậy. Trên mobile cụ thể, log cũng thường được gộp lô và gửi bất đồng bộ (không phải mỗi sự kiện) để tránh tốn pin/dữ liệu vì log quá nhiều, và không bao giờ nên chứa PII hay bí mật dạng văn bản thuần vì log thường kết thúc ở công cụ bên thứ ba."
+      }
+    },
+    {
+      "title": {
+        "en": "Migrating Legacy Code: The Strangler Fig Pattern",
+        "vi": "Migrate Code Cũ: Strangler Fig Pattern"
+      },
+      "content": {
+        "en": "Named after a vine that gradually grows around and eventually replaces its host tree, the strangler fig pattern migrates a system incrementally instead of via a risky 'big-bang' rewrite: build the new implementation alongside the old one, route traffic/usage to the new version piece by piece (screen by screen, feature by feature, or even user-cohort by user-cohort via a feature flag), and only remove the old implementation once nothing routes to it anymore.\n\nOn mobile, a common application is migrating a legacy UI framework (older Views/UIKit code) to a modern one (Compose/SwiftUI) one screen at a time within the same app, using interop layers (`ComposeView` inside a legacy Fragment, or `UIHostingController` inside legacy UIKit) to let both coexist during the transition. The benefit is a continuously shippable app throughout migration and much lower risk than a rewrite that can't ship until it's entirely done; the cost is maintaining interop code and, temporarily, two ways of doing the same thing.",
+        "vi": "Đặt tên theo một loài dây leo dần dần mọc quanh và cuối cùng thay thế cây chủ, strangler fig pattern migrate một hệ thống theo kiểu tăng dần thay vì qua một cuộc viết lại 'big-bang' rủi ro: xây triển khai mới song song với cái cũ, định tuyến traffic/việc sử dụng sang phiên bản mới từng phần một (từng màn hình, từng tính năng, hay thậm chí từng nhóm người dùng qua feature flag), và chỉ loại bỏ triển khai cũ khi không còn gì định tuyến tới nó nữa.\n\nTrên mobile, một ứng dụng phổ biến là migrate framework UI cũ (code View/UIKit cũ) sang framework hiện đại (Compose/SwiftUI) từng màn hình một trong cùng một app, dùng lớp interop (`ComposeView` bên trong Fragment cũ, hoặc `UIHostingController` bên trong UIKit cũ) để cả hai cùng tồn tại trong quá trình chuyển đổi. Lợi ích là một app có thể phát hành liên tục suốt quá trình migrate và rủi ro thấp hơn nhiều so với một cuộc viết lại không thể phát hành cho tới khi hoàn toàn xong; chi phí là phải duy trì code interop và, tạm thời, hai cách làm cùng một việc."
+      }
+    },
+    {
+      "title": {
+        "en": "Test Suite Strategy: Smoke Tests vs Full Regression",
+        "vi": "Chiến lược Bộ Test: Smoke Test và Regression Đầy đủ"
+      },
+      "content": {
+        "en": "Not every test needs to run at every stage. **Smoke tests** are a small, fast set checking that the most critical paths function at all (app launches without crashing, login works, the home screen loads) — designed to catch catastrophic breakage in seconds/minutes, cheap enough to run on every build or PR. A **full regression suite** exhaustively re-verifies existing behavior for unintended side effects of a change, typically much larger and slower, run before a release rather than on every commit.\n\nThis mirrors the broader testing pyramid idea: fast, narrow checks run constantly to catch obvious breakage immediately, while thorough, slower checks run less often at natural gates (pre-release) where their cost is easier to absorb. Skipping smoke tests means catastrophic bugs are found late (by the slower full suite, or worse, by users); running the full suite on every commit is often too slow to be practical for fast iteration.",
+        "vi": "Không phải mọi test đều cần chạy ở mọi giai đoạn. **Smoke test** là một tập nhỏ, nhanh kiểm tra các đường dẫn quan trọng nhất có hoạt động hay không (app khởi chạy không crash, đăng nhập hoạt động, màn hình chính tải được) — được thiết kế để bắt lỗi hỏng nghiêm trọng trong vài giây/phút, đủ rẻ để chạy ở mỗi bản build hoặc PR. **Bộ regression đầy đủ** kiểm tra lại toàn diện hành vi hiện có để tìm tác dụng phụ ngoài ý muốn của một thay đổi, thường lớn và chậm hơn nhiều, chạy trước khi phát hành thay vì ở mỗi commit.\n\nĐiều này phản ánh ý tưởng rộng hơn về kim tự tháp test: kiểm tra nhanh, hẹp chạy liên tục để bắt lỗi hỏng rõ ràng ngay lập tức, trong khi kiểm tra kỹ lưỡng, chậm hơn chạy ít thường xuyên hơn ở các cổng tự nhiên (trước khi phát hành) nơi chi phí của chúng dễ chấp nhận hơn. Bỏ qua smoke test nghĩa là lỗi nghiêm trọng bị phát hiện muộn (bởi bộ đầy đủ chậm hơn, hoặc tệ hơn, bởi người dùng); chạy bộ đầy đủ ở mỗi commit thường quá chậm để thực tế cho việc lặp nhanh."
+      }
+    },
+    {
+      "title": {
+        "en": "Incident Response for a Mobile Outage",
+        "vi": "Ứng phó Sự cố cho Mobile App"
+      },
+      "content": {
+        "en": "When a mobile app breaks in production (a bad release causing crashes, a backend outage taking down a core feature), the response looks different from a typical backend incident because a mobile client can't always be 'rolled back' instantly the way a server deploy can.\n\nKey tools mobile teams rely on: **remote config / feature flags** to disable a broken feature server-side without shipping a new build; **staged rollouts** (releasing to 1% -> 10% -> 100% of users) so a bad release is caught and halted before reaching everyone; and **crash reporting with release-health dashboards** (Crashlytics, Sentry) to detect a spike immediately after a rollout and correlate it to a specific version. A store-review-gated app update is the slowest lever (can take hours to days), so a resilient app is designed so the *fastest* available lever — usually a server-side flag — can mitigate most classes of incident without waiting on a new binary to reach users.",
+        "vi": "Khi một mobile app gặp sự cố ở production (một bản phát hành lỗi gây crash, một sự cố backend làm sập tính năng cốt lõi), cách ứng phó khác với một sự cố backend thông thường vì mobile client không phải lúc nào cũng có thể 'rollback' tức thì như một lần deploy server.\n\nCác công cụ chính mà team mobile dựa vào: **remote config / feature flag** để tắt một tính năng lỗi từ phía server mà không cần phát hành bản build mới; **staged rollout** (phát hành cho 1% -> 10% -> 100% người dùng) để một bản phát hành lỗi được phát hiện và dừng lại trước khi tới tất cả mọi người; và **báo cáo crash với dashboard release-health** (Crashlytics, Sentry) để phát hiện đột biến ngay sau một lần rollout và liên kết nó với một phiên bản cụ thể. Cập nhật app qua cổng review của store là đòn bẩy chậm nhất (có thể mất hàng giờ tới hàng ngày), nên một app kiên cường được thiết kế sao cho đòn bẩy *nhanh nhất* có sẵn — thường là một flag phía server — có thể giảm thiểu hầu hết các loại sự cố mà không cần chờ một bản build mới tới tay người dùng."
       }
     }
   ]

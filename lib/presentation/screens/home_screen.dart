@@ -2,17 +2,26 @@ import 'package:flutter/material.dart';
 
 import '../../domain/entities/app_language.dart';
 import '../../domain/entities/topic.dart';
+import '../../domain/repositories/progress_repository.dart';
 import '../../domain/usecases/get_topics.dart';
 import '../theme/app_spacing.dart';
 import '../widgets/language_toggle.dart';
 import '../widgets/topic_card.dart';
+import 'favorites_screen.dart';
+import 'search_screen.dart';
 import 'topic_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.getTopics, required this.language});
+  const HomeScreen({
+    super.key,
+    required this.getTopics,
+    required this.language,
+    required this.progressRepository,
+  });
 
   final GetTopics getTopics;
   final ValueNotifier<AppLanguage> language;
+  final ProgressRepository progressRepository;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -30,6 +39,42 @@ class _HomeScreenState extends State<HomeScreen> {
         return Scaffold(
           appBar: AppBar(
             title: const Text('Ôn phỏng vấn Mobile'),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.bookmark_rounded),
+                tooltip: language == AppLanguage.en ? 'Favorites' : 'Yêu thích',
+                onPressed: () async {
+                  final topics = await _topicsFuture;
+                  if (!context.mounted) return;
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => FavoritesScreen(
+                        topics: topics,
+                        language: widget.language,
+                        progressRepository: widget.progressRepository,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.search_rounded),
+                tooltip: language == AppLanguage.en ? 'Search' : 'Tìm kiếm',
+                onPressed: () async {
+                  final topics = await _topicsFuture;
+                  if (!context.mounted) return;
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => SearchScreen(
+                        topics: topics,
+                        language: widget.language,
+                        progressRepository: widget.progressRepository,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(52),
               child: Padding(
@@ -89,9 +134,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: TopicCard(
                             topic: topic,
                             language: language,
+                            progressRepository: widget.progressRepository,
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (_) => TopicScreen(topic: topic, language: widget.language),
+                                builder: (_) => TopicScreen(
+                                  topic: topic,
+                                  language: widget.language,
+                                  progressRepository: widget.progressRepository,
+                                ),
                               ),
                             ),
                           ),
